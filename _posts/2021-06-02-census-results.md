@@ -76,7 +76,7 @@ The frequency of use also varies a lot, but around 1/2 of people use Toki Pona a
 <div id="How often do you use (read/listen/write/speak) Toki Pona?_tp"></div>
 
 ## Toki Pona skills
-Speaking and listening were the weakest reported skills. Speaking is considered easier than listening.
+Listening, conversation and speaking were the weakest reported skills. Speaking is considered easier than listening.
 <div id="Which of these are true for you?"></div>
 <div id="Which of these are true for you?_tp"></div>
 
