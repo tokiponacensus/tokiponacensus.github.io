@@ -35,6 +35,8 @@ April 23, 2021. The Toki Pona census is released. After about a month and a half
 
 + Free-text answers have been randomly shuffled, but they are grouped by language, following the order of the "<b>toki seme?</b>" question.
 
++ In small screens some labels could be hidden or incomplete. You can tap/click on the graphs to reveal the missing info. 
+
 ---
 # Intro
 ---
