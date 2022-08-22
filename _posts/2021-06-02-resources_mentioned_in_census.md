@@ -9,11 +9,12 @@ related: false
 
 ---
 
-
 ---
 # ijo mute pi toki pona 
 ---
 + [This doc](https://docs.google.com/document/d/1Dzs-imNeZ8TMgdHUiiungJ4Yf97CJk9ylhQPXjWLsJU) contains lots of pointers to Toki Pona resources.
+
++ [Pu and Ku](https://tokipona.org/)
 
 ---
 # nimi pi pu ala
