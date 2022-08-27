@@ -1,6 +1,6 @@
 ---
 layout: single
-title:  "List of resources mentioned in the 2021 Toki Pona census"
+title:  "List of resources mentioned in the Toki Pona census"
 description: "Here we provide pointers to resources that were mentioned in the Toki Pona census"
 permalink: /resources/
 toc: true
@@ -8,6 +8,9 @@ toc_label: "Resources"
 related: false
 
 ---
+The Toki Pona census 2022 is live! You can fill it here: [https://forms.gle/h17VRNFC3gxBqPcJA](https://forms.gle/h17VRNFC3gxBqPcJA) 
+
+Share it with anyone you know that is interested in Toki Pona, even if they didn't finish learning it.
 
 ---
 # ijo mute pi toki pona 
