@@ -6,13 +6,8 @@ permalink: /resources/
 toc: true
 toc_label: "Resources"
 related: false
-
 ---
-The Toki Pona census 2022 is live! You can fill it here: [https://forms.gle/h17VRNFC3gxBqPcJA](https://forms.gle/h17VRNFC3gxBqPcJA) 
 
-Share it with anyone you know that is interested in Toki Pona, even if they didn't finish learning it.
-
----
 # ijo mute pi toki pona 
 ---
 + [This doc](https://docs.google.com/document/d/1Dzs-imNeZ8TMgdHUiiungJ4Yf97CJk9ylhQPXjWLsJU) contains lots of pointers to Toki Pona resources.
