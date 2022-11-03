@@ -11,6 +11,11 @@ related: false
 
 {% include graphs22.html %}
 
+
+ <figure>
+  <img src="/assets/images/census-2022.png">  
+  <figcaption><small>Art: David Revoy, <a href="https://www.davidrevoy.com" target="_blank">www.davidrevoy.com</a></small></figcaption>
+</figure> 
 <small>
 Go [here]({% post_url 2022-11-03-resources_mentioned_in_census %}) for a list of pointers to resources mentioned in the census.
 </small>
@@ -18,11 +23,6 @@ Go [here]({% post_url 2022-11-03-resources_mentioned_in_census %}) for a list of
 <small>
 [Read this]({% post_url 2022-10-15-musi-supa %}) if you are interested in a Toki Pona inspired board game.
 </small>
-
- <figure>
-  <img src="/assets/images/census-2022.png">  
-  <figcaption><small>Art: David Revoy, <a href="https://www.davidrevoy.com" target="_blank">www.davidrevoy.com</a></small></figcaption>
-</figure> 
 
 How much has the Toki Pona community changed since April 2021? Is it still growing exponentially? Are Ku suli words known or used? Find about this and much more in the results to the second Toki Pona census, version 2022. 
 
@@ -82,7 +82,9 @@ However, for the global group, it seems like there is a relatively large turnove
 <div id="22Did you answer the 2021 Toki Pona census?_tp"></div>
 
 ## Toki Pona level
-Similarly to last time, the Toki Pona level of respondents is diverse, a normal distribution can be spotted in the global group, and as expected, it is biased towards a greater level for people that responded using the Toki Pona version.
+Similarly to last time, the Toki Pona level of respondents is diverse, a normal distribution can be spotted in the global group, and as expected, it is biased towards a greater level for people that responded using the Toki Pona version. 
+
+Tap on the labels on small screens to see them fully.
 
 <div id="22What level of ability in Toki Pona do you have?"></div>
 <div id="22What level of ability in Toki Pona do you have?_tp"></div>
@@ -168,6 +170,8 @@ The course <i>12 days of Toki Pona by jan Misali</i> keeps being the resource mo
 ## Communities
 Discord and Reddit are still the most represented communities. Interestingly, the percentage of people in Discord has grown from 74.1% to 86.3% and the Reddit one has decreased from 65.6% to 55.1%. This is despite the exponential growth we showed on Reddit above, which just means that the Discord community has been growing even faster! Some new platforms have got Toki Pona communities, like Mastodon and VRChat, which we have extracted from the free answer part of this question.
 
+Remember you can click on the bars to see their labels and numbers if they are missing in small screens.
+
 <div id="22What Toki Pona communities are you in?"></div>
 <div id="22What Toki Pona communities are you in?_tp"></div>
 {% include free_text/22_What_Toki_Pona_communities_are_you_in.html %}
@@ -196,8 +200,11 @@ The data regarding writing systems is quite similar to the last census. The only
 
 ## Sign languages of Toki Pona
 
-As last time, almost nobody knows any sign language of Toki Pona. Although a significant number of people are interested and were interested last time, very few people have learned it. The number of people that know any Toki Pona signed language has increased though: from 5 to 9 people for toki pona luka and from 1 to 10 for Luka Pona. Note the scale is logarithmic for better visualization.
+As last time, almost nobody knows any sign language of Toki Pona. Although a significant number of people are interested and were interested last time, very few people have learned it. The number of people that know any Toki Pona signed language has increased though: from 5 to 9 people for toki pona luka and from 1 to 10 for Luka Pona. We show the regular plots and then the same plots with logarithmic so the bars are wide enough for you to click on them and see the numbers.
 
+<div id="22Do you know, want to know or are learning any of the sign languages/systems of Toki Pona?"></div>
+<div id="22Do you know, want to know or are learning any of the sign languages/systems of Toki Pona?_tp"></div>
+And these are the plots with log scale.
 <div id="22Do you know, want to know or are learning any of the sign languages/systems of Toki Pona?_log_scale"></div>
 <div id="22Do you know, want to know or are learning any of the sign languages/systems of Toki Pona?_tp_log_scale"></div>
 ---
@@ -252,6 +259,7 @@ The original options of this question were chosen to be the most common language
 
 <div id="22What other languages do you know?"></div>
 <div id="22What other languages do you know?_log_scale"></div>
+Recall that you can tap on the bars to see their labels and their numbers.
 <div id="22What other languages do you know?_tp"></div>
 {% include free_text/22_FWhat_other_languages_do_you_know_Write_the_langua.html %}
 

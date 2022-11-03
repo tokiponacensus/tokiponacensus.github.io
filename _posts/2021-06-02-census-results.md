@@ -10,6 +10,11 @@ related: false
 
 {% include graphs.html %}
 
+
+ <figure>
+  <img src="/assets/images/nasin-kulupu.png">  
+  <figcaption><small>Art: David Revoy, <a href="https://www.davidrevoy.com" target="_blank">www.davidrevoy.com</a></small></figcaption>
+</figure> 
 <small>
 Go [here]({% post_url 2022-11-03-resources_mentioned_in_census %}) for a list of pointers to resources mentioned in the census.
 </small>
@@ -17,11 +22,6 @@ Go [here]({% post_url 2022-11-03-resources_mentioned_in_census %}) for a list of
 <small>
 [Read this]({% post_url 2022-10-15-musi-supa %}) if you are interested in a Toki Pona inspired board game.
 </small>
-
- <figure>
-  <img src="/assets/images/nasin-kulupu.png">  
-  <figcaption><small>Art: David Revoy, <a href="https://www.davidrevoy.com" target="_blank">www.davidrevoy.com</a></small></figcaption>
-</figure> 
 
 How is the Toki Pona community? Who is interested in Toki Pona? Up to now we could only guess but we were really as much in the dark as the character above. Fret not! You are about to see. 
 

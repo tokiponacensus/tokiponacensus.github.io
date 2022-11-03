@@ -1591,6 +1591,56 @@ legend: { position: 'top', maxLines: 3},
             var options = {
                            isStacked: true,
 legend: { position: 'top', maxLines: 3},
+'height':600,
+
+                           'title':'Do you know, want to know or are learning any of the sign languages/systems of Toki Pona?'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22Do you know, want to know or are learning any of the sign languages/systems of Toki Pona?'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = google.visualization.arrayToDataTable([
+            ['Answer', 'sona','kama sona','wile sona','wile ala sona',
+            { role: 'annotation' } ],
+            ['toki pona luka', 2, 9, 50, 170, ''],['luka pona', 5, 23, 132, 76, ''],['toki luka pi jan Sa (Chuff)', 1, 0, 23, 203, ''],['nasin sin sina', 2, 1, 18, 208, '']
+            ]);
+            var view = data; 
+
+
+            var options = {
+                           isStacked: true,
+legend: { position: 'top', maxLines: 3},
+'height':600,
+
+                           'title':'sina sona e toki luka anu seme?'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22Do you know, want to know or are learning any of the sign languages/systems of Toki Pona?_tp'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = google.visualization.arrayToDataTable([
+            ['Answer', 'know','learning','interested','not interested',
+            { role: 'annotation' } ],
+            ['toki pona luka', 9, 28, 469, 1060, ''],['Luka Pona', 10, 43, 705, 621, ''],["Chuff's toki luka", 4, 2, 289, 1015, ''],['nasin ante sina', 2, 1, 272, 1028, '']
+            ]);
+            var view = data; 
+
+
+            var options = {
+                           isStacked: true,
+legend: { position: 'top', maxLines: 3},
 hAxis : { logScale : true, },
 
                      'height':600,
