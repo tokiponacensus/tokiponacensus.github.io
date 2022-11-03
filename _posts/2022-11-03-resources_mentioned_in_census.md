@@ -15,6 +15,8 @@ related: false
 ---
 + [This doc](https://docs.google.com/document/d/1Dzs-imNeZ8TMgdHUiiungJ4Yf97CJk9ylhQPXjWLsJU) contains lots of pointers to Toki Pona resources.
 
++ [Read this]({% post_url 2022-10-15-musi-supa %}) if you are interested in a Toki Pona inspired board game.
+
 ---
 # nimi pi pu ala
 ---

@@ -12,7 +12,11 @@ related: false
 {% include graphs.html %}
 
 <small>
-Go [here]({% post_url 2021-06-02-resources_mentioned_in_census %}) for a list of pointers to resources mentioned in the census.
+Go [here]({% post_url 2022-11-03-resources_mentioned_in_census %}) for a list of pointers to resources mentioned in the census.
+</small>
+
+<small>
+[Read this]({% post_url 2022-10-15-musi-supa %}) if you are interested in a Toki Pona inspired board game.
 </small>
 
  <figure>
