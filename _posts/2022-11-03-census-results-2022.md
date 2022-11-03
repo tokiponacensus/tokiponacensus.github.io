@@ -196,7 +196,7 @@ The data regarding writing systems is quite similar to the last census. The only
 
 ## Sign languages of Toki Pona
 
-As last time, almost nobody knows any sign language of Toki Pona. Although a significant number of people are interested and were interested last time, very few people have learned it. The number of people that know any Toki Pona signed language has increased though: from 5 to 9 people for toki pona luka and from 1 to 10 for Luka Pona.
+As last time, almost nobody knows any sign language of Toki Pona. Although a significant number of people are interested and were interested last time, very few people have learned it. The number of people that know any Toki Pona signed language has increased though: from 5 to 9 people for toki pona luka and from 1 to 10 for Luka Pona. Note the scale is logarithmic for better visualization.
 
 <div id="22Do you know, want to know or are learning any of the sign languages/systems of Toki Pona?_log_scale"></div>
 <div id="22Do you know, want to know or are learning any of the sign languages/systems of Toki Pona?_tp_log_scale"></div>
