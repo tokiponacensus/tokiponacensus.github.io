@@ -1,19 +1,18 @@
 ---
 layout: single
-title:  "List of resources mentioned in the 2021 Toki Pona census"
+title:  "List of resources mentioned in the Toki Pona census"
 description: "Here we provide pointers to resources that were mentioned in the Toki Pona census"
 permalink: /resources/
 toc: true
 toc_label: "Resources"
 related: false
-
 ---
 
-
----
 # ijo mute pi toki pona 
 ---
 + [This doc](https://docs.google.com/document/d/1Dzs-imNeZ8TMgdHUiiungJ4Yf97CJk9ylhQPXjWLsJU) contains lots of pointers to Toki Pona resources.
+
++ [Pu and Ku](https://tokipona.org/)
 
 + [Read this]({% post_url 2022-10-15-musi-supa %}) if you are interested in a Toki Pona inspired board game.
 

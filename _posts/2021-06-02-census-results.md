@@ -6,7 +6,6 @@ permalink: /results/
 toc: true
 toc_label: "Results"
 related: false
-
 ---
 
 {% include graphs.html %}
