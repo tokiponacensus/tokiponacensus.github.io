@@ -19,10 +19,6 @@ related: false
 Go [here]({% post_url 2022-11-03-resources_mentioned_in_census %}) for a list of pointers to resources mentioned in the census.
 </small>
 
-<small>
-[Read this]({% post_url 2022-10-15-musi-supa %}) if you are interested in a Toki Pona inspired board game.
-</small>
-
 How is the Toki Pona community? Who is interested in Toki Pona? Up to now we could only guess but we were really as much in the dark as the character above. Fret not! You are about to see. 
 
 April 23, 2021. The Toki Pona census is released. After about a month and a half it was closed with almost 1000 responses. It was made possible by a hard-working team. A big shout-out to everyone that helped make this a reality: the creators of the census (especially jan Sonatan, jan Olipija and jan Tamalu), the translators, people that suggested questions, the beta-testers and everyone that filled and shared the questionnaire a! tenpo ni la lipu sona ni li lon tan sina a! We want this: this flat of information feels good toward you!
@@ -43,6 +39,9 @@ April 23, 2021. The Toki Pona census is released. After about a month and a half
 ---
 # Intro
 ---
+
+**[Read this post]({% post_url 2022-10-15-musi-supa %}) if you are interested in a Toki Pona inspired board game.**
+
 
 ## Language used
 
@@ -238,3 +237,6 @@ We asked people to add anything else they wanted and we received quite a few ans
 
 ---
 This is it! We hope you enjoyed it. If you have any feedback, feel free to drop us <a href="mailto:tokiponacensus@gmail.com">an email</a>.
+
+**[Read this post]({% post_url 2022-10-15-musi-supa %}) if you are interested in a Toki Pona inspired board game.**
+

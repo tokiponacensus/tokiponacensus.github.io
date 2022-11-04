@@ -20,10 +20,6 @@ related: false
 Go [here]({% post_url 2022-11-03-resources_mentioned_in_census %}) for a list of pointers to resources mentioned in the census.
 </small>
 
-<small>
-[Read this]({% post_url 2022-10-15-musi-supa %}) if you are interested in a Toki Pona inspired board game.
-</small>
-
 How much has the Toki Pona community changed since April 2021? Is it still growing exponentially? Are Ku suli words known or used? Find about this and much more in the results to the second Toki Pona census, version 2022. 
 
 August 27, 2022. After 1 year and 4 months since the first census, this second one is released. After 6 weeks, about the same time as for the previous census, it was closed with almost 2000 responses. Twice as many!
@@ -48,6 +44,8 @@ Thank you to everyone that contributed to this project. o lukin pona a!
 ---
 # Intro
 ---
+**[Read this post]({% post_url 2022-10-15-musi-supa %}) if you are interested in a Toki Pona inspired board game.**
+
 
 ## Language used
 
@@ -282,3 +280,5 @@ Thanks to everyone for participating! See you maybe at the next one, for which w
 
 ---
 And that's about it. I hope you had a great time reading the results. If you have any feedback, feel free to drop us <a href="mailto:tokiponacensus@gmail.com">an email</a>.
+
+**[Read this post]({% post_url 2022-10-15-musi-supa %}) if you are interested in a Toki Pona inspired board game.**
