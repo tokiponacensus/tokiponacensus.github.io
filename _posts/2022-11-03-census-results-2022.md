@@ -49,7 +49,7 @@ Thank you to everyone that contributed to this project. o lukin pona a!
 
 Most people used the English version of the form. Almost 14% of people used the Toki Pona version, which is greater than last time's 10.8%.
 
-**Btw, [read this post]({% post_url 2022-10-15-musi-supa %}) if you are interested in a Toki Pona inspired board game.**
+**Btw, [read this post]({% post_url 2022-10-15-musi-supa %}) if you are interested in a board game about language inspired by Toki Pona.**
 
 <div id="22toki seme?"></div>
 
@@ -281,4 +281,4 @@ Thanks to everyone for participating! See you maybe at the next one, for which w
 ---
 And that's about it. I hope you had a great time reading the results. If you have any feedback, feel free to drop us <a href="mailto:tokiponacensus@gmail.com">an email</a>.
 
-**[Read this post]({% post_url 2022-10-15-musi-supa %}) if you are interested in a Toki Pona inspired board game.**
+**[Read this post]({% post_url 2022-10-15-musi-supa %}) if you are interested in a board game about language inspired by Toki Pona.**
