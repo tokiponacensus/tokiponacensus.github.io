@@ -46,7 +46,7 @@ April 23, 2021. The Toki Pona census is released. After about a month and a half
 
 Most people used the English version of the form. A bit more than 10% used the Toki Pona version. Some languages could have been used more but one has to take into account that some translations only came after the census was released (Chinese, French, Esperanto).
 
-**Btw, [read this post]({% post_url 2022-10-15-musi-supa %}) if you are interested in a Toki Pona inspired board game.**
+**Btw, [read this post]({% post_url 2022-10-15-musi-supa %}) if you are interested in a board game about language inspired by Toki Pona.**
 
 <div id="toki seme?"></div>
 
@@ -239,5 +239,5 @@ We asked people to add anything else they wanted and we received quite a few ans
 ---
 This is it! We hope you enjoyed it. If you have any feedback, feel free to drop us <a href="mailto:tokiponacensus@gmail.com">an email</a>.
 
-**[Read this post]({% post_url 2022-10-15-musi-supa %}) if you are interested in a Toki Pona inspired board game.**
+**[Read this post]({% post_url 2022-10-15-musi-supa %}) if you are interested in a board game about language inspired by Toki Pona.**
 

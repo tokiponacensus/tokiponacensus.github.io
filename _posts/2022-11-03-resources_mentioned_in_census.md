@@ -14,7 +14,7 @@ related: false
 
 + [Pu and Ku](https://tokipona.org/)
 
-+ **[Read this post]({% post_url 2022-10-15-musi-supa %}) if you are interested in a Toki Pona inspired board game.**
++ **[Read this post]({% post_url 2022-10-15-musi-supa %}) if you are interested in a board game about language inspired by Toki Pona.**
 
 ---
 # nimi pi pu ala
