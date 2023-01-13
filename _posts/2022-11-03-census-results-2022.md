@@ -229,6 +229,9 @@ There are not very big differences between the global and the Toki Pona segments
 
 
 <div id="22What is your gender?"></div>
+
+**Btw, [read this post]({% post_url 2022-10-15-musi-supa %}) if you are interested in a board game about language inspired by Toki Pona.**
+
 <div id="22What is your gender?_tp"></div>
 {% include free_text/22_What_is_your_gender.html %}
 
