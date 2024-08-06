@@ -27,30 +27,39 @@ related: false
 
 + [12 days of Toki Pona by jan Misali](https://www.youtube.com/watch?v=4L-dvvng4Zc&list=PLjOmpMyMxd8T9lZjF36c4mn4YgwZ4ToT6)
 
-+ [jan Pije's course](https://web.archive.org/web/20200513202025/http://tokipona.net/tp/janpije/okamasona1.php)
++ [jan Lentan’s course](https://lipu-sona.pona.la/).
 
-+ [jan Lope's course](https://jan-lope.github.io/Toki_Pona_lessons_English/)
 
-+ [76 lessons](https://aiki.pbworks.com/f/tp+in+76+lessons+English.pdf)
++ [toki pona in 18 minutes](https://www.youtube.com/watch?v=5phj5Ae80h8).
 
-+ [jan Lentan’s course](https://rnd.neocities.org/tokipona/)
++ Learn Toki Pona! By jan Kekan San. [videos](https://www.youtube.com/watch?v=J93GWOMbgdg), and [written lessons](https://mun.la/sona/).
 
-+ [Toki pona in a fortnight](https://www.youtube.com/watch?v=qzWrG9iM9ac)
++ [lipu sona tan jan Tesa](https://lipu-sona.kittycat.homes/en).
+
++ [o pilin e toki pona](https://www.youtube.com/playlist?list=PLwYL9_SRAk8EXSZPSTm9lm2kD_Z1RzUgm) tan jan Telakoman.
 
 + Anki decks [with reverse and linja pona](https://ankiweb.net/shared/info/1548566798), [all](https://ankiweb.net/shared/decks/toki%20pona)
 
 + Memrise decks [solpahi](https://app.memrise.com/course/39856/toki-pona-complete/), [jan Kalupana](https://app.memrise.com/course/352694/speak-toki-pona-with-audio/)
+
++ [jan Pije's course](https://web.archive.org/web/20200513202025/http://tokipona.net/tp/janpije/okamasona1.php).
+
++ [76 lessons](https://aiki.pbworks.com/f/tp+in+76+lessons+English.pdf)
+
++ [Toki pona in a fortnight](https://www.youtube.com/watch?v=qzWrG9iM9ac)
+
++ [jan Lope's course](https://jan-lope.github.io/Toki_Pona_lessons_English/)
 
 
 ---
 # kulupu
 ---
 
-+ [ma pona pi toki pona](https://discord.gg/Byqn5z9)
++ [ma pona pi toki pona](https://discord.gg/Byqn5z9) on Discord.
 
 + [kulupu Pepu](https://www.facebook.com/groups/sitelen/)
 
-+ kulupu Telekan: [kulupu pi toki pona](https://t.me/kulupupitokipona)
++ kulupu Telekan: toki pona - jan pi wile pona taso, [kulupu pi toki pona](https://t.me/kulupupitokipona), [toki pona taso](https://t.me/tokiponataso) [sitelen pona taso](https://t.me/sitelenponataso)
 
 + kulupu Wesi: [/r/tokipona](https://www.reddit.com/r/tokipona/), [/r/mi_lon](https://www.reddit.com/r/mi_lon/)
 
@@ -58,9 +67,11 @@ related: false
 # ijo pi toki pona
 ---
 
-+ [lipu kule](https://lipukule.org/)
++ [kalama musi](https://www.youtube.com/playlist?list=PLc7R2x5fn6ArBC8QSv2cb2rVvJ5-xltvr)
 
 + [lipu tenpo](https://liputenpo.org/)
+
++ [lipu kule](https://lipukule.org/)
 
 + [jan Pepa en soweli Kawa](https://www.peppercarrot.com/tp/)
 
@@ -80,9 +91,9 @@ related: false
 # nasin sitelen pi toki pona
 ---
 
-+ [Kanji/Kana & Hanzi](http://tokipona.net/tp/classicwordlist.aspx)
++ [Kanji/Kana & Hanzi](https://web.archive.org/web/20220921122642/tokipona.net/tp/classicwordlist.aspx)
 
-+ [sitelen pona](http://tokipona.net/tp/janpije/hieroglyphs.php)
++ [sitelen pona](https://jan-ne.github.io/tp/sp)
 
 + [sitelen sitelen](https://www.jonathangabel.com/archive/2012/projects_t47.html)
 
