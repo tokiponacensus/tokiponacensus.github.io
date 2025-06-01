@@ -18,7 +18,7 @@ var store = [{
         "teaser": null
       },{
         "title": "List of resources mentioned in the Toki Pona census",
-        "excerpt":"ijo mute pi toki pona This doc contains lots of pointers to Toki Pona resources. Pu and Ku Btw, I created a Discord server for playing and contributing to a game inspired by Toki Pona designed to grow the Toki Pona community. This is a post about it. nimi pi...","categories": [],
+        "excerpt":"ijo mute pi toki pona Pu and Ku Btw, I created a Discord server for playing and contributing to a game inspired by Toki Pona designed to grow the Toki Pona community. This is a post about it. nimi pi pu ala jan Sonja’s list of non-pu words kama sona...","categories": [],
         "tags": [],
         "url": "/resources/",
         "teaser": null
