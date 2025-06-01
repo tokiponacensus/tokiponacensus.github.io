@@ -52,7 +52,7 @@ In this edition, we had some new questions and others were slightly modified. Th
 
 We used a Google form in English and Toki Pona and a Tencent QQ form in Chinese and Toki Pona, since Google is banned in China. 
 
-The respondents in Toki Pona increased to about 16% from the almost 14% from 2022 and the 10.8% of 2021. This percentage highly correlates with the people that reported to have an advanced or fluent level, whereas people with an intermediate level or below tend to prefer answering the census in English.
+The respondents in Toki Pona increased to about 16% from the almost 14% from 2022 and the 10.8% of 2021. This percentage highly correlates with the people that reported to have an advanced or fluent level, whereas people with an intermediate level or below tend to prefer answering the census in English, despite most of them using Toki Pona a few times per week, as reported below.
 
 **Btw, I created [a Discord server](https://discord.gg/9dByQ3JT) for playing and contributing to a game inspired by Toki Pona designed to grow the Toki Pona community. [This is a post about it]({% post_url 2025-05-31-musi-supa %}).**
 
