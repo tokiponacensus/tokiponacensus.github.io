@@ -17,7 +17,7 @@ related: false
   <figcaption><small>Art: David Revoy, <a href="https://www.davidrevoy.com" target="_blank">www.davidrevoy.com</a></small></figcaption>
 </figure> 
 <small>
-Go [here]({% post_url 2022-11-03-resources_mentioned_in_census %}) for a list of pointers to resources mentioned in the census.
+Go [here]({% post_url 2025-05-01-resources_mentioned_in_census %}) for a list of pointers to resources mentioned in the census.
 </small>
 
 How much has the Toki Pona community changed since April 2021? Is it still growing exponentially? Are Ku suli words known or used? Find about this and much more in the results to the second Toki Pona census, version 2022. 
@@ -49,7 +49,7 @@ Thank you to everyone that contributed to this project. o lukin pona a!
 
 Most people used the English version of the form. Almost 14% of people used the Toki Pona version, which is greater than last time's 10.8%.
 
-**Btw, [read this post]({% post_url 2024-06-15-musi-supa %}) if you are interested in a board game about language inspired by Toki Pona.**
+**Btw, I created [a Discord server](https://discord.gg/9dByQ3JT) for playing and contributing to a game inspired by Toki Pona designed to grow the Toki Pona community. [This is a post about it]({% post_url 2025-05-31-musi-supa %}).**
 
 <div id="22toki seme?"></div>
 
@@ -230,7 +230,7 @@ There are not very big differences between the global and the Toki Pona segments
 
 <div id="22What is your gender?"></div>
 
-**Btw, [read this post]({% post_url 2024-06-15-musi-supa %}) if you are interested in a board game about language inspired by Toki Pona.**
+**Btw, I created [a Discord server](https://discord.gg/9dByQ3JT) for playing and contributing to a game inspired by Toki Pona designed to grow the Toki Pona community. [This is a post about it]({% post_url 2025-05-31-musi-supa %}).**
 
 <div id="22What is your gender?_tp"></div>
 {% include free_text/22_What_is_your_gender.html %}
@@ -284,4 +284,4 @@ Thanks to everyone for participating! See you maybe at the next one, for which w
 ---
 And that's about it. I hope you had a great time reading the results. If you have any feedback, feel free to drop us <a href="mailto:tokiponacensus@gmail.com">an email</a>.
 
-**[Read this post]({% post_url 2024-06-15-musi-supa %}) if you are interested in a board game about language inspired by Toki Pona.**
+**Btw, I created [a Discord server](https://discord.gg/9dByQ3JT) for playing and contributing to a game inspired by Toki Pona designed to grow the Toki Pona community. [This is a post about it]({% post_url 2025-05-31-musi-supa %}).**
