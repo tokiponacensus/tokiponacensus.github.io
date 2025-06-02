@@ -32,7 +32,7 @@ related: false
 
 + [toki pona in 18 minutes](https://www.youtube.com/watch?v=5phj5Ae80h8).
 
-+ Learn Toki Pona! By jan Kekan San. [videos](https://www.youtube.com/watch?v=J93GWOMbgdg), and [written lessons](https://mun.la/sona/).
++ Learn Toki Pona! By mun Kekan San. [videos](https://www.youtube.com/watch?v=J93GWOMbgdg), and [written lessons](https://mun.la/sona/).
 
 + [lipu sona tan jan Tesa](https://lipu-sona.kittycat.homes/en).
 

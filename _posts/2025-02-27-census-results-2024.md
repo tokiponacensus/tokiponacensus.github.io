@@ -201,7 +201,7 @@ About 47% of respondents report to have taught Toki Pona to other people (100% m
 
 ## How people learned Toki Pona
 
-This question was updated this year since new courses were created and became popular since last time. The course <i>12 days of Toki Pona by jan Misali</i> keeps being the resource most people used for learning Toki Pona initially. This option went down to 52% after being 61% last time but 52.8% in 2021. Then, pu and ma pona follow the lead and the lessons by jan Kekan San gets fourth place. About 10% of people use Anki or Memrise to support their learning, similar to last times. In general, the trend is for older courses to be used less, and the video courses to increase in popularity. Below the labels have been simplified for better readability, the actual questions were longer and more detailed (e.g. "Learn Toki Pona!" specified: videos or written lessons).
+This question was updated this year since new courses were created and became popular since last time. The course <i>12 days of Toki Pona by jan Misali</i> keeps being the resource most people used for learning Toki Pona initially. This option went down to 52% after being 61% last time but 52.8% in 2021. Then, pu and ma pona follow the lead and the lessons by mun Kekan San gets fourth place. About 10% of people use Anki or Memrise to support their learning, similar to last times. In general, the trend is for older courses to be used less, and the video courses to increase in popularity. Below the labels have been simplified for better readability, the actual questions were longer and more detailed (e.g. "Learn Toki Pona!" specified: videos or written lessons).
 
 <div id="24How did you learn Toki Pona?"></div>
 <div id="24How did you learn Toki Pona?_tp"></div>
