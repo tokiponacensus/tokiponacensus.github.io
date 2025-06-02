@@ -1,31 +1,49 @@
-var store = [{
-        "title": "Results of the 2021 Toki Pona census",
-        "excerpt":"Art: David Revoy, www.davidrevoy.com Go here for a list of pointers to resources mentioned in the census. How is the Toki Pona community? Who is interested in Toki Pona? Up to now we could only guess but we were really as much in the dark as the character above. Fret...","categories": [],
-        "tags": [],
-        "url": "/results/",
-        "teaser": null
-      },{
-        "title": "Results of the 2022 Toki Pona census",
-        "excerpt":"Art: David Revoy, www.davidrevoy.com Go here for a list of pointers to resources mentioned in the census. How much has the Toki Pona community changed since April 2021? Is it still growing exponentially? Are Ku suli words known or used? Find about this and much more in the results to...","categories": [],
-        "tags": [],
-        "url": "/results2022/",
-        "teaser": null
-      },{
-        "title": "Results of the 2024 Toki Pona census",
-        "excerpt":"Art: David Revoy, www.davidrevoy.com Go here for a list of pointers to resources mentioned in the census. How has the Toki Pona community evolved since August 2022? Is it still growing exponentially? How do people find out about Toki Pona? What do people create in Toki Pona most often? Find...","categories": [],
-        "tags": [],
-        "url": "/results2024/",
-        "teaser": null
-      },{
-        "title": "List of resources mentioned in the Toki Pona census",
-        "excerpt":"ijo mute pi toki pona Pu and Ku Btw, I created a Discord server for playing and contributing to a game inspired by Toki Pona designed to grow the Toki Pona community. This is a post about it. nimi pi pu ala jan Sonja’s list of non-pu words kama sona...","categories": [],
-        "tags": [],
-        "url": "/resources/",
-        "teaser": null
-      },{
-        "title": "A board game about language",
-        "excerpt":"Musi Supa - The Fun of Desk: a game about language. Feel like a caveman with this guessing game about describing things by only using the 80 words in the board and some rules to change them. Two modes: (A) Speak the words (B) Use signs! No previous knowledge required,...","categories": [],
-        "tags": [],
-        "url": "/musi-supa/",
-        "teaser": null
-      }]
+---
+layout: none
+---
+
+var store = [
+  {%- for c in site.collections -%}
+    {%- if forloop.last -%}
+      {%- assign l = true -%}
+    {%- endif -%}
+    {%- assign docs = c.docs | where_exp:'doc','doc.search != false' -%}
+    {%- for doc in docs -%}
+      {%- if doc.header.teaser -%}
+        {%- capture teaser -%}{{ doc.header.teaser }}{%- endcapture -%}
+      {%- else -%}
+        {%- assign teaser = site.teaser -%}
+      {%- endif -%}
+      {
+        "title": {{ doc.title | jsonify }},
+        "excerpt":
+          {%- if site.search_full_content == true -%}
+            {{ doc.content | newline_to_br |
+              replace:"<br />", " " |
+              replace:"</p>", " " |
+              replace:"</h1>", " " |
+              replace:"</h2>", " " |
+              replace:"</h3>", " " |
+              replace:"</h4>", " " |
+              replace:"</h5>", " " |
+              replace:"</h6>", " "|
+            strip_html | strip_newlines | jsonify }},
+          {%- else -%}
+            {{ doc.content | newline_to_br |
+              replace:"<br />", " " |
+              replace:"</p>", " " |
+              replace:"</h1>", " " |
+              replace:"</h2>", " " |
+              replace:"</h3>", " " |
+              replace:"</h4>", " " |
+              replace:"</h5>", " " |
+              replace:"</h6>", " "|
+            strip_html | strip_newlines | truncatewords: 50 | jsonify }},
+          {%- endif -%}
+        "categories": {{ doc.categories | jsonify }},
+        "tags": {{ doc.tags | jsonify }},
+        "url": {{ doc.url | relative_url | jsonify }},
+        "teaser": {{ teaser | relative_url | jsonify }}
+      }{%- unless forloop.last and l -%},{%- endunless -%}
+    {%- endfor -%}
+  {%- endfor -%}]

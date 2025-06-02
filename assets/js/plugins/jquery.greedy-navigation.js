@@ -1,7 +1,7 @@
 /*
-GreedyNav.js - https://github.com/lukejacksonn/GreedyNav
+GreedyNav.js - http://lukejacksonn.com/actuate
 Licensed under the MIT license - http://opensource.org/licenses/MIT
-Copyright (c) 2015 Luke Jackson http://lukejacksonn.com
+Copyright (c) 2015 Luke Jackson
 */
 
 $(function() {
@@ -107,7 +107,6 @@ $(function() {
     // Mouse has left, start the timer
     timer = setTimeout(function() {
       $hlinks.addClass('hidden');
-      $('.greedy-nav__toggle').removeClass('close');
     }, closingTime);
   }).on('mouseenter', function() {
     // Mouse is back, cancel the timer

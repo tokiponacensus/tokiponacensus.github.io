@@ -1,0 +1,2313 @@
+<html><head>
+    <style>
+        div.scroll {
+            padding:4px;
+            background-color: cornsilk;
+            height: 40vh;
+            overflow-x: hidden;
+            overflow-y: auto;
+            text-align:justify;
+        }
+        div.scroll-tall {
+            padding:4px;
+            background-color: cornsilk;
+            height: 60vh;
+            overflow-x: hidden;
+            overflow-y: auto;
+            text-align:justify;
+        }
+    </style>
+<!--Load the AJAX API-->
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+
+  // Load the Visualization API and the corechart package.
+  google.charts.load('current', {'packages':['corechart']});
+
+  // Set a callback to run when the Google Visualization API is loaded.
+  google.charts.setOnLoadCallback(drawChart);
+
+  function drawChart() {
+
+    
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'answer');
+            data.addColumn('number', 'Responses');
+            data.addRows(
+                [['English', 1471], ['Toki Pona', 264], ['Spanish', 42], ['Chinese', 32], ['Esperanto', 32], ['Russian', 22], ['Polish', 19], ['French', 15], ['Japanese', 15], ['German', 14], ['Korean', 5]]
+            );
+            
+          var groupData = google.visualization.data.group(
+            data,
+            [{column: 0, modifier: function () {return 'total'}, type:'string'}],
+            [{column: 1, aggregation: google.visualization.data.sum, type: 'number'}]
+          );
+
+          var formatPercent = new google.visualization.NumberFormat({
+            pattern: '#,##0.0%'
+          });
+
+          var formatShort = new google.visualization.NumberFormat({
+            pattern: 'short'
+          });
+
+          var view = new google.visualization.DataView(data);
+          view.setColumns([0, 1, {
+            calc: function (dt, row) {
+              var amount =  formatShort.formatValue(dt.getValue(row, 1));
+              var percent = formatPercent.formatValue(dt.getValue(row, 1) / 1931.0);
+              return amount + ' (' + percent + ')';
+            },
+            type: 'string',
+            role: 'annotation'
+          }]);
+          
+
+            var options = {
+                           'legend':'none',
+'height':600,
+
+                    annotations : {
+                        alwaysOutside : true,
+                    },
+                    'title':'toki seme?\n(1931 responses)'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22toki seme?'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'answer');
+            data.addColumn('number', 'Responses');
+            data.addRows(
+                [['1st section', 1931], ['2nd section', 1817], ['3rd section', 1721], ['4th section', 1713]]
+            );
+            
+          var groupData = google.visualization.data.group(
+            data,
+            [{column: 0, modifier: function () {return 'total'}, type:'string'}],
+            [{column: 1, aggregation: google.visualization.data.sum, type: 'number'}]
+          );
+
+          var formatPercent = new google.visualization.NumberFormat({
+            pattern: '#,##0.0%'
+          });
+
+          var formatShort = new google.visualization.NumberFormat({
+            pattern: 'short'
+          });
+
+          var view = new google.visualization.DataView(data);
+          view.setColumns([0, 1, {
+            calc: function (dt, row) {
+              var amount =  formatShort.formatValue(dt.getValue(row, 1));
+              var percent = formatPercent.formatValue(dt.getValue(row, 1) / 1931.0);
+              return amount + ' (' + percent + ')';
+            },
+            type: 'string',
+            role: 'annotation'
+          }]);
+          
+
+            var options = {
+                           'legend':'none',
+'height':600,
+
+                    annotations : {
+                        alwaysOutside : true,
+                    },
+                    'title':'How much was each section filled?\n(1931 responses)'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22How much was each section filled?'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'answer');
+            data.addColumn('number', 'Responses');
+            data.addRows(
+                [['nanpa wan', 264], ['nanpa tu', 245], ['nanpa tu wan', 236], ['nanpa ali', 234]]
+            );
+            
+          var groupData = google.visualization.data.group(
+            data,
+            [{column: 0, modifier: function () {return 'total'}, type:'string'}],
+            [{column: 1, aggregation: google.visualization.data.sum, type: 'number'}]
+          );
+
+          var formatPercent = new google.visualization.NumberFormat({
+            pattern: '#,##0.0%'
+          });
+
+          var formatShort = new google.visualization.NumberFormat({
+            pattern: 'short'
+          });
+
+          var view = new google.visualization.DataView(data);
+          view.setColumns([0, 1, {
+            calc: function (dt, row) {
+              var amount =  formatShort.formatValue(dt.getValue(row, 1));
+              var percent = formatPercent.formatValue(dt.getValue(row, 1) / 264.0);
+              return amount + ' (' + percent + ')';
+            },
+            type: 'string',
+            role: 'annotation'
+          }]);
+          
+
+            var options = {
+                           'legend':'none',
+'height':600,
+
+                    annotations : {
+                        alwaysOutside : true,
+                    },
+                    'title':'jan li pana e mute seme?\n(264 responses)'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22How much was each section filled?_tp'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'answer');
+            data.addColumn('number', 'Responses');
+            data.addRows(
+                [['I do not speak any other conlangs', 1209], ['Esperanto', 253], ['Other, stated below', 72], ['Lojban', 30], ['toki ma', 29], ['Viossa', 16], ['Ithkuil', 14], ['Klingon', 13], ['My own conlang', 12], ['uwulang', 8], ['Kay(f)bop(t)', 8], ['Hilichurlian', 8], ['Vötgil', 7], ["Na'vi", 6], ['High Valyrian', 6], ['Ido', 6], ['Viesa', 4], ['Laiqbun', 3], ['Shidinn', 3], ['Sindarin', 2], ['Quenya', 2], ['Dothraki', 2], ['Simplingua', 2], ['Nao', 1]]
+            );
+            
+          var groupData = google.visualization.data.group(
+            data,
+            [{column: 0, modifier: function () {return 'total'}, type:'string'}],
+            [{column: 1, aggregation: google.visualization.data.sum, type: 'number'}]
+          );
+
+          var formatPercent = new google.visualization.NumberFormat({
+            pattern: '#,##0.0%'
+          });
+
+          var formatShort = new google.visualization.NumberFormat({
+            pattern: 'short'
+          });
+
+          var view = new google.visualization.DataView(data);
+          view.setColumns([0, 1, {
+            calc: function (dt, row) {
+              var amount =  formatShort.formatValue(dt.getValue(row, 1));
+              var percent = formatPercent.formatValue(dt.getValue(row, 1) / 1584.0);
+              return amount + ' (' + percent + ')';
+            },
+            type: 'string',
+            role: 'annotation'
+          }]);
+          
+
+            var options = {
+                           'legend':'none',
+hAxis : { logScale : true, },
+
+                     'height':800,
+
+                    annotations : {
+                        alwaysOutside : true,
+                    },
+                    'title':'Do you speak any other conlangs? (MA)\n(1584 responses). Log scale'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22Do you speak any other conlangs?_log_scale'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'answer');
+            data.addColumn('number', 'Responses');
+            data.addRows(
+                [['mi toki ala e toki sin ante', 141], ['toki Epelanto - Esperanto', 35], ['ante (ona li lon anpa)', 10], ['toki Losupan - Lojban', 7], ['toki ma', 7], ['toki Wijosa - Viossa', 3], ['toki Iki - Ithkuil', 1], ['toki Kinkon - Klingon', 4], ['toki pali mi', 2], ['toki Uwa - uwulang', 1], ['toki Kabo - Kay(f)bop(t)', 0], ['toki Kilisulijan - Hilichurlian', 1], ['toki Poki - Vötgil', 0], ["toki Nawi - Na'vi", 1], ['toki Iwalelian - High Valyrian', 2], ['toki Ito - Ido', 2], ['nasin sitelen Wijesa - Viesa', 0], ['toki Lanpun - Laiqbun', 2], ['toki Sitin - Shidinn', 0], ['toki Sintalin - Sindarin', 1], ['toki Kenja - Quenya', 2], ['toki Totaki - Dothraki', 2], ['toki Sinlinkuwa - Simplingua', 0], ['toki No - Nao', 0]]
+            );
+            
+          var groupData = google.visualization.data.group(
+            data,
+            [{column: 0, modifier: function () {return 'total'}, type:'string'}],
+            [{column: 1, aggregation: google.visualization.data.sum, type: 'number'}]
+          );
+
+          var formatPercent = new google.visualization.NumberFormat({
+            pattern: '#,##0.0%'
+          });
+
+          var formatShort = new google.visualization.NumberFormat({
+            pattern: 'short'
+          });
+
+          var view = new google.visualization.DataView(data);
+          view.setColumns([0, 1, {
+            calc: function (dt, row) {
+              var amount =  formatShort.formatValue(dt.getValue(row, 1));
+              var percent = formatPercent.formatValue(dt.getValue(row, 1) / 199.0);
+              return amount + ' (' + percent + ')';
+            },
+            type: 'string',
+            role: 'annotation'
+          }]);
+          
+
+            var options = {
+                           'legend':'none',
+hAxis : { logScale : true, },
+
+                     'height':800,
+
+                    annotations : {
+                        alwaysOutside : true,
+                    },
+                    'title':'sina toki e toki sin ante seme? (MA)\n(199 responses). Log scale'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22Do you speak any other conlangs?_tp_log_scale'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'answer');
+            data.addColumn('number', 'Responses');
+            data.addRows(
+                [['Yes', 1433], ['No', 498]]
+            );
+            var view = data; 
+
+
+            var options = {
+                           legend: { position: 'top', maxLines: 3},
+'height':600,
+'title':'Would you say you know Toki Pona?\n(1931 responses)'
+                           };
+            var chart = new google.visualization.PieChart(document.getElementById('22Would you say you know Toki Pona?'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'answer');
+            data.addColumn('number', 'Responses');
+            data.addRows(
+                [['mi sona', 263], ['mi sona ala', 1]]
+            );
+            var view = data; 
+
+
+            var options = {
+                           legend: { position: 'top', maxLines: 3},
+'height':600,
+'title':'sina sona ala sona e toki pona?\n(264 responses)'
+                           };
+            var chart = new google.visualization.PieChart(document.getElementById('22Would you say you know Toki Pona?_tp'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'answer');
+            data.addColumn('number', 'Responses');
+            data.addRows(
+                [['Yes', 319], ['No', 1570]]
+            );
+            var view = data; 
+
+
+            var options = {
+                           legend: { position: 'top', maxLines: 3},
+'height':600,
+'title':'Did you answer the 2021 Toki Pona census?\n(1889 responses)'
+                           };
+            var chart = new google.visualization.PieChart(document.getElementById('22Did you answer the 2021 Toki Pona census?'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'answer');
+            data.addColumn('number', 'Responses');
+            data.addRows(
+                [['pana', 83], ['pana ala', 173]]
+            );
+            var view = data; 
+
+
+            var options = {
+                           legend: { position: 'top', maxLines: 3},
+'height':600,
+'title':'sina pana ala pana e sona sina tawa lipu ni lon tenpo suno sike 2021?\n(256 responses)'
+                           };
+            var chart = new google.visualization.PieChart(document.getElementById('22Did you answer the 2021 Toki Pona census?_tp'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'answer');
+            data.addColumn('number', 'Responses');
+            data.addRows(
+                [["None (I haven't started learning)", 30], ["Beginner (I've just started learning)", 374], ['Learner (I am learning and can converse a little)', 676], ['Intermediate (I can converse but still getting better)', 529], ['Advanced (I can converse well)', 228], ['Fluent (I can communicate anything well)', 90]]
+            );
+            
+          var groupData = google.visualization.data.group(
+            data,
+            [{column: 0, modifier: function () {return 'total'}, type:'string'}],
+            [{column: 1, aggregation: google.visualization.data.sum, type: 'number'}]
+          );
+
+          var formatPercent = new google.visualization.NumberFormat({
+            pattern: '#,##0.0%'
+          });
+
+          var formatShort = new google.visualization.NumberFormat({
+            pattern: 'short'
+          });
+
+          var view = new google.visualization.DataView(data);
+          view.setColumns([0, 1, {
+            calc: function (dt, row) {
+              var amount =  formatShort.formatValue(dt.getValue(row, 1));
+              var percent = formatPercent.formatValue(dt.getValue(row, 1) / 1927.0);
+              return amount + ' (' + percent + ')';
+            },
+            type: 'string',
+            role: 'annotation'
+          }]);
+          
+
+            var options = {
+                           'legend':'none',
+'height':600,
+
+                    annotations : {
+                        alwaysOutside : true,
+                    },
+                    'title':'What level of ability in Toki Pona do you have?\n(1927 responses)'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22What level of ability in Toki Pona do you have?'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'answer');
+            data.addColumn('number', 'Responses');
+            data.addRows(
+                [['mi sona ala', 0], ['tenpo ni la mi kama sona, taso mi sona lili lili', 2], ['mi kama sona, mi ken toki lili', 30], ['mi ken toki pona, taso mi kama pona', 80], ['mi ken toki pona mute', 97], ['mi ken toki pona e ale', 55]]
+            );
+            
+          var groupData = google.visualization.data.group(
+            data,
+            [{column: 0, modifier: function () {return 'total'}, type:'string'}],
+            [{column: 1, aggregation: google.visualization.data.sum, type: 'number'}]
+          );
+
+          var formatPercent = new google.visualization.NumberFormat({
+            pattern: '#,##0.0%'
+          });
+
+          var formatShort = new google.visualization.NumberFormat({
+            pattern: 'short'
+          });
+
+          var view = new google.visualization.DataView(data);
+          view.setColumns([0, 1, {
+            calc: function (dt, row) {
+              var amount =  formatShort.formatValue(dt.getValue(row, 1));
+              var percent = formatPercent.formatValue(dt.getValue(row, 1) / 264.0);
+              return amount + ' (' + percent + ')';
+            },
+            type: 'string',
+            role: 'annotation'
+          }]);
+          
+
+            var options = {
+                           'legend':'none',
+'height':600,
+
+                    annotations : {
+                        alwaysOutside : true,
+                    },
+                    'title':'ken sina pi toki pona li seme?\n(264 responses)'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22What level of ability in Toki Pona do you have?_tp'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'answer');
+            data.addColumn('number', 'Responses');
+            data.addRows(
+                [['not at all', 122], ['a few times a year', 336], ['a few times a month', 562], ['a few times per week', 603], ['every day', 289]]
+            );
+            
+          var groupData = google.visualization.data.group(
+            data,
+            [{column: 0, modifier: function () {return 'total'}, type:'string'}],
+            [{column: 1, aggregation: google.visualization.data.sum, type: 'number'}]
+          );
+
+          var formatPercent = new google.visualization.NumberFormat({
+            pattern: '#,##0.0%'
+          });
+
+          var formatShort = new google.visualization.NumberFormat({
+            pattern: 'short'
+          });
+
+          var view = new google.visualization.DataView(data);
+          view.setColumns([0, 1, {
+            calc: function (dt, row) {
+              var amount =  formatShort.formatValue(dt.getValue(row, 1));
+              var percent = formatPercent.formatValue(dt.getValue(row, 1) / 1912.0);
+              return amount + ' (' + percent + ')';
+            },
+            type: 'string',
+            role: 'annotation'
+          }]);
+          
+
+            var options = {
+                           'legend':'none',
+'height':600,
+
+                    annotations : {
+                        alwaysOutside : true,
+                    },
+                    'title':'How often do you use (read/listen/write/speak) Toki Pona?\n(1912 responses)'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22How often do you use (read/listen/write/speak) Toki Pona?'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'answer');
+            data.addColumn('number', 'Responses');
+            data.addRows(
+                [['mi kepeken ala', 1], ['tenpo pi mute lili lon tenpo sike', 31], ['tenpo pi mute lili lon tenpo mun', 63], ['tenpo pi mute lili lon tenpo suno luka tu', 91], ['tenpo suno ali', 75]]
+            );
+            
+          var groupData = google.visualization.data.group(
+            data,
+            [{column: 0, modifier: function () {return 'total'}, type:'string'}],
+            [{column: 1, aggregation: google.visualization.data.sum, type: 'number'}]
+          );
+
+          var formatPercent = new google.visualization.NumberFormat({
+            pattern: '#,##0.0%'
+          });
+
+          var formatShort = new google.visualization.NumberFormat({
+            pattern: 'short'
+          });
+
+          var view = new google.visualization.DataView(data);
+          view.setColumns([0, 1, {
+            calc: function (dt, row) {
+              var amount =  formatShort.formatValue(dt.getValue(row, 1));
+              var percent = formatPercent.formatValue(dt.getValue(row, 1) / 261.0);
+              return amount + ' (' + percent + ')';
+            },
+            type: 'string',
+            role: 'annotation'
+          }]);
+          
+
+            var options = {
+                           'legend':'none',
+'height':600,
+
+                    annotations : {
+                        alwaysOutside : true,
+                    },
+                    'title':'tenpo pi mute seme la sina kepeken toki pona (lukin anu kute anu sitelen anu kalama)?\n(261 responses)'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22How often do you use (read/listen/write/speak) Toki Pona?_tp'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'answer');
+            data.addColumn('number', 'Responses');
+            data.addRows(
+                [['I know the Toki Pona grammar', 1476], ['I can read written Toki Pona', 1424], ['I can produce written Toki Pona', 1312], ['I know all Toki Pona words from pu', 1160], ['I can speak spoken Toki Pona', 801], ['I can converse with other people', 679], ['I understand spoken Toki Pona', 570]]
+            );
+            
+          var groupData = google.visualization.data.group(
+            data,
+            [{column: 0, modifier: function () {return 'total'}, type:'string'}],
+            [{column: 1, aggregation: google.visualization.data.sum, type: 'number'}]
+          );
+
+          var formatPercent = new google.visualization.NumberFormat({
+            pattern: '#,##0.0%'
+          });
+
+          var formatShort = new google.visualization.NumberFormat({
+            pattern: 'short'
+          });
+
+          var view = new google.visualization.DataView(data);
+          view.setColumns([0, 1, {
+            calc: function (dt, row) {
+              var amount =  formatShort.formatValue(dt.getValue(row, 1));
+              var percent = formatPercent.formatValue(dt.getValue(row, 1) / 1714.0);
+              return amount + ' (' + percent + ')';
+            },
+            type: 'string',
+            role: 'annotation'
+          }]);
+          
+
+            var options = {
+                           'legend':'none',
+'height':600,
+
+                    annotations : {
+                        alwaysOutside : true,
+                    },
+                    'title':'Which of these are true for you? (MA)\n(1714 responses)'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22Which of these are true for you?'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'answer');
+            data.addColumn('number', 'Responses');
+            data.addRows(
+                [['mi sona e nasin toki pi toki pona', 245], ['mi ken lukin e toki pona', 252], ['mi ken sitelen e toki pona', 245], ['mi sona e nimi pu ale pi toki pona', 246], ['mi ken kalama e toki pona uta', 209], ['mi en jan ante li ken toki', 179], ['mi ken kute e toki pona uta', 166]]
+            );
+            
+          var groupData = google.visualization.data.group(
+            data,
+            [{column: 0, modifier: function () {return 'total'}, type:'string'}],
+            [{column: 1, aggregation: google.visualization.data.sum, type: 'number'}]
+          );
+
+          var formatPercent = new google.visualization.NumberFormat({
+            pattern: '#,##0.0%'
+          });
+
+          var formatShort = new google.visualization.NumberFormat({
+            pattern: 'short'
+          });
+
+          var view = new google.visualization.DataView(data);
+          view.setColumns([0, 1, {
+            calc: function (dt, row) {
+              var amount =  formatShort.formatValue(dt.getValue(row, 1));
+              var percent = formatPercent.formatValue(dt.getValue(row, 1) / 263.0);
+              return amount + ' (' + percent + ')';
+            },
+            type: 'string',
+            role: 'annotation'
+          }]);
+          
+
+            var options = {
+                           'legend':'none',
+'height':600,
+
+                    annotations : {
+                        alwaysOutside : true,
+                    },
+                    'title':'ni mute la seme li lon? (MA)\n(263 responses)'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22Which of these are true for you?_tp'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'answer');
+            data.addColumn('number', 'Responses');
+            data.addRows(
+                [['I wanted to have fun learning it and using it', 1730], ['I wanted to be multilingual', 760], ['I wanted to gain philosophical insights', 641], ['I wanted to speak without others understanding me', 580], ['I had other reasons', 289], ['Other, stated below', 274], ['I have not started learning', 25]]
+            );
+            
+          var groupData = google.visualization.data.group(
+            data,
+            [{column: 0, modifier: function () {return 'total'}, type:'string'}],
+            [{column: 1, aggregation: google.visualization.data.sum, type: 'number'}]
+          );
+
+          var formatPercent = new google.visualization.NumberFormat({
+            pattern: '#,##0.0%'
+          });
+
+          var formatShort = new google.visualization.NumberFormat({
+            pattern: 'short'
+          });
+
+          var view = new google.visualization.DataView(data);
+          view.setColumns([0, 1, {
+            calc: function (dt, row) {
+              var amount =  formatShort.formatValue(dt.getValue(row, 1));
+              var percent = formatPercent.formatValue(dt.getValue(row, 1) / 1921.0);
+              return amount + ' (' + percent + ')';
+            },
+            type: 'string',
+            role: 'annotation'
+          }]);
+          
+
+            var options = {
+                           'legend':'none',
+'height':600,
+
+                    annotations : {
+                        alwaysOutside : true,
+                    },
+                    'title':'Why did you start learning Toki Pona? (MA)\n(1921 responses)'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22Why did you start learning Toki Pona?'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'answer');
+            data.addColumn('number', 'Responses');
+            data.addRows(
+                [['kama sona pi toki pona en kepeken pi toki pona li musi tawa mi', 236], ['mi wile sona e toki mute', 150], ['mi wile sona e nasin ante toki', 157], ['mi wile toki tawa jan la mi wile ala e ni: jan ante li sona e mi', 60], ['tan ante', 32], ['ante (ona li lon anpa)', 54], ['mi kama sona ala', 1]]
+            );
+            
+          var groupData = google.visualization.data.group(
+            data,
+            [{column: 0, modifier: function () {return 'total'}, type:'string'}],
+            [{column: 1, aggregation: google.visualization.data.sum, type: 'number'}]
+          );
+
+          var formatPercent = new google.visualization.NumberFormat({
+            pattern: '#,##0.0%'
+          });
+
+          var formatShort = new google.visualization.NumberFormat({
+            pattern: 'short'
+          });
+
+          var view = new google.visualization.DataView(data);
+          view.setColumns([0, 1, {
+            calc: function (dt, row) {
+              var amount =  formatShort.formatValue(dt.getValue(row, 1));
+              var percent = formatPercent.formatValue(dt.getValue(row, 1) / 263.0);
+              return amount + ' (' + percent + ')';
+            },
+            type: 'string',
+            role: 'annotation'
+          }]);
+          
+
+            var options = {
+                           'legend':'none',
+'height':600,
+
+                    annotations : {
+                        alwaysOutside : true,
+                    },
+                    'title':'sina kama sona e toki pona tan seme? (MA)\n(263 responses)'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22Why did you start learning Toki Pona?_tp'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'answer');
+            data.addColumn('number', 'Responses');
+            data.addRows(
+                [['2000', 3], ['2001', 1], ['2002', 1], ['2003', 1], ['2004', 3], ['2005', 2], ['2006', 4], ['2007', 2], ['2008', 0], ['2009', 2], ['2010', 4], ['2011', 2], ['2012', 3], ['2013', 2], ['2014', 9], ['2015', 14], ['2016', 23], ['2017', 29], ['2018', 46], ['2019', 99], ['2020', 286], ['2021', 555], ['2022', 785]]
+            );
+            var view = data; 
+
+
+            var options = {
+                           'legend':'none',
+'height':600,
+'title':'When did you first start learning Toki Pona?\n(1876 responses)'
+                           };
+            var chart = new google.visualization.ColumnChart(document.getElementById('22When did you first start learning Toki Pona?'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'answer');
+            data.addColumn('number', 'Responses');
+            data.addRows(
+                [['2000', 1], ['2001', 0], ['2002', 0], ['2003', 1], ['2004', 0], ['2005', 0], ['2006', 1], ['2007', 0], ['2008', 0], ['2009', 0], ['2010', 1], ['2011', 1], ['2012', 0], ['2013', 0], ['2014', 6], ['2015', 6], ['2016', 8], ['2017', 10], ['2018', 11], ['2019', 19], ['2020', 41], ['2021', 99], ['2022', 57]]
+            );
+            var view = data; 
+
+
+            var options = {
+                           'legend':'none',
+'height':600,
+'title':'tenpo sike seme la, sina open e kama sona pi toki pona?\n(262 responses)'
+                           };
+            var chart = new google.visualization.ColumnChart(document.getElementById('22When did you first start learning Toki Pona?_tp'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'answer');
+            data.addColumn('number', 'Responses');
+            data.addRows(
+                [['2000', 3], ['2001', 1], ['2002', 1], ['2003', 1], ['2004', 3], ['2005', 2], ['2006', 4], ['2007', 2], ['2008', 0], ['2009', 2], ['2010', 4], ['2011', 2], ['2012', 3], ['2013', 2], ['2014', 9], ['2015', 14], ['2016', 23], ['2017', 29], ['2018', 46], ['2019', 99], ['2020', 286], ['2021', 555], ['2022', 785]]
+            );
+            var view = data; 
+
+
+            var options = {
+                           'legend':'none',
+
+                    vAxis : {
+                            logScale : true,
+                    },
+
+                    'height':600,
+'title':'When did you first start learning Toki Pona?\n(1876 responses). Log scale'
+                           };
+            var chart = new google.visualization.ColumnChart(document.getElementById('22When did you first start learning Toki Pona?_log_scale'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'answer');
+            data.addColumn('number', 'Responses');
+            data.addRows(
+                [['2000', 1], ['2001', 0], ['2002', 0], ['2003', 1], ['2004', 0], ['2005', 0], ['2006', 1], ['2007', 0], ['2008', 0], ['2009', 0], ['2010', 1], ['2011', 1], ['2012', 0], ['2013', 0], ['2014', 6], ['2015', 6], ['2016', 8], ['2017', 10], ['2018', 11], ['2019', 19], ['2020', 41], ['2021', 99], ['2022', 57]]
+            );
+            var view = data; 
+
+
+            var options = {
+                           'legend':'none',
+
+                    vAxis : {
+                            logScale : true,
+                    },
+
+                    'height':600,
+'title':'tenpo sike seme la, sina open e kama sona pi toki pona?\n(262 responses). Log scale'
+                           };
+            var chart = new google.visualization.ColumnChart(document.getElementById('22When did you first start learning Toki Pona?_tp_log_scale'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'answer');
+            data.addColumn('number', 'Responses');
+            data.addRows(
+                [['Yes, I own pu, but not ku', 229], ['Yes, I own ku, but not pu', 107], ['Yes, I own both', 453], ["No, I don't have either", 1013]]
+            );
+            var view = data; 
+
+
+            var options = {
+                           legend: { position: 'top', maxLines: 3},
+'height':600,
+'title':'Do you own "Toki Pona: The Language of Good" (pu) or "Toki Pona dictionary" (ku) by Sonja Lang?\n(1802 responses)'
+                           };
+            var chart = new google.visualization.PieChart(document.getElementById('22Do you own Toki Pona: The Language of Good (pu) or Toki Pona dictionary (ku) by Sonja Lang?'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'answer');
+            data.addColumn('number', 'Responses');
+            data.addRows(
+                [['mi jo e lipu pu e lipu ku ala', 32], ['mi jo e lipu pu ala e lipu ku', 19], ['mi jo e tu: mi jo e lipu pu e lipu ku', 92], ['mi jo ala', 101]]
+            );
+            var view = data; 
+
+
+            var options = {
+                           legend: { position: 'top', maxLines: 3},
+'height':600,
+'title':'sina jo ala jo e lipu pu e lipu ku?\n(244 responses)'
+                           };
+            var chart = new google.visualization.PieChart(document.getElementById('22Do you own Toki Pona: The Language of Good (pu) or Toki Pona dictionary (ku) by Sonja Lang?_tp'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = google.visualization.arrayToDataTable([
+            ['Answer', 'know and use','know but don\'t use','don\'t know',
+            { role: 'annotation' } ],
+            ['tonsi', 1143, 259, 311, ''],['monsuta', 1062, 325, 317, ''],['kijetesantakalu', 1055, 442, 221, ''],['ku', 1056, 345, 303, ''],['kin', 983, 283, 433, ''],['oko', 838, 580, 292, ''],['n', 796, 359, 540, ''],['kipisi', 783, 325, 584, ''],['namako', 727, 422, 551, ''],['leko', 721, 281, 694, ''],['epiku', 714, 692, 304, ''],['soko', 663, 305, 724, ''],['misikeke', 637, 357, 688, ''],['lanpan', 564, 411, 718, ''],['meso', 538, 362, 792, ''],['jasima', 442, 394, 851, ''],['kokosila', 265, 702, 724, ''],['majuna', 80, 0, 0, ''],['kiki', 68, 0, 0, ''],['linluwi', 64, 0, 0, ''],['powe', 54, 0, 0, ''],['usawi', 52, 0, 0, ''],['apeja', 48, 0, 0, ''],['puwa', 41, 0, 0, ''],['pake', 40, 0, 0, ''],['kapesi', 31, 0, 0, ''],['yupekosi', 27, 0, 0, ''],['taki', 28, 0, 0, ''],['isipin', 28, 0, 0, ''],['unu', 27, 0, 0, ''],['san', 27, 0, 0, ''],['te', 27, 0, 0, ''],['to', 26, 0, 0, ''],['oke', 26, 0, 0, ''],['soto', 24, 0, 0, ''],['teje', 23, 0, 0, ''],['po', 22, 0, 0, ''],['misa', 18, 0, 0, ''],['wa', 17, 0, 0, ''],['omekapo', 17, 0, 0, '']
+            ]);
+            var view = data; 
+
+
+            var options = {
+                           isStacked: true,
+legend: { position: 'top', maxLines: 3},
+'height':1400,
+
+                           'title':'Which of these words (and its non-pu meanings) do you know / use?'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22Which of these words (and its non-pu meanings) do you know / use?'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = google.visualization.arrayToDataTable([
+            ['Answer', 'sona en kepeken','sona en kepeken ala','sona ala',
+            { role: 'annotation' } ],
+            ['tonsi', 208, 33, 4, ''],['monsuta', 198, 45, 2, ''],['kijetesantakalu', 173, 71, 1, ''],['ku', 202, 37, 6, ''],['kin', 212, 31, 2, ''],['oko', 133, 110, 1, ''],['n', 166, 62, 17, ''],['kipisi', 163, 70, 12, ''],['namako', 163, 70, 10, ''],['leko', 163, 58, 24, ''],['epiku', 83, 155, 6, ''],['soko', 156, 63, 25, ''],['misikeke', 138, 80, 25, ''],['lanpan', 111, 104, 29, ''],['meso', 110, 100, 35, ''],['jasima', 89, 113, 43, ''],['kokosila', 43, 163, 39, ''],['majuna', 21, 0, 0, ''],['kiki', 19, 0, 0, ''],['linluwi', 23, 0, 0, ''],['powe', 15, 0, 0, ''],['usawi', 12, 0, 0, ''],['apeja', 8, 0, 0, ''],['puwa', 5, 0, 0, ''],['pake', 15, 0, 0, ''],['kapesi', 6, 0, 0, ''],['yupekosi', 4, 0, 0, ''],['taki', 10, 0, 0, ''],['isipin', 5, 0, 0, ''],['unu', 5, 0, 0, ''],['san', 6, 0, 0, ''],['te', 11, 0, 0, ''],['to', 10, 0, 0, ''],['oke', 4, 0, 0, ''],['soto', 8, 0, 0, ''],['teje', 8, 0, 0, ''],['po', 6, 0, 0, ''],['misa', 5, 0, 0, ''],['wa', 2, 0, 0, ''],['omekapo', 3, 0, 0, '']
+            ]);
+            var view = data; 
+
+
+            var options = {
+                           isStacked: true,
+legend: { position: 'top', maxLines: 3},
+'height':1400,
+
+                           'title':'sina sona ala sona e nimi ni pi pu ala? sina kepeken, anu seme?'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22Which of these words (and its non-pu meanings) do you know / use?_tp'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'answer');
+            data.addColumn('number', 'Responses');
+            data.addRows(
+                [['No', 1061], ['Yes, in person', 456], ['Yes, using text chat', 314], ['Other, stated below', 105], ['Yes, using voice chat', 88], ['Yes, I created a Toki Pona course', 52]]
+            );
+            
+          var groupData = google.visualization.data.group(
+            data,
+            [{column: 0, modifier: function () {return 'total'}, type:'string'}],
+            [{column: 1, aggregation: google.visualization.data.sum, type: 'number'}]
+          );
+
+          var formatPercent = new google.visualization.NumberFormat({
+            pattern: '#,##0.0%'
+          });
+
+          var formatShort = new google.visualization.NumberFormat({
+            pattern: 'short'
+          });
+
+          var view = new google.visualization.DataView(data);
+          view.setColumns([0, 1, {
+            calc: function (dt, row) {
+              var amount =  formatShort.formatValue(dt.getValue(row, 1));
+              var percent = formatPercent.formatValue(dt.getValue(row, 1) / 1775.0);
+              return amount + ' (' + percent + ')';
+            },
+            type: 'string',
+            role: 'annotation'
+          }]);
+          
+
+            var options = {
+                           'legend':'none',
+'height':600,
+
+                    annotations : {
+                        alwaysOutside : true,
+                    },
+                    'title':'Have you taught Toki Pona to other people? (MA)\n(1775 responses)'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22Have you taught Toki Pona to other people?'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'answer');
+            data.addColumn('number', 'Responses');
+            data.addRows(
+                [['mi pana ala', 75], ['lon, mi pana e sona lon poka pi jan pi kama sona', 116], ['lon, mi pana sona kepeken sitelen lon kulupu pi ilo sona', 77], ['ante (ona li lon anpa)', 22], ['lon, mi pana sona kepeken kalama lon kulupu pi ilo sona', 21], ['lon, mi pali e lipu pi kama sona', 29]]
+            );
+            
+          var groupData = google.visualization.data.group(
+            data,
+            [{column: 0, modifier: function () {return 'total'}, type:'string'}],
+            [{column: 1, aggregation: google.visualization.data.sum, type: 'number'}]
+          );
+
+          var formatPercent = new google.visualization.NumberFormat({
+            pattern: '#,##0.0%'
+          });
+
+          var formatShort = new google.visualization.NumberFormat({
+            pattern: 'short'
+          });
+
+          var view = new google.visualization.DataView(data);
+          view.setColumns([0, 1, {
+            calc: function (dt, row) {
+              var amount =  formatShort.formatValue(dt.getValue(row, 1));
+              var percent = formatPercent.formatValue(dt.getValue(row, 1) / 244.0);
+              return amount + ' (' + percent + ')';
+            },
+            type: 'string',
+            role: 'annotation'
+          }]);
+          
+
+            var options = {
+                           'legend':'none',
+'height':600,
+
+                    annotations : {
+                        alwaysOutside : true,
+                    },
+                    'title':'sina pana ala pana e sona pi toki pona tawa jan ante? (MA)\n(244 responses)'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22Have you taught Toki Pona to other people?_tp'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'answer');
+            data.addColumn('number', 'Responses');
+            data.addRows(
+                [['12 days of Toki Pona by jan Misali', 1080], ['pu (Toki Pona: The Language of Good)', 602], ['ma pona pi toki pona', 490], ["jan Lentan's course (devurandom)", 353], ['Other, stated below', 290], ["jan Pije's course", 266], ['Using Memrise', 263], ['Using Anki', 234], ['A friend taught me', 150], ['76 lessons', 105], ["I don't remember", 58], ["jan Lope's course", 23]]
+            );
+            
+          var groupData = google.visualization.data.group(
+            data,
+            [{column: 0, modifier: function () {return 'total'}, type:'string'}],
+            [{column: 1, aggregation: google.visualization.data.sum, type: 'number'}]
+          );
+
+          var formatPercent = new google.visualization.NumberFormat({
+            pattern: '#,##0.0%'
+          });
+
+          var formatShort = new google.visualization.NumberFormat({
+            pattern: 'short'
+          });
+
+          var view = new google.visualization.DataView(data);
+          view.setColumns([0, 1, {
+            calc: function (dt, row) {
+              var amount =  formatShort.formatValue(dt.getValue(row, 1));
+              var percent = formatPercent.formatValue(dt.getValue(row, 1) / 1768.0);
+              return amount + ' (' + percent + ')';
+            },
+            type: 'string',
+            role: 'annotation'
+          }]);
+          
+
+            var options = {
+                           'legend':'none',
+'height':900,
+
+                    annotations : {
+                        alwaysOutside : true,
+                    },
+                    'title':'How did you learn Toki Pona? (MA)\n(1768 responses)'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22How did you learn Toki Pona?'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'answer');
+            data.addColumn('number', 'Responses');
+            data.addRows(
+                [['sitelen tawa pi jan Misali - 12 days of toki pona by jan Misali', 141], ['pu', 104], ['ma pona pi toki pona', 111], ['lipu pi jan Lentan (devurandom)', 65], ['ante (ona li lon anpa)', 38], ["lipu pi jan Pije - jan Pije's course", 72], ['ilo Menwasi', 17], ['ilo Anki', 33], ['jan pona mi li pana e sona', 20], ['76 lessons', 22], ['mi sona ala', 5], ['jan Lope', 6]]
+            );
+            
+          var groupData = google.visualization.data.group(
+            data,
+            [{column: 0, modifier: function () {return 'total'}, type:'string'}],
+            [{column: 1, aggregation: google.visualization.data.sum, type: 'number'}]
+          );
+
+          var formatPercent = new google.visualization.NumberFormat({
+            pattern: '#,##0.0%'
+          });
+
+          var formatShort = new google.visualization.NumberFormat({
+            pattern: 'short'
+          });
+
+          var view = new google.visualization.DataView(data);
+          view.setColumns([0, 1, {
+            calc: function (dt, row) {
+              var amount =  formatShort.formatValue(dt.getValue(row, 1));
+              var percent = formatPercent.formatValue(dt.getValue(row, 1) / 245.0);
+              return amount + ' (' + percent + ')';
+            },
+            type: 'string',
+            role: 'annotation'
+          }]);
+          
+
+            var options = {
+                           'legend':'none',
+'height':900,
+
+                    annotations : {
+                        alwaysOutside : true,
+                    },
+                    'title':'sina kama sona e toki pona kepeken nasin seme? (MA)\n(245 responses)'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22How did you learn Toki Pona?_tp'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'answer');
+            data.addColumn('number', 'Responses');
+            data.addRows(
+                [['Discord (ma pona pi toki pona and others)', 1501], ['Reddit (/r/tokipona, /r/mi_lon...)', 958], ['Facebook (toki pona, toki pona taso...)', 134], ['Twitter', 129], ['Telegram (kulupu pi toki pona, toki pona taso sin, sitelen pona taso, jan pi wile pona taso... )', 104], ['Other, stated below', 80], ['Mastodon (toki.social)', 29], ['Tencent QQ', 24], ['VRChat', 15], ['Kakaotalk (kulupu pi toki pona pi ma Anku)', 9]]
+            );
+            
+          var groupData = google.visualization.data.group(
+            data,
+            [{column: 0, modifier: function () {return 'total'}, type:'string'}],
+            [{column: 1, aggregation: google.visualization.data.sum, type: 'number'}]
+          );
+
+          var formatPercent = new google.visualization.NumberFormat({
+            pattern: '#,##0.0%'
+          });
+
+          var formatShort = new google.visualization.NumberFormat({
+            pattern: 'short'
+          });
+
+          var view = new google.visualization.DataView(data);
+          view.setColumns([0, 1, {
+            calc: function (dt, row) {
+              var amount =  formatShort.formatValue(dt.getValue(row, 1));
+              var percent = formatPercent.formatValue(dt.getValue(row, 1) / 1740.0);
+              return amount + ' (' + percent + ')';
+            },
+            type: 'string',
+            role: 'annotation'
+          }]);
+          
+
+            var options = {
+                           'legend':'none',
+'height':600,
+
+                    annotations : {
+                        alwaysOutside : true,
+                    },
+                    'title':'What Toki Pona communities are you in? (MA)\n(1740 responses)'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22What Toki Pona communities are you in?'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'answer');
+            data.addColumn('number', 'Responses');
+            data.addRows(
+                [['ilo Siko (ma pona pi toki pona anu kulupu ante)', 193], ['lipu Wesi (/r/tokipona, /r/mi_lon...)', 143], ['lipu Pepu (toki pona, toki pona taso...)', 26], ['lipu Tuwita', 30], ['ilo Telekan (kulupu pi toki pona, toki pona taso sin, sitelen pona taso, jan pi wile pona taso... )', 28], ['ante (ona li lon anpa)', 20], ['ilo Masoton', 14], ['ilo Tensen Kiju Kiju', 0], ['musi Wijasa (VRchat)', 2], ['ilo Kakajoto (kulupu pi toki pona pi ma Anku)', 3]]
+            );
+            
+          var groupData = google.visualization.data.group(
+            data,
+            [{column: 0, modifier: function () {return 'total'}, type:'string'}],
+            [{column: 1, aggregation: google.visualization.data.sum, type: 'number'}]
+          );
+
+          var formatPercent = new google.visualization.NumberFormat({
+            pattern: '#,##0.0%'
+          });
+
+          var formatShort = new google.visualization.NumberFormat({
+            pattern: 'short'
+          });
+
+          var view = new google.visualization.DataView(data);
+          view.setColumns([0, 1, {
+            calc: function (dt, row) {
+              var amount =  formatShort.formatValue(dt.getValue(row, 1));
+              var percent = formatPercent.formatValue(dt.getValue(row, 1) / 238.0);
+              return amount + ' (' + percent + ')';
+            },
+            type: 'string',
+            role: 'annotation'
+          }]);
+          
+
+            var options = {
+                           'legend':'none',
+'height':600,
+
+                    annotations : {
+                        alwaysOutside : true,
+                    },
+                    'title':'sina lon kulupu seme pi Toki Pona (MA)\n(238 responses)'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22What Toki Pona communities are you in?_tp'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'answer');
+            data.addColumn('number', 'Responses');
+            data.addRows(
+                [['jan', 1603], ['soweli', 136], ['kulupu', 69], ['kala', 29], ['akesi', 46], ['pipi', 29], ['waso', 53], ['kasi', 29], ['ijo', 55], ['ilo', 49], ['kijetesantakalu', 63], ["I don't use head nouns", 104], ['Other, stated below', 140]]
+            );
+            
+          var groupData = google.visualization.data.group(
+            data,
+            [{column: 0, modifier: function () {return 'total'}, type:'string'}],
+            [{column: 1, aggregation: google.visualization.data.sum, type: 'number'}]
+          );
+
+          var formatPercent = new google.visualization.NumberFormat({
+            pattern: '#,##0.0%'
+          });
+
+          var formatShort = new google.visualization.NumberFormat({
+            pattern: 'short'
+          });
+
+          var view = new google.visualization.DataView(data);
+          view.setColumns([0, 1, {
+            calc: function (dt, row) {
+              var amount =  formatShort.formatValue(dt.getValue(row, 1));
+              var percent = formatPercent.formatValue(dt.getValue(row, 1) / 1777.0);
+              return amount + ' (' + percent + ')';
+            },
+            type: 'string',
+            role: 'annotation'
+          }]);
+          
+
+            var options = {
+                           'legend':'none',
+'height':600,
+
+                    annotations : {
+                        alwaysOutside : true,
+                    },
+                    'title':'Which head nouns before your name do you use for yourself? (Examples: jan Sonja, soweli Tuto, kulupu Kaja, ilo Piku) (MA)\n(1777 responses)'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22Which head nouns before your name do you use for yourself? (Examples: jan Sonja, soweli Tuto, kulupu Kaja, ilo Piku)'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'answer');
+            data.addColumn('number', 'Responses');
+            data.addRows(
+                [['jan', 228], ['soweli', 30], ['kulupu', 15], ['kala', 9], ['akesi', 12], ['pipi', 10], ['waso', 21], ['kasi', 11], ['ijo', 20], ['ilo', 14], ['kijetesantakalu', 9], ['mi kepeken ala e nimi jan', 7], ['ante (ona li lon anpa)', 38]]
+            );
+            
+          var groupData = google.visualization.data.group(
+            data,
+            [{column: 0, modifier: function () {return 'total'}, type:'string'}],
+            [{column: 1, aggregation: google.visualization.data.sum, type: 'number'}]
+          );
+
+          var formatPercent = new google.visualization.NumberFormat({
+            pattern: '#,##0.0%'
+          });
+
+          var formatShort = new google.visualization.NumberFormat({
+            pattern: 'short'
+          });
+
+          var view = new google.visualization.DataView(data);
+          view.setColumns([0, 1, {
+            calc: function (dt, row) {
+              var amount =  formatShort.formatValue(dt.getValue(row, 1));
+              var percent = formatPercent.formatValue(dt.getValue(row, 1) / 244.0);
+              return amount + ' (' + percent + ')';
+            },
+            type: 'string',
+            role: 'annotation'
+          }]);
+          
+
+            var options = {
+                           'legend':'none',
+'height':600,
+
+                    annotations : {
+                        alwaysOutside : true,
+                    },
+                    'title':'sina kepeken nimi jan anu nimi ante (sama ni: jan Sonja, soweli Tuto, kulupu Kaja, ilo Piku) (MA)\n(244 responses)'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22Which head nouns before your name do you use for yourself? (Examples: jan Sonja, soweli Tuto, kulupu Kaja, ilo Piku)_tp'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'answer');
+            data.addColumn('number', 'Responses');
+            data.addRows(
+                [['Toki Pona songs', 1109], ['Toki Pona videos', 997], ['memes in /r/mi_lon', 788], ['lipu tenpo', 403], ["I haven't consumed any Toki Pona media", 205], ['akesi seli lili', 148], ['lipu kule', 119], ['jan Pepa en soweli Kawa', 100], ['Other, stated below', 90], ['meli olin moli', 77], ['toki kala', 59], ['books translated by jan Ne', 56], ['nasin nasa', 54], ['kalama sin', 21], ['kuntu', 13]]
+            );
+            
+          var groupData = google.visualization.data.group(
+            data,
+            [{column: 0, modifier: function () {return 'total'}, type:'string'}],
+            [{column: 1, aggregation: google.visualization.data.sum, type: 'number'}]
+          );
+
+          var formatPercent = new google.visualization.NumberFormat({
+            pattern: '#,##0.0%'
+          });
+
+          var formatShort = new google.visualization.NumberFormat({
+            pattern: 'short'
+          });
+
+          var view = new google.visualization.DataView(data);
+          view.setColumns([0, 1, {
+            calc: function (dt, row) {
+              var amount =  formatShort.formatValue(dt.getValue(row, 1));
+              var percent = formatPercent.formatValue(dt.getValue(row, 1) / 1693.0);
+              return amount + ' (' + percent + ')';
+            },
+            type: 'string',
+            role: 'annotation'
+          }]);
+          
+
+            var options = {
+                           'legend':'none',
+'height':800,
+
+                    annotations : {
+                        alwaysOutside : true,
+                    },
+                    'title':'What Toki Pona media have you consumed? (MA)\n(1693 responses)'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22What Toki Pona media have you consumed?'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'answer');
+            data.addColumn('number', 'Responses');
+            data.addRows(
+                [['kalama musi pi toki pona', 161], ['sitelen tawa pi toki pona', 123], ['sitelen musi lon lipu /r/mi_lon', 116], ['lipu tenpo', 112], ['mi lukin ala anu kute ala e ijo pi toki pona', 12], ['akesi seli lili', 52], ['lipu kule', 37], ['jan Pepa en soweli Kawa', 37], ['ante (ona li lon anpa)', 26], ['meli olin moli', 27], ['toki kala', 27], ['lipu pi toki ante pi jan Ne', 16], ['nasin nasa', 13], ['kalama sin', 9], ['kuntu', 10]]
+            );
+            
+          var groupData = google.visualization.data.group(
+            data,
+            [{column: 0, modifier: function () {return 'total'}, type:'string'}],
+            [{column: 1, aggregation: google.visualization.data.sum, type: 'number'}]
+          );
+
+          var formatPercent = new google.visualization.NumberFormat({
+            pattern: '#,##0.0%'
+          });
+
+          var formatShort = new google.visualization.NumberFormat({
+            pattern: 'short'
+          });
+
+          var view = new google.visualization.DataView(data);
+          view.setColumns([0, 1, {
+            calc: function (dt, row) {
+              var amount =  formatShort.formatValue(dt.getValue(row, 1));
+              var percent = formatPercent.formatValue(dt.getValue(row, 1) / 228.0);
+              return amount + ' (' + percent + ')';
+            },
+            type: 'string',
+            role: 'annotation'
+          }]);
+          
+
+            var options = {
+                           'legend':'none',
+'height':800,
+
+                    annotations : {
+                        alwaysOutside : true,
+                    },
+                    'title':'sina lukin anu kute e ijo seme pi toki pona? (MA)\n(228 responses)'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22What Toki Pona media have you consumed?_tp'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = google.visualization.arrayToDataTable([
+            ['Answer', 'preferred','know and use','know','don\'t know',
+            { role: 'annotation' } ],
+            ['Latin alphabet (ni)', 1053, 431, 43, 11, ''],['sitelen pona ↓', 319, 491, 390, 491, ''],['sitelen sitelen', 34, 84, 342, 1175, ''],['Cyrillic alphabet ни', 10, 42, 289, 1050, ''],['sitelen Emoji ⬇️', 7, 36, 268, 1316, ''],['Kanji/Kana 此', 12, 37, 166, 1170, ''],['Hangul 니', 5, 21, 134, 1232, ''],['Hanzi 这', 7, 16, 69, 1292, ''],['Arabic Abjad ني', 5, 10, 74, 1296, ''],['Alefbet ivri ני', 2, 8, 54, 1318, '']
+            ]);
+            var view = data; 
+
+
+            var options = {
+                           isStacked: true,
+legend: { position: 'top', maxLines: 3},
+'height':600,
+
+                           'title':'What writing systems do you use for Toki Pona?'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22What writing systems do you use for Toki Pona?'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = google.visualization.arrayToDataTable([
+            ['Answer', 'kepeken mute','sona en kepeken','sona','sona ala',
+            { role: 'annotation' } ],
+            ['sitelen Lasina (ni)', 200, 33, 1, 7, ''],['sitelen pona ↓', 77, 98, 44, 24, ''],['sitelen sitelen', 5, 18, 51, 163, ''],['sitelen Kililisa ни', 0, 11, 58, 165, ''],['sitelen Emoji ⬇️', 1, 8, 49, 178, ''],['sitelen Nijon 此', 0, 9, 22, 203, ''],['sitelen Kanku 니', 0, 4, 23, 206, ''],['sitelen Sonko 这', 0, 1, 9, 221, ''],['sitelen Alapi ني', 1, 4, 15, 211, ''],['sitelen Alebet ili ני', 0, 2, 16, 216, '']
+            ]);
+            var view = data; 
+
+
+            var options = {
+                           isStacked: true,
+legend: { position: 'top', maxLines: 3},
+'height':600,
+
+                           'title':'sina kepeken nasin seme tawa sitelen pi toki pona?'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22What writing systems do you use for Toki Pona?_tp'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = google.visualization.arrayToDataTable([
+            ['Answer', 'know','learning','interested','not interested',
+            { role: 'annotation' } ],
+            ['toki pona luka', 9, 28, 469, 1060, ''],['Luka Pona', 10, 43, 705, 621, ''],["Chuff's toki luka", 4, 2, 289, 1015, ''],['nasin ante sina', 2, 1, 272, 1028, '']
+            ]);
+            var view = data; 
+
+
+            var options = {
+                           isStacked: true,
+legend: { position: 'top', maxLines: 3},
+'height':600,
+
+                           'title':'Do you know, want to know or are learning any of the sign languages/systems of Toki Pona?'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22Do you know, want to know or are learning any of the sign languages/systems of Toki Pona?'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = google.visualization.arrayToDataTable([
+            ['Answer', 'sona','kama sona','wile sona','wile ala sona',
+            { role: 'annotation' } ],
+            ['toki pona luka', 2, 9, 50, 170, ''],['luka pona', 5, 23, 132, 76, ''],['toki luka pi jan Sa (Chuff)', 1, 0, 23, 203, ''],['nasin sin sina', 2, 1, 18, 208, '']
+            ]);
+            var view = data; 
+
+
+            var options = {
+                           isStacked: true,
+legend: { position: 'top', maxLines: 3},
+'height':600,
+
+                           'title':'sina sona e toki luka anu seme?'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22Do you know, want to know or are learning any of the sign languages/systems of Toki Pona?_tp'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = google.visualization.arrayToDataTable([
+            ['Answer', 'know','learning','interested','not interested',
+            { role: 'annotation' } ],
+            ['toki pona luka', 9, 28, 469, 1060, ''],['Luka Pona', 10, 43, 705, 621, ''],["Chuff's toki luka", 4, 2, 289, 1015, ''],['nasin ante sina', 2, 1, 272, 1028, '']
+            ]);
+            var view = data; 
+
+
+            var options = {
+                           isStacked: true,
+legend: { position: 'top', maxLines: 3},
+hAxis : { logScale : true, },
+
+                     'height':600,
+
+                           'title':'Do you know, want to know or are learning any of the sign languages/systems of Toki Pona?. Log scale'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22Do you know, want to know or are learning any of the sign languages/systems of Toki Pona?_log_scale'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = google.visualization.arrayToDataTable([
+            ['Answer', 'sona','kama sona','wile sona','wile ala sona',
+            { role: 'annotation' } ],
+            ['toki pona luka', 2, 9, 50, 170, ''],['luka pona', 5, 23, 132, 76, ''],['toki luka pi jan Sa (Chuff)', 1, 0, 23, 203, ''],['nasin sin sina', 2, 1, 18, 208, '']
+            ]);
+            var view = data; 
+
+
+            var options = {
+                           isStacked: true,
+legend: { position: 'top', maxLines: 3},
+hAxis : { logScale : true, },
+
+                     'height':600,
+
+                           'title':'sina sona e toki luka anu seme?. Log scale'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22Do you know, want to know or are learning any of the sign languages/systems of Toki Pona?_tp_log_scale'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'answer');
+            data.addColumn('number', 'Responses');
+            data.addRows(
+                [['<20', 891], ['20-24', 404], ['25-29', 149], ['30-39', 115], ['40-49', 40], ['50-59', 29], ['60-69', 7], ['70-79', 0], ['80-89', 0], ['90-99', 0], ['100+', 0], ['I do not wish to disclose', 78]]
+            );
+            
+          var groupData = google.visualization.data.group(
+            data,
+            [{column: 0, modifier: function () {return 'total'}, type:'string'}],
+            [{column: 1, aggregation: google.visualization.data.sum, type: 'number'}]
+          );
+
+          var formatPercent = new google.visualization.NumberFormat({
+            pattern: '#,##0.0%'
+          });
+
+          var formatShort = new google.visualization.NumberFormat({
+            pattern: 'short'
+          });
+
+          var view = new google.visualization.DataView(data);
+          view.setColumns([0, 1, {
+            calc: function (dt, row) {
+              var amount =  formatShort.formatValue(dt.getValue(row, 1));
+              var percent = formatPercent.formatValue(dt.getValue(row, 1) / 1713.0);
+              return amount + ' (' + percent + ')';
+            },
+            type: 'string',
+            role: 'annotation'
+          }]);
+          
+
+            var options = {
+                           'legend':'none',
+'height':600,
+
+                    annotations : {
+                        alwaysOutside : true,
+                    },
+                    'title':'How old are you?\n(1713 responses)'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22How old are you?'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'answer');
+            data.addColumn('number', 'Responses');
+            data.addRows(
+                [['<20', 107], ['20-24', 65], ['25-29', 28], ['30-39', 16], ['40-49', 5], ['50-59', 5], ['60-69', 1], ['70-79', 0], ['80-89', 0], ['90-99', 0], ['100+', 0], ['mi wile ala toki e ona', 7]]
+            );
+            
+          var groupData = google.visualization.data.group(
+            data,
+            [{column: 0, modifier: function () {return 'total'}, type:'string'}],
+            [{column: 1, aggregation: google.visualization.data.sum, type: 'number'}]
+          );
+
+          var formatPercent = new google.visualization.NumberFormat({
+            pattern: '#,##0.0%'
+          });
+
+          var formatShort = new google.visualization.NumberFormat({
+            pattern: 'short'
+          });
+
+          var view = new google.visualization.DataView(data);
+          view.setColumns([0, 1, {
+            calc: function (dt, row) {
+              var amount =  formatShort.formatValue(dt.getValue(row, 1));
+              var percent = formatPercent.formatValue(dt.getValue(row, 1) / 234.0);
+              return amount + ' (' + percent + ')';
+            },
+            type: 'string',
+            role: 'annotation'
+          }]);
+          
+
+            var options = {
+                           'legend':'none',
+'height':600,
+
+                    annotations : {
+                        alwaysOutside : true,
+                    },
+                    'title':'tenpo sike sina li seme?\n(234 responses)'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22How old are you?_tp'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'answer');
+            data.addColumn('number', 'Responses');
+            data.addRows(
+                [['North America', 859], ['Europe', 530], ['Asia', 126], ['Oceania', 83], ['South America', 78], ['Do not wish to disclose', 23], ['Africa', 9], ['Other', 6]]
+            );
+            
+          var groupData = google.visualization.data.group(
+            data,
+            [{column: 0, modifier: function () {return 'total'}, type:'string'}],
+            [{column: 1, aggregation: google.visualization.data.sum, type: 'number'}]
+          );
+
+          var formatPercent = new google.visualization.NumberFormat({
+            pattern: '#,##0.0%'
+          });
+
+          var formatShort = new google.visualization.NumberFormat({
+            pattern: 'short'
+          });
+
+          var view = new google.visualization.DataView(data);
+          view.setColumns([0, 1, {
+            calc: function (dt, row) {
+              var amount =  formatShort.formatValue(dt.getValue(row, 1));
+              var percent = formatPercent.formatValue(dt.getValue(row, 1) / 1714.0);
+              return amount + ' (' + percent + ')';
+            },
+            type: 'string',
+            role: 'annotation'
+          }]);
+          
+
+            var options = {
+                           'legend':'none',
+'height':600,
+
+                    annotations : {
+                        alwaysOutside : true,
+                    },
+                    'title':'What continent/region are you from? \n(1714 responses)'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22What continent/region are you from? '));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'answer');
+            data.addColumn('number', 'Responses');
+            data.addRows(
+                [['ma Notamewika', 110], ['ma Elope', 85], ['ma Asija', 14], ['ma lili Osijania', 12], ['ma Sutamelika', 8], ['mi wile ala toki e ona', 2], ['ma Apika', 4], ['ma ante', 0]]
+            );
+            
+          var groupData = google.visualization.data.group(
+            data,
+            [{column: 0, modifier: function () {return 'total'}, type:'string'}],
+            [{column: 1, aggregation: google.visualization.data.sum, type: 'number'}]
+          );
+
+          var formatPercent = new google.visualization.NumberFormat({
+            pattern: '#,##0.0%'
+          });
+
+          var formatShort = new google.visualization.NumberFormat({
+            pattern: 'short'
+          });
+
+          var view = new google.visualization.DataView(data);
+          view.setColumns([0, 1, {
+            calc: function (dt, row) {
+              var amount =  formatShort.formatValue(dt.getValue(row, 1));
+              var percent = formatPercent.formatValue(dt.getValue(row, 1) / 235.0);
+              return amount + ' (' + percent + ')';
+            },
+            type: 'string',
+            role: 'annotation'
+          }]);
+          
+
+            var options = {
+                           'legend':'none',
+'height':600,
+
+                    annotations : {
+                        alwaysOutside : true,
+                    },
+                    'title':'sike ma la, sina tan ma seme?\n(235 responses)'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22What continent/region are you from? _tp'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'answer');
+            data.addColumn('number', 'Responses');
+            data.addRows(
+                [['meli - woman/feminine', 410], ['mije - man/masculine', 956], ['tonsi - non-binary/trans/gnc', 590], ['ala - agender', 132], ['mi sona ala / mi alasa - I do not know / I am questioning', 136], ['I do not wish to disclose', 33], ['Other, stated below', 79]]
+            );
+            
+          var groupData = google.visualization.data.group(
+            data,
+            [{column: 0, modifier: function () {return 'total'}, type:'string'}],
+            [{column: 1, aggregation: google.visualization.data.sum, type: 'number'}]
+          );
+
+          var formatPercent = new google.visualization.NumberFormat({
+            pattern: '#,##0.0%'
+          });
+
+          var formatShort = new google.visualization.NumberFormat({
+            pattern: 'short'
+          });
+
+          var view = new google.visualization.DataView(data);
+          view.setColumns([0, 1, {
+            calc: function (dt, row) {
+              var amount =  formatShort.formatValue(dt.getValue(row, 1));
+              var percent = formatPercent.formatValue(dt.getValue(row, 1) / 1710.0);
+              return amount + ' (' + percent + ')';
+            },
+            type: 'string',
+            role: 'annotation'
+          }]);
+          
+
+            var options = {
+                           'legend':'none',
+'height':600,
+
+                    annotations : {
+                        alwaysOutside : true,
+                    },
+                    'title':'What is your gender? (MA)\n(1710 responses)'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22What is your gender?'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'answer');
+            data.addColumn('number', 'Responses');
+            data.addRows(
+                [['meli', 60], ['mije', 131], ['tonsi', 70], ['ala', 21], ['mi sona ala / mi alasa', 23], ['mi wile ala toki e ona', 5], ['ante (ona li lon anpa)', 15]]
+            );
+            
+          var groupData = google.visualization.data.group(
+            data,
+            [{column: 0, modifier: function () {return 'total'}, type:'string'}],
+            [{column: 1, aggregation: google.visualization.data.sum, type: 'number'}]
+          );
+
+          var formatPercent = new google.visualization.NumberFormat({
+            pattern: '#,##0.0%'
+          });
+
+          var formatShort = new google.visualization.NumberFormat({
+            pattern: 'short'
+          });
+
+          var view = new google.visualization.DataView(data);
+          view.setColumns([0, 1, {
+            calc: function (dt, row) {
+              var amount =  formatShort.formatValue(dt.getValue(row, 1));
+              var percent = formatPercent.formatValue(dt.getValue(row, 1) / 235.0);
+              return amount + ' (' + percent + ')';
+            },
+            type: 'string',
+            role: 'annotation'
+          }]);
+          
+
+            var options = {
+                           'legend':'none',
+'height':600,
+
+                    annotations : {
+                        alwaysOutside : true,
+                    },
+                    'title':'kule/kon sina li seme? (MA)\n(235 responses)'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22What is your gender?_tp'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'answer');
+            data.addColumn('number', 'Responses');
+            data.addRows(
+                [['Atheism', 737], ['Agnosticism', 543], ['Christianity', 280], ['Other, stated below', 185], ['I do not wish to disclose', 108], ['Paganism', 85], ['Judaism', 68], ['Buddism', 55], ['Daoism', 23], ['Hinduism', 23], ['Wicca', 20], ['Islam', 19], ['Confucianism', 6], ['Sikhism', 2]]
+            );
+            
+          var groupData = google.visualization.data.group(
+            data,
+            [{column: 0, modifier: function () {return 'total'}, type:'string'}],
+            [{column: 1, aggregation: google.visualization.data.sum, type: 'number'}]
+          );
+
+          var formatPercent = new google.visualization.NumberFormat({
+            pattern: '#,##0.0%'
+          });
+
+          var formatShort = new google.visualization.NumberFormat({
+            pattern: 'short'
+          });
+
+          var view = new google.visualization.DataView(data);
+          view.setColumns([0, 1, {
+            calc: function (dt, row) {
+              var amount =  formatShort.formatValue(dt.getValue(row, 1));
+              var percent = formatPercent.formatValue(dt.getValue(row, 1) / 1664.0);
+              return amount + ' (' + percent + ')';
+            },
+            type: 'string',
+            role: 'annotation'
+          }]);
+          
+
+            var options = {
+                           'legend':'none',
+'height':800,
+
+                    annotations : {
+                        alwaysOutside : true,
+                    },
+                    'title':'What is your religion/philosophy? (MA)\n(1664 responses)'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22What is your religion/philosophy?'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'answer');
+            data.addColumn('number', 'Responses');
+            data.addRows(
+                [['mi toki e ni: sewi li lon ala', 94], ['mi ken ala sona', 75], ['nasin sewi pi jan Jesuwa (nasin Kisijan)', 43], ['ante (ona li lon anpa)', 32], ['mi wile ala toki e ona', 10], ['nasin Pakan', 6], ['nasin sewi Jejusin (nasin sewi Jawatu)', 5], ['nasin Tatakata', 4], ['nasin Konpusijo', 0], ['nasin Sanatana Tama', 4], ['nasin Wika', 1], ['nasin sewi Silami', 1], ['nasin Tajo', 2], ['nasin Siki', 0]]
+            );
+            
+          var groupData = google.visualization.data.group(
+            data,
+            [{column: 0, modifier: function () {return 'total'}, type:'string'}],
+            [{column: 1, aggregation: google.visualization.data.sum, type: 'number'}]
+          );
+
+          var formatPercent = new google.visualization.NumberFormat({
+            pattern: '#,##0.0%'
+          });
+
+          var formatShort = new google.visualization.NumberFormat({
+            pattern: 'short'
+          });
+
+          var view = new google.visualization.DataView(data);
+          view.setColumns([0, 1, {
+            calc: function (dt, row) {
+              var amount =  formatShort.formatValue(dt.getValue(row, 1));
+              var percent = formatPercent.formatValue(dt.getValue(row, 1) / 229.0);
+              return amount + ' (' + percent + ')';
+            },
+            type: 'string',
+            role: 'annotation'
+          }]);
+          
+
+            var options = {
+                           'legend':'none',
+'height':800,
+
+                    annotations : {
+                        alwaysOutside : true,
+                    },
+                    'title':'nasin sewi seme li nasin sewi sina? (MA)\n(229 responses)'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22What is your religion/philosophy?_tp'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'answer');
+            data.addColumn('number', 'Responses');
+            data.addRows(
+                [['1', 213], ['2', 472], ['3', 498], ['4', 250], ['5', 115], ['6', 31], ['7', 20], ['8', 19], ['9', 7], ['10 or more', 10]]
+            );
+            
+          var groupData = google.visualization.data.group(
+            data,
+            [{column: 0, modifier: function () {return 'total'}, type:'string'}],
+            [{column: 1, aggregation: google.visualization.data.sum, type: 'number'}]
+          );
+
+          var formatPercent = new google.visualization.NumberFormat({
+            pattern: '#,##0.0%'
+          });
+
+          var formatShort = new google.visualization.NumberFormat({
+            pattern: 'short'
+          });
+
+          var view = new google.visualization.DataView(data);
+          view.setColumns([0, 1, {
+            calc: function (dt, row) {
+              var amount =  formatShort.formatValue(dt.getValue(row, 1));
+              var percent = formatPercent.formatValue(dt.getValue(row, 1) / 1635.0);
+              return amount + ' (' + percent + ')';
+            },
+            type: 'string',
+            role: 'annotation'
+          }]);
+          
+
+            var options = {
+                           'legend':'none',
+'height':600,
+
+                    annotations : {
+                        alwaysOutside : true,
+                    },
+                    'title':'In how many languages can you converse with some degree of fluency? (including Toki Pona)\n(1635 responses)'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22In how many languages can you converse with some degree of fluency? (including Toki Pona)'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'answer');
+            data.addColumn('number', 'Responses');
+            data.addRows(
+                [['1', 3], ['2', 39], ['3', 64], ['4', 42], ['5', 29], ['6', 10], ['7', 11], ['8', 13], ['9', 7], ['10 li 10+', 4]]
+            );
+            
+          var groupData = google.visualization.data.group(
+            data,
+            [{column: 0, modifier: function () {return 'total'}, type:'string'}],
+            [{column: 1, aggregation: google.visualization.data.sum, type: 'number'}]
+          );
+
+          var formatPercent = new google.visualization.NumberFormat({
+            pattern: '#,##0.0%'
+          });
+
+          var formatShort = new google.visualization.NumberFormat({
+            pattern: 'short'
+          });
+
+          var view = new google.visualization.DataView(data);
+          view.setColumns([0, 1, {
+            calc: function (dt, row) {
+              var amount =  formatShort.formatValue(dt.getValue(row, 1));
+              var percent = formatPercent.formatValue(dt.getValue(row, 1) / 222.0);
+              return amount + ' (' + percent + ')';
+            },
+            type: 'string',
+            role: 'annotation'
+          }]);
+          
+
+            var options = {
+                           'legend':'none',
+'height':600,
+
+                    annotations : {
+                        alwaysOutside : true,
+                    },
+                    'title':'sina ken toki kepeken toki pi mute seme? (o nanpa kin e toki pona)\n(222 responses)'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22In how many languages can you converse with some degree of fluency? (including Toki Pona)_tp'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = google.visualization.arrayToDataTable([
+            ['Answer', 'native/fluent','can converse','learning / know a bit',
+            { role: 'annotation' } ],
+            ['English', 1522, 139, 21, ''],['Spanish', 111, 241, 370, ''],['French', 77, 192, 288, ''],['Japanese', 20, 94, 378, ''],['German', 76, 131, 260, ''],['Chinese', 53, 46, 172, ''],['Russian', 62, 20, 148, ''],['Portuguese', 69, 22, 101, ''],['Italian', 23, 27, 115, ''],['Swedish', 38, 22, 97, ''],['Dutch', 38, 9, 99, ''],['Polish', 42, 9, 74, ''],['Korean', 12, 12, 102, ''],['Latin', 4, 12, 20, ''],['Finnish', 7, 1, 17, ''],['American Sign Language', 4, 5, 11, ''],['Hebrew', 8, 5, 5, ''],['Arabic', 2, 5, 11, ''],['Filipino', 8, 3, 6, ''],['Norwegian', 9, 2, 5, ''],['Ukrainian', 8, 3, 3, ''],['Turkish', 9, 0, 5, ''],['Hindi', 4, 7, 3, ''],['Indonesian', 5, 1, 8, ''],['Czech', 10, 0, 3, ''],['Irish', 6, 2, 5, ''],['Scots', 1, 0, 10, ''],['Welsh', 4, 4, 3, ''],['Malay', 4, 1, 3, ''],['Yiddish', 2, 1, 5, ''],['Cantonese', 6, 1, 0, ''],['Icelandic', 3, 1, 2, ''],['Hungarian', 4, 0, 1, ''],['Catalan', 3, 1, 1, '']
+            ]);
+            var view = data; 
+
+
+            var options = {
+                           isStacked: true,
+legend: { position: 'top', maxLines: 3},
+'height':1600,
+
+                           'title':'What other languages do you know? (MA)'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22What other languages do you know?'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = google.visualization.arrayToDataTable([
+            ['Answer', 'toki mama/mi toki pona mute','mi ken toki','mi kama sona / sona lili',
+            { role: 'annotation' } ],
+            ['toki Inli - English - English', 210, 21, 2, ''],['toki Epanja - Spanish - Español', 12, 32, 52, ''],['toki Kanse - French - Français', 19, 28, 47, ''],['toki Nijon - Japanese - 日本語', 4, 11, 65, ''],['toki Tosi - German - Deutsch', 17, 12, 49, ''],['toki Sonko - Chinese - 中文', 5, 7, 39, ''],['toki Losi - Russian - русский', 12, 5, 28, ''],['toki Potuke - Portuguese - Português', 10, 3, 27, ''],['toki Italija - Italian - italiano', 5, 4, 22, ''],['toki Wensa - Swedish - Svenska', 7, 4, 25, ''],['toki Netelan - Dutch - Nederlands', 7, 2, 23, ''],['toki Posuka - Polish - Polski', 9, 2, 17, ''],['toki Anku - Korean - 한국어', 1, 2, 21, '']
+            ]);
+            var view = data; 
+
+
+            var options = {
+                           isStacked: true,
+legend: { position: 'top', maxLines: 3},
+'height':750,
+
+                           'title':'sina ken toki kepeken toki seme? (MA)'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22What other languages do you know?_tp'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = google.visualization.arrayToDataTable([
+            ['Answer', 'native/fluent','can converse','learning / know a bit',
+            { role: 'annotation' } ],
+            ['English', 1522, 139, 21, ''],['Spanish', 111, 241, 370, ''],['French', 77, 192, 288, ''],['Japanese', 20, 94, 378, ''],['German', 76, 131, 260, ''],['Chinese', 53, 46, 172, ''],['Russian', 62, 20, 148, ''],['Portuguese', 69, 22, 101, ''],['Italian', 23, 27, 115, ''],['Swedish', 38, 22, 97, ''],['Dutch', 38, 9, 99, ''],['Polish', 42, 9, 74, ''],['Korean', 12, 12, 102, ''],['Latin', 4, 12, 20, ''],['Finnish', 7, 1, 17, ''],['American Sign Language', 4, 5, 11, ''],['Hebrew', 8, 5, 5, ''],['Arabic', 2, 5, 11, ''],['Filipino', 8, 3, 6, ''],['Norwegian', 9, 2, 5, ''],['Ukrainian', 8, 3, 3, ''],['Turkish', 9, 0, 5, ''],['Hindi', 4, 7, 3, ''],['Indonesian', 5, 1, 8, ''],['Czech', 10, 0, 3, ''],['Irish', 6, 2, 5, ''],['Scots', 1, 0, 10, ''],['Welsh', 4, 4, 3, ''],['Malay', 4, 1, 3, ''],['Yiddish', 2, 1, 5, ''],['Cantonese', 6, 1, 0, ''],['Icelandic', 3, 1, 2, ''],['Hungarian', 4, 0, 1, ''],['Catalan', 3, 1, 1, '']
+            ]);
+            var view = data; 
+
+
+            var options = {
+                           isStacked: true,
+legend: { position: 'top', maxLines: 3},
+hAxis : { logScale : true, },
+
+                     'height':1600,
+
+                           'title':'What other languages do you know? (MA). Log scale'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22What other languages do you know?_log_scale'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+            var data = google.visualization.arrayToDataTable([
+            ['Answer', 'toki mama/mi toki pona mute','mi ken toki','mi kama sona / sona lili',
+            { role: 'annotation' } ],
+            ['toki Inli - English - English', 210, 21, 2, ''],['toki Epanja - Spanish - Español', 12, 32, 52, ''],['toki Kanse - French - Français', 19, 28, 47, ''],['toki Nijon - Japanese - 日本語', 4, 11, 65, ''],['toki Tosi - German - Deutsch', 17, 12, 49, ''],['toki Sonko - Chinese - 中文', 5, 7, 39, ''],['toki Losi - Russian - русский', 12, 5, 28, ''],['toki Potuke - Portuguese - Português', 10, 3, 27, ''],['toki Italija - Italian - italiano', 5, 4, 22, ''],['toki Wensa - Swedish - Svenska', 7, 4, 25, ''],['toki Netelan - Dutch - Nederlands', 7, 2, 23, ''],['toki Posuka - Polish - Polski', 9, 2, 17, ''],['toki Anku - Korean - 한국어', 1, 2, 21, '']
+            ]);
+            var view = data; 
+
+
+            var options = {
+                           isStacked: true,
+legend: { position: 'top', maxLines: 3},
+hAxis : { logScale : true, },
+
+                     'height':750,
+
+                           'title':'sina ken toki kepeken toki seme? (MA). Log scale'
+                           };
+            var chart = new google.visualization.BarChart(document.getElementById('22What other languages do you know?_tp_log_scale'));
+            chart.draw(view, options);
+        
+
+
+
+
+
+
+
+    }</script>
+    </head></html>
+    
