@@ -1,0 +1,683 @@
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>La lógica detrás de Toki Pona</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/black.css">
+
+		<!-- Tema usado para el resaltado de sintaxis en código -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+
+		<style>
+			.reveal .slides section.center {
+				text-align: center;
+			}
+
+			.reveal .subtitle {
+				font-size: 0.9em;
+				margin-top: 1.25rem;
+				opacity: 0.9;
+			}
+
+			.reveal .muted {
+				opacity: 0.75;
+			}
+
+			.reveal .slides section ul {
+				display: inline-block;
+				text-align: left;
+			}
+
+			.reveal .cols {
+				display: flex;
+				gap: 2.5rem;
+				align-items: center;
+				justify-content: space-between;
+			}
+
+			.reveal .col {
+				flex: 1;
+				min-width: 0;
+			}
+
+			.reveal .col-title {
+				text-align: center;
+				font-size: 0.9em;
+				margin-bottom: 0.75rem;
+			}
+
+			.reveal img.img-full {
+				max-height: 78vh;
+				width: auto;
+			}
+
+			.reveal img.img-med {
+				max-height: 60vh;
+				width: auto;
+			}
+
+			.reveal img.img-half {
+				max-height: 62vh;
+				width: 100%;
+				height: auto;
+				object-fit: contain;
+			}
+
+			.reveal iframe.embed {
+				width: 100%;
+				height: 70vh;
+				border: 0;
+			}
+
+			.reveal iframe.embed-video {
+				height: 56vh;
+			}
+
+			.reveal section.compact {
+				font-size: 0.82em;
+			}
+
+			.reveal section.popularity ul {
+				margin-bottom: 0.25rem;
+			}
+
+			.reveal section.popularity img {
+				margin-top: -0.75rem;
+			}
+
+			.reveal strong,
+			.reveal b {
+				color: #b9e3ff;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+					<section>
+						<section class="center">
+							<h2 class="r-fit-text">La lógica detrás de Toki Pona<br>¿Cómo funciona un idioma enano?</h2>
+							<p class="subtitle">Centro Artístico<br>Charla de jan Tamalu</p>
+						</section>
+					</section>
+
+				<section>
+					<section data-markdown>
+						<textarea data-template>
+## ¿Qué es Toki Pona?
+
+- Toki Pona es una lengua inventada, sencilla y fácil de aprender.
+- Tiene entre 120 y 135 palabras.
+- Sonja Lang la concibió en 2001, y pasó por muchas modificaciones.
+- En 2014 se publicó el primer libro oficial, que fijó muchas cosas sobre cómo funciona.
+- Es una lengua artística, pero puede funcionar prácticamente como lengua auxiliar...
+- Está viva y evoluciona.
+- No pretende ser la lengua más simple.
+						</textarea>
+						<aside class="notes">su propósito es divertirse con ella.</aside>
+					</section>
+
+					<section data-background-image="figs/dictionary_by_topics.png" data-background-size="contain" data-background-repeat="no-repeat" data-background-position="center"></section>
+
+					<section data-background-image="figs/non_pu_words.png" data-background-size="contain" data-background-repeat="no-repeat" data-background-position="center"></section>
+
+							<section class="center popularity">
+								<h2>Popularidad</h2>
+								<ul>
+		                            <li>Es la segunda lengua construida más popular después del esperanto.<br>
+		                            <small class="muted">~El 14% de los esperantistas habla Toki Pona.</small></li>
+								</ul>
+								<img class="img-med" style="max-height: 55vh;" src="figs/second_conlang.png" alt="Segunda lengua construida más popular tras el esperanto">
+							</section>
+
+					<section>
+							<h2>Libro</h2>
+						<div class="cols">
+							<div class="col">
+								<ul>
+										<li>En 2014 se publicó el primer libro oficial: un punto de guardado de cómo funciona Toki Pona.</li>
+								</ul>
+							</div>
+							<div class="col center">
+									<img class="img-med" src="figs/pu.jpg" alt="Portada de pu (2014)">
+							</div>
+						</div>
+					</section>
+
+					<section>
+							<h2>Segundo libro</h2>
+						<div class="cols">
+							<div class="col">
+								<ul>
+										<li>Toki Pona creció durante la pandemia y ha evolucionado un poco desde entonces.</li>
+										<li>En 2021 se recogieron una pequeña revisión y el uso de la comunidad en un segundo libro.</li>
+								</ul>
+							</div>
+							<div class="col center">
+									<img class="img-med" src="figs/ku.jpg" alt="Portada de ku (2021)">
+							</div>
+						</div>
+					</section>
+
+					<section>
+							<h2>Comunidad — ¿dónde?</h2>
+						<iframe
+							class="embed"
+								title="lipu pi sona ma (mapa)"
+							src="https://umap.openstreetmap.fr/en/map/lipu-pi-sona-ma_1114317#6/41.236511/-3.999023"
+							loading="lazy"
+							referrerpolicy="no-referrer"
+						></iframe>
+							<p class="muted" style="margin-top: 0.75rem;">
+								Alternativa: <a href="https://umap.openstreetmap.fr/en/map/lipu-pi-sona-ma_1114317#6/41.236511/-3.999023" target="_blank" rel="noreferrer">abrir el mapa</a>
+							</p>
+						</section>
+
+					<section data-markdown>
+						<textarea data-template>
+## Comunidad — quién y qué
+
+- ¿Cuántas? (mis estimaciones)
+    - ~Unas 20.000 personas saben bastante sobre Toki Pona.
+    - ~Unas 1.000 lo hablan con fluidez
+- Proyectos y eventos
+    - Convención anual de Toki Pona (en Europa y EE. UU.)
+    - Directo virtual de 24 h por el cumpleaños de TP
+    - Proyectos: revistas, libros, traducciones, canciones, podcasts, vídeos, juegos, etc.
+						</textarea>
+					</section>
+
+					<section data-background-image="figs/pepper_and_carrot.png" data-background-size="contain" data-background-repeat="no-repeat" data-background-position="center"></section>
+
+					<section data-background-image="figs/musi_supa_low_res.jpg" data-background-size="contain" data-background-repeat="no-repeat" data-background-position="center"></section>
+
+					<section class="center">
+							<h2>Toki Pona++: Sistemas de escritura</h2>
+						<div class="cols">
+							<div class="col center">
+								<img class="img-half" src="figs/sitelen_pona.png" alt="sitelen pona">
+							</div>
+							<div class="col center">
+								<img class="img-half" src="figs/sitelen_sitelen.png" alt="sitelen sitelen">
+							</div>
+						</div>
+					</section>
+
+
+					<section>
+							<h2>Toki Pona++: Lengua de signos</h2>
+							<p><strong>luka pona</strong>: una lengua de signos inspirada en Toki Pona</p>
+						<iframe
+							class="embed embed-video"
+								title="vídeo de luka pona"
+							src="about:blank"
+							data-yt-src="https://www.youtube-nocookie.com/embed/cSqq6Ma1tik?rel=0&modestbranding=1"
+							loading="lazy"
+							referrerpolicy="strict-origin-when-cross-origin"
+							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+							allowfullscreen
+						></iframe>
+							<p class="muted" style="margin-top: 0.75rem;">
+								Alternativa: <a href="https://www.youtube.com/watch?v=cSqq6Ma1tik" target="_blank" rel="noreferrer">abrir en YouTube</a>
+							</p>
+						</section>
+
+				</section>
+
+				<section>
+					<section class="center">
+							<h2 class="r-fit-text">¿Cómo funciona Toki Pona?</h2>
+	                        <h5>(~70% de todas las reglas de Toki Pona)</h5>
+	                        <small>(Pero debes saber que: ¡no hay reglas!)</small>
+						</section>
+
+					<section data-markdown>
+						<textarea data-template>
+## Ortografía y pronunciación
+
+- **5 vocales**: a, e, i, o, u. Son como en español/italiano.
+- **9 consonantes**: j, k, s, l, m, n, p, t, w. Son como en inglés, excepto la j, que es como la y inglesa. <small class="muted">(La pronunciación es como la del Alfabeto Fonético Internacional)</small>
+- Las frases no empiezan con mayúscula:
+    - `ni li nasin`.
+- El acento de cada palabra está en la primera sílaba
+    - **mi ke**peken **mu**si
+						</textarea>
+						<aside class="notes">Sin reducción vocálica. palisa. ala.</aside>
+					</section>
+
+					<section data-markdown>
+						<textarea data-template>
+## Estructura de palabras
+
+- Las palabras vienen de otras lenguas:
+    - Del inglés: mani (money), wan (one), tu (two).
+    - Del cantonés: ni (esto), sinpin (frente, pared, cara)
+    - Del esperanto: ijo ("io", thing), ilo ("ilo", tool)
+    - De lenguas romances: pan ("pan", bread, cereals), kule (color)
+    - Del finés: kala (fish), sina (you)
+    - ...
+						</textarea>
+					</section>
+
+					<section data-markdown>
+						<textarea data-template>
+## Estructura de palabras
+
+- Las sílabas son CV, con posible n al final.
+- ¿Inicio de palabra? Se puede eliminar la C inicial
+- Ejemplos:
+    - si-te-len,
+    - a-la-sa
+    - an-pa
+    - ke-pe-ken
+						</textarea>
+					</section>
+
+					<section data-markdown>
+						<textarea data-template>
+## Estructura de palabras
+
+- Los nombres propios se ajustan a la fonética de Toki Pona. Usan mayúsculas y van precedidos de lo que son.
+    - damaru -> jan **Ta**malu
+    - España -> ma **E**panja
+    - Minecraft -> musi **Man**ka
+						</textarea>
+					</section>
+
+					<section>
+							<h2>Tipos de palabras</h2>
+						<div class="cols" style="margin-top: 1.25rem;">
+							<div class="col">
+									<div class="col-title"><strong>Palabras de contenido</strong></div>
+								<ul>
+										<li><strong>moku</strong>: comer, beber, comida</li>
+										<li><strong>ike</strong>: malo, malvado</li>
+										<li><strong>toki</strong>: hablar, lengua, hola</li>
+										<li><strong>mi</strong>: yo, nosotros, mi, nuestro...</li>
+										<li><strong>jan</strong>: persona</li>
+										<li><strong>tawa</strong>: moverse, ir</li>
+									</ul>
+								</div>
+								<div class="col">
+									<div class="col-title"><strong>Partículas gramaticales</strong></div>
+									<ul>
+										<li><strong>li</strong>: introduce el predicado</li>
+										<li><strong>e</strong>: introduce el objeto directo</li>
+										<li><strong>en</strong>: separa sujetos</li>
+										<li><strong>anu</strong>: o</li>
+										<li><strong>la</strong>: marca el final del contexto</li>
+										<li><strong>o</strong>: llamar a alguien, órdenes o deseos</li>
+									</ul>
+								</div>
+							</div>
+						</section>
+
+					<section data-markdown>
+						<textarea data-template>
+## Posición de las palabras y significados
+
+- Todas las palabras de contenido pueden ser:
+    - Sustantivos, adjetivos, verbos, adverbios
+    - Algunas pueden ser preposiciones.
+    - Algunas pueden ser verbos antes de verbos
+    - Depende de dónde las coloques en la frase.
+
+- **No hay derivadas**:
+    - No hay plurales, género, tiempos ni ninguna otra derivación.
+						</textarea>
+					</section>
+
+					<section data-markdown>
+						<textarea data-template>
+## Posición de las palabras y significados
+
+- **Muchos significados** al mismo tiempo
+    - El significado se infiere:
+        - Usando el contexto
+        - Especificando con otras palabras.
+
+- **Bolsas semánticas**:
+    - Las palabras significan cualquier cosa que puedas imaginar relacionada con sus entradas del diccionario...
+    - ...siempre que otra palabra no lo capture mejor.
+						</textarea>
+					</section>
+
+					<section class="center">
+							<h2>Significados</h2>
+							<img class="img-full" src="figs/mi_suli.jpg" alt="Ejemplo de significado de mi suli">
+						</section>
+
+					<section data-markdown>
+						<textarea data-template>
+## Ejemplos
+
+- **pona**: bueno, positivo, útil; amable, pacífico; simple
+    - **Como sustantivo**: bondad; mejora; positividad
+    - **Como verbo**: mejorar; arreglar; hacer que algo sea bueno
+    - **Como adjetivo**: bueno; simple; amable...
+    - **Como adverbio**: bien
+    - **Otro ejemplo de significado**: guay
+						</textarea>
+					</section>
+
+					<section data-markdown>
+						<textarea data-template>
+## Ejemplos
+
+- **wile**: querer, deber, necesitar, requerir
+    - **Como sustantivo**: un deseo; una necesidad
+    - **Como verbo**: querer; necesitar; deber
+    - **Como adjetivo**: deseado; necesario
+    - **Como adverbio**: voluntariamente
+    - **Otro ejemplo de significado**: deseo
+						</textarea>
+					</section>
+
+					<section data-markdown>
+						<textarea data-template>
+## Ejemplos
+
+- **sama**: igual, similar; entre sí; hermano, par, compañero
+    - **Como sustantivo**: similitud; igualdad
+    - **Como verbo**: parecerse; coincidir; igualar
+    - **Como adjetivo**: igual; similar
+    - **Como adverbio**: de forma similar
+    - **Otro ejemplo de significado**: igualdad
+						</textarea>
+						<aside class="notes">(*Como preposición*: como)</aside>
+					</section>
+
+					<section data-markdown>
+						<textarea data-template>
+## Pequeño desvío sobre las palabras
+
+- Abramos el diccionario agrupado por temas
+						</textarea>
+					</section>
+
+					<section class="compact" data-markdown>
+						<textarea data-template>
+## Sintagmas nominales
+
+- **Varias palabras sin partículas**:
+    - La primera es un sustantivo
+    - Las siguientes modifican todo lo anterior
+
+- `tomo loje` = (casa roja) = casa roja.
+- `loje tomo` = (rojo casa) = el rojo de la casa.
+- `jan utala suli` = ((persona lucha) grande) = un gran guerrero.
+- `jan utala suli ike` = (((persona lucha) grande) malo) = un gran guerrero malvado.
+						</textarea>
+					</section>
+
+					<section class="compact" data-markdown>
+						<textarea data-template>
+### Sintagmas nominales
+
+- La partícula `pi` cambia los paréntesis:
+    - `jan utala suli` = ((persona lucha) grande) = un gran guerrero.
+    - `jan pi utala suli` = (persona (lucha grande)) = una persona de guerra.
+    - `jan pi utala suli ike` = (persona ((lucha grande) mala)) = una persona de una guerra mala.
+    - `jan ike pi utala suli` = ((persona mala) (lucha grande)) = una persona mala de guerra.
+						</textarea>
+					</section>
+
+					<section class="compact" data-markdown>
+						<textarea data-template>
+## Sintagmas nominales
+
+- **No uses `pi` con solo dos palabras**
+    - Bien: `ilo kasi` = (herramienta planta) = herramienta de plantas (para plantas, o de madera, etc.)
+    - Mal: `ilo pi kasi` = (herramienta pi planta)
+						</textarea>
+					</section>
+
+					<section class="center">
+							<h2>Sintagmas nominales</h2>
+							<img class="img-full" src="figs/poki_moku.png" alt="Sintagma nominal: poki moku">
+						</section>
+
+					<section class="center">
+							<h2>Sintagmas nominales</h2>
+						<div class="cols">
+							<div class="col center">
+									<img class="img-med" src="figs/ilo_kalama_suli.jpg" alt="Ejemplo: ilo kalama suli">
+							</div>
+							<div class="col center">
+									<img class="img-med" src="figs/ilo_pi_kalama_suli.png" alt="Ejemplo: ilo pi kalama suli">
+							</div>
+						</div>
+					</section>
+
+					<section class="center">
+							<h2>Sintagmas nominales</h2>
+							<img class="img-full" src="figs/pi_visual.png" alt="Explicación visual de pi">
+					</section>
+
+					<section class="center">
+							<h2>Sintagmas nominales</h2>
+							<img class="img-full" style="max-height: 70vh;" src="figs/telo_soweli_suli.png" alt="Ejemplo: telo soweli suli">
+						</section>
+
+					<section data-markdown>
+						<textarea data-template>
+## Ejercicios
+
+- Vayamos a la hoja de ejercicios.
+						</textarea>
+					</section>
+
+					<section data-markdown>
+						<textarea data-template>
+## Algunas otras partículas
+
+- en (y): separa los sujetos de la frase
+    - `mi en sina` = tú y yo
+    - `soweli loje en jan suli` = (animal rojo) y (persona grande) = el animal rojo y la persona grande
+
+- anu (o)
+						</textarea>
+					</section>
+
+					<section class="compact" data-markdown>
+						<textarea data-template>
+## Verbos
+
+- Tres tipos de predicados. Empiezan con `li` y requieren un sujeto
+    - Tipo 1. A li B = A es B
+
+        - `kasi li moku` = las plantas son comida
+    - Tipo 2. A li B = A hace la acción B (B es un verbo)
+        - `kasi li moku` = las plantas comen
+    - Se permiten calificadores: A li B C (C califica a B)
+        - `kasi li moku pona` = (planta li (comer bien)) = las plantas son buena comida (o las plantas comen bien)
+    - Tipo 3. Más adelante
+						</textarea>
+					</section>
+
+					<section class="compact" data-markdown>
+						<textarea data-template>
+## Verbos
+
+- **Excepción**: solo `mi` (yo) o solo `sina` (tú) omiten `li`:
+    - `mi sona` = (yo saber) = yo (lo) sé
+    - `mi sona pona` = (yo (saber bien)) = yo (lo) sé bien
+    - `sina toki mute` = (tú (hablar mucho)) = tú hablas mucho
+    - `mi mute li moku` = ((yo muchos) li comer) = estamos comiendo
+    - `sina en mi li pali` = ((tú y yo) li trabajar) = tú y yo estamos trabajando
+
+- **Excepción**: usando la partícula `o`.
+    - Como `li`, pero introduce una orden o un deseo. El sujeto puede omitirse.
+						</textarea>
+					</section>
+
+					<section data-markdown>
+						<textarea data-template>
+## Objetos directos
+
+- Añade `e + sintagma nominal` después de `li + algo` para indicar el objeto sobre el que se realiza la acción.
+    - `jan li moku e kili suwi` =
+        (persona li comer e (fruta dulce)) = una persona come una/la fruta dulce
+    - `mi lukin e tomo pi jan ni` = (yo (li) ver e (casa de (persona esta))) = veo la casa de esta persona
+
+- Ejemplos y ejercicios (vamos a la hoja)
+						</textarea>
+					</section>
+
+					<section data-markdown>
+						<textarea data-template>
+## Preposiciones
+
+- lon (en), tawa (hacia), kepeken (usando), sama (como), tan (porque, de, por).
+
+- Predicado tipo 3: A li Preposición B
+    - ona li lon tomo = (ellos li (en casa)) = ellos "en la casa"
+    - mi tawa nena ni = (yo (li) (hacia (montaña esta))) = yo "hacia esta montaña"
+    - sina tan ma mi a = (tú (li) (de (tierra mía !!))) = tú "¡de mi tierra!""
+						</textarea>
+					</section>
+				</section>
+
+				<section>
+					<section data-markdown>
+						<textarea data-template>
+## Recursos para aprender
+
+- Web con enlaces a muchas cosas de Toki Pona: [pona.la](https://pona.la/)
+- Un curso muy bueno: https://lipu-sona.pona.la/
+- Otro curso muy bueno: https://mun.la/sona/
+- Para memorizar el vocabulario de pu: https://ankiweb.net/shared/info/1548566798
+- Hay un curso antiguo en YouTube: https://www.youtube.com/watch?v=4L-dvvng4Zc&list=PLjOmpMyMxd8T9lZjF36c4mn4YgwZ4ToT6
+						</textarea>
+					</section>
+
+					<section data-markdown>
+						<textarea data-template>
+## Recursos para aprender
+
+- Comunidades en Discord, Reddit, Telegram, etc., y charlar/hablar con gente allí.
+- [Diccionario oficial de pu](https://jan-ne.github.io/tp/dictionary)
+- [Un diccionario moderno: nimi.li](https://nimi.li/)
+						</textarea>
+					</section>
+				</section>
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+				function enablePauseLikeFragments() {
+					const allSections = document.querySelectorAll( '.reveal .slides section' );
+
+					allSections.forEach( section => {
+						// Skip vertical stacks (they contain nested <section> slides)
+						if( section.querySelector( ':scope > section' ) ) return;
+						if( section.hasAttribute( 'data-no-fragments' ) ) return;
+
+						// Convertir en fragmentos solo los ítems de "nivel 3" (viñetas de primer nivel en la diapositiva).
+						// Las viñetas anidadas (nivel 4+) deben aparecer a la vez que su elemento padre.
+						const lists = section.querySelectorAll( 'ul, ol' );
+						lists.forEach( list => {
+							if( list.closest( 'aside' ) ) return;
+							if( list.closest( 'li' ) ) return;
+
+							const items = Array.from( list.children ).filter( el => el.tagName === 'LI' );
+							if( items.length < 2 ) return;
+
+							items.forEach( li => li.classList.add( 'fragment' ) );
+						} );
+					} );
+				}
+
+				function setupYouTubeEmbeds() {
+					document.querySelectorAll( 'iframe[data-yt-src]' ).forEach( iframe => {
+						const baseSrc = iframe.getAttribute( 'data-yt-src' );
+						if( !baseSrc ) return;
+
+						// YouTube embeds sometimes behave better with an explicit origin,
+						// but `file://` pages have an opaque origin ("null").
+						const origin = window.location.origin;
+						if( origin && origin !== 'null' ) {
+							const joiner = baseSrc.includes( '?' ) ? '&' : '?';
+							iframe.src = `${baseSrc}${joiner}origin=${encodeURIComponent( origin )}`;
+						}
+						else {
+							iframe.src = baseSrc;
+						}
+					} );
+				}
+
+					function bindLeftRightToAlwaysSkipFragments() {
+						Reveal.addKeyBinding(
+							{ keyCode: 37, key: '←', description: 'Navegar a la izquierda (sin fragmentos)' },
+							event => {
+								if( event.shiftKey ) {
+									Reveal.slide( 0 );
+								}
+							else {
+								Reveal.left( { skipFragments: true } );
+							}
+						}
+					);
+
+						Reveal.addKeyBinding(
+							{ keyCode: 39, key: '→', description: 'Navegar a la derecha (sin fragmentos)' },
+							event => {
+								if( event.shiftKey ) {
+									Reveal.slide( Reveal.getHorizontalSlides().length - 1 );
+								}
+							else {
+								Reveal.right( { skipFragments: true } );
+							}
+						}
+					);
+				}
+
+				function bindControlArrowsToAlwaysSkipFragments() {
+					const revealEl = Reveal.getRevealElement();
+					if( !revealEl ) return;
+
+					const intercept = ( selector, handler ) => {
+						revealEl.querySelectorAll( selector ).forEach( el => {
+							[ 'click', 'touchstart', 'touchend' ].forEach( eventName => {
+								el.addEventListener(
+									eventName,
+									event => {
+										event.preventDefault();
+										event.stopImmediatePropagation();
+										Reveal.onUserInput( event );
+										handler();
+									},
+									{ capture: true, passive: false }
+								);
+							} );
+						} );
+					};
+
+					intercept( '.controls .navigate-left', () => Reveal.left( { skipFragments: true } ) );
+					intercept( '.controls .navigate-right', () => Reveal.right( { skipFragments: true } ) );
+				}
+
+				setupYouTubeEmbeds();
+
+				Reveal.initialize( {
+					hash: true,
+					slideNumber: true,
+					plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+				} ).then( () => {
+					enablePauseLikeFragments();
+					Reveal.syncFragments();
+					bindLeftRightToAlwaysSkipFragments();
+					bindControlArrowsToAlwaysSkipFragments();
+				} );
+		</script>
+	</body>
+</html>

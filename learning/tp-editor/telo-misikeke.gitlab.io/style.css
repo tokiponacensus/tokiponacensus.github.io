@@ -1,0 +1,214 @@
+/*  ---------------------------- pali-sin.css ----------------------------
+    http://meyerweb.com/eric/tools/css/reset/ 
+    v2.0 | 20110126
+    License: none (public domain)
+*/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+/* ol, ul { */
+/* 	list-style: none; */
+/* } */
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/* lipu ni */
+body, html {
+    width: 100%;
+    height: 100%;
+}
+#poki {
+    //display: flex;
+    //flex-direction: column;
+    min-height: 100vh;
+}
+
+em {
+    font-style: italic;
+}
+
+strong {
+    font-weight: bold;
+}
+
+h1 {
+    font-size: xx-large;
+    padding: 15px;
+    margin-left: 50px;
+}
+
+h2 {
+    font-size: x-large;
+}
+
+#subtitle, p#options {
+    margin: 0 20px;
+}
+
+p#options {
+    margin-top: 10px;
+    line-height: 1.4;
+}
+
+p#options input {
+    margin: 0;
+}
+
+#logo {
+    height: 50px;
+    float: left;
+    margin: 5px;
+}
+
+h1 small {
+    font-size: x-large;
+    color: gray;
+}
+
+#subtitle small {
+    font-size: large;
+}
+#subtitle small a {
+    color: gray;
+}
+
+p {
+    margin: 10px 0;
+}
+
+#poki-pi-toki-sina {
+    //flex-grow: 1;
+    overflow: hidden;
+    // height: 80%;
+    padding: 10px;
+    border: 1px solid darkgray;
+    border-radius: 15px;
+    margin: 15px;
+}
+
+ul {
+    padding: 25px;
+}
+
+
+[data-tippy-root] {
+    max-width: min(350px, 90%) !important;
+}
+
+.tippy-box {
+    color: black;
+    font-size: 16px;
+    border: 3px solid black;
+    border-left-width: 10px;
+}
+
+.error-category {
+    color: gray !important;
+}
+
+:root {
+  --nitpick-h: 50;
+  --possible-error-h: 280;
+  --error-h: 0;
+  --uncommon-h: 200;
+
+  --nitpick: hsl(var(--nitpick-h), 100%, 70%);
+  --possible-error: hsl(var(--possible-error-h), 100%, 70%);
+  --error: hsl(var(--error-h), 100%, 70%);
+  --uncommon: hsl(var(--uncommon-h), 100%, 70%);
+
+  --nitpick-desat: hsl(var(--nitpick-h), 100%, 97%);
+  --possible-error-desat: hsl(var(--possible-error-h), 100%, 97%);
+  --error-desat: hsl(var(--error-h), 100%, 97%);
+  --uncommon-desat: hsl(var(--uncommon-h), 100%, 97%);
+
+  --nitpick-desaturated: hsl(
+      var(--foreground-h),
+      calc(var(--foreground-s) / 2%),
+      calc(var(--foreground-l) * 1%)
+  );
+}
+
+.more-infos {
+    display: inline-block;
+    margin-top: 10px;
+}
+
+.survey-button {
+    text-decoration: none;
+    border: 1px solid black;
+    color: black;
+    font-size: medium;
+    background-color: #FFFF99;
+    padding: 5px;
+    border-radius: 10px;
+    margin-left: 15px;
+    animation-name: pulse-bg-color;
+    animation-duration: 1.25s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate-reverse;
+    animation-timing-function: ease;
+}
+
+.survey-button.clicked {
+    animation: none;
+    background-color: transparent;
+    opacity: 0.6;
+}
+
+.survey-button b {
+    font-weight: bold;
+}
+
+@keyframes pulse-bg-color {
+    to {
+        background-color: #FFFF4D;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .ilo-lili-la-o-weka {
+        display: none;
+    }
+
+    .survey-button {
+        display: block;
+        text-align: center;
+        margin: 15px;
+    }
+}

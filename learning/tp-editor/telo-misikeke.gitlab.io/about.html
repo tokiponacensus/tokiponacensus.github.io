@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <title>telo misikeke | a toki pona grammar checker | about</title>
+        <link rel="icon" type="image/x-icon" href="favicon.png">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="style.css?{MD5_CSS}">
+        <style>
+            #toki {
+                padding: 30px;
+                font-size: large;
+            }
+            code {
+                font-family: monospace;
+            }
+            h2 {
+                margin-top: 35px;
+                margin-bottom: 20px;
+            }
+            ul {
+                padding: 15px 55px;
+            }
+            #errors-explained li {
+                line-height: 1.7;
+            }
+            .toki-pona {
+                border: 1px solid lightgray;
+                margin: 5px 25px;
+                padding: 15px;
+                font-style: italic;
+            }
+            p {
+                margin: 10px 35px;
+            }
+        </style>
+    </head>
+    <body id="poki">
+        <img id="logo" src="logo.svg" alt=""><h1>telo misikeke <small>pi toki pona - a toki pona grammar checker</small></h1>
+        <h2 id="subtitle">o alasa e pakala! <small><a href="index.html">[Back]</a></small></h2>
+        <div id="toki">
+            <p>This tool was developed by <a href="https://jan-nikola.gitlab.io/">jan Nikola</a>,
+                with help from jan Kijon (thanks for the tip of LDT!)</p>
+            <br>
+            <p>Powered by:</p>
+            <ul>
+                <li>A modified version of <a href="https://github.com/kueblc/LDT">LDT</a> for the highlighting</li>
+                <li><a href="https://linku.la/">lipu Linku</a>, for the word usage database</li>
+                <li><a href="https://atomiks.github.io/tippyjs/">Tippy</a> and <a href="https://popper.js.org/">Popper</a> for the tooltips</li>
+                <li><a href="https://game-icons.net/1x1/caro-asercion/round-potion.html">This <em>Round Potion</em> icon</a>, remixed for the <em>toki ponesque</em> logo</li>
+            </ul>
+            <h2>Objective</h2>
+            <p class="toki-pona">jan li kama sona e toki pona la, pakala sama li lon toki ona. ilo ni li alasa e pakala ni lon toki.</p>
+            <p>This tool is not a toki pona parser. Instead, it looks for patterns of common human
+                errors.</p>
+            <p>It was developed during the proofreading/retranslation
+                of <a href="http://jan-lawa-lili.gitlab.io/">jan lawa lili</a>,
+                once I noticed that a few recurring errors followed the
+                same patterns.</p>
+            <h2>Standard toki pona Disclaimer™</h2>
+            <p class="toki-pona">o sona e ni: nasin pona pi toki pona li mute.</p>
+            <p>This tool is not authoritative. Different people use different styles of toki pona. An underlined passage does not necessarily mean that it should be reworded. </p>
+            <p>I tried to split "error" types into different categories in order to minimize the confusion:</p>
+            <ul id="errors-explained">
+                <li>
+                    <span style="background-color: var(--error-desat); border-bottom: 2px solid var(--error);">Errors</span>:
+                    those should be fairly non-controversial ill-formed passages.
+                </li>
+                <li>
+                    <span style="background-color: var(--possible-error-desat); border-bottom: 2px solid var(--possible-error);">Possible errors</span>:
+                    those are patterns that fit common beginner mistakes, but that might be valid in specific contexts.<br>Think <code>mi tawa e tomo mi</code> (<em>I move my house</em>) instead of <code>mi tawa tomo mi</code> (<em>I go to my house</em>).
+                </li>
+                <li>
+                    <span style="background-color: var(--nitpick-desat); border-bottom: 2px solid var(--nitpick);">Nitpicks</span>:
+                    those are not errors <em>per se</em>, but could probably be rewritten in a more toki ponesque way.
+                </li>
+                <li>
+                    <span style="background-color: var(--uncommon-desat); border-bottom: 2px solid var(--uncommon);">Uncommon words</span>:
+                    words that are not widely known in the toki pona community. They are taken from the <a href="https://linku.la/about">Lipu Linku API</a>. Anything that is not marked as either <em>common</em> or <em>core</em> is flagged. When you use them, you should keep in mind that a lot of toki pona speakers don't know them.
+                </li>
+            </ul>
+            <h2>Limitations</h2>
+            <p class="toki-pona">pakala mute li lon nimi sama la, ilo ni li ken ala sona e ale.</p>
+            <p>The biggest limitation is that it cannot parse two
+                overlapping errors.</p>
+            <p>For instance: <code>jan li li moku mute en moku kin</code> will show the <code>li li</code> error, but not the erroneous <code>en</code> use.</p>
+            <p>If you correct the first error, <code>jan li moku mute en moku kin</code> will then show the problematic <code>en</code>.</p>
+            <h2>Anything else I should know?</h2>
+            <p class="toki-pona">o luka e nena CTRL e nena "." tawa ni: sina ken lukin e pakala kama :-)</p>
+            <p>Ctrl+. will bring your cursor to the next error. This is useful when correcting larger texts.</p>
+            <h2>Contribute</h2>
+            <p class="toki-pona">sina wile pona e ilo ni la, o toki tawa mi!</p>
+            <p>If you have ideas for other common errors I missed, if
+                you encounter any problem (e.g. wrongly flagged passages
+                or undetected errors), you can either:</p>
+            <ul>
+                <li>Ping me (<code>@jan Nikola</code>) on the <a href="https://discord.com/channels/301377942062366741/1068723426283503626">ma pona thread</a></li>
+                <li><a href="https://gitlab.com/telo-misikeke/telo-misikeke.gitlab.io/-/issues">Open an issue on the Gitlab project</a></li>
+                <li>Contact me, at 316k (at) legtux (dot org)</li>
+            </ul>
+            <p>The code is released under the MIT license.</p>
+            <br>
+            <p>Thanks to everyone from <em>ma pona pi toki pona</em> and from <em>lipu Wesi pi toki pona</em> who tested it and sent comments!</p>
+        </div>
+    </body>
+</html>

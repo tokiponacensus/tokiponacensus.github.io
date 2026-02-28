@@ -1,0 +1,2708 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Editor de Toki Pona</title>
+<style>
+  :root{
+    --gap:12px; --sep:#e5e7eb; --ink:#111827; --muted:#6b7280;
+    --gram-bg:#f3f4f6; --gram-fg:#374151;
+    --col-width:120px;          /* computed at load */
+    --glyph-size:80px;          /* ← small glyph size */
+    --en-height:22px;           /* altura fija de la fila de glosa */
+    --err-area:44px;            /* two-line error band area */
+
+    /* Colors from telo-misikeke */
+    --nitpick-h: 50;
+    --possible-error-h: 280;
+    --error-h: 0;
+    --uncommon-h: 200;
+
+    --nitpick: hsl(var(--nitpick-h), 100%, 70%);
+    --possible-error: hsl(var(--possible-error-h), 100%, 70%);
+    --error: hsl(var(--error-h), 100%, 70%);
+    --uncommon: hsl(var(--uncommon-h), 100%, 70%);
+
+    --nitpick-desat: hsl(var(--nitpick-h), 100%, 97%);
+    --possible-error-desat: hsl(var(--possible-error-h), 100%, 97%);
+    --error-desat: hsl(var(--error-h), 100%, 97%);
+    --uncommon-desat: hsl(var(--uncommon-h), 100%, 97%);
+  }
+  *{box-sizing:border-box}
+  body{
+    font-family:system-ui,sans-serif;
+    color:var(--ink);
+    margin:20px;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    -webkit-text-size-adjust: 100%;
+  }
+  h1{font-size:1.15rem;margin:0 0 8px}
+  .toggle{margin:0 0 10px;cursor:pointer;user-select:none}
+  .toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 10px;user-select:none}
+  button{
+    appearance:none;
+    border:1px solid #d1d5db;
+    background:linear-gradient(#ffffff, #f9fafb);
+    color:var(--ink);
+    padding:7px 10px;
+    border-radius:12px;
+    cursor:pointer;
+    font-weight:700;
+    letter-spacing:.1px;
+    box-shadow:0 1px 1px rgba(0,0,0,.04);
+  }
+  button:hover{background:linear-gradient(#ffffff, #f3f4f6); border-color:#cbd5e1}
+  button:active{transform:translateY(1px); box-shadow:none}
+  button:focus-visible{outline:3px solid rgba(59,130,246,.35); outline-offset:2px}
+  .panel{padding:11px;border:1px dashed var(--sep);border-radius:12px;min-height:160px}
+  .line{position:relative;padding:calc(12px + var(--err-area)) 0 12px;border-top:1px dashed var(--sep);display:flex;gap:var(--gap);align-items:flex-start;flex-wrap:nowrap}
+  .line:first-child{border-top:0}
+  .cell{width:var(--col-width);display:flex;flex-direction:column;align-items:center;justify-content:flex-start}
+  .en{height:var(--en-height);line-height:var(--en-height);font-weight:600;white-space:nowrap;text-align:center;margin-bottom:6px;cursor:pointer;width:100%}
+  .en.grammar{font-size:.8rem;background:var(--gram-bg);color:var(--gram-fg);padding:2px 6px;border-radius:6px;height:auto;line-height:unset}
+  /* Multiline gloss: show extra lines above, keeping glyph/tp aligned across cells. */
+  .en.multiline,
+  .en.grammar.multiline{
+    white-space:pre-line;
+    min-height:var(--en-height);
+    height:var(--en-height);
+    line-height:1.05;
+    overflow:visible;
+    position:relative;
+    top:-0.9em;
+  }
+  .errband{min-height:6px;width:100%;border-radius:6px;margin-bottom:6px;display:none;cursor:pointer}
+  .errband.show{display:block}
+  .errband.error{background:var(--error-desat);border-bottom:2px solid var(--error)}
+  .errband.possible-error{background:var(--possible-error-desat);border-bottom:2px solid var(--possible-error)}
+  .errband.nitpick{background:var(--nitpick-desat);border-bottom:2px solid var(--nitpick)}
+  .errband.uncommon{background:var(--uncommon-desat);border-bottom:2px solid var(--uncommon)}
+  /* Group overlay band */
+  .errgroup{
+    position:absolute; z-index:50;
+    padding:4px 8px; border-radius:8px; cursor:pointer;
+    max-width:100%; min-width:0;
+    font-size:.85rem; color:var(--gram-fg);
+    /* Two-line clamp with ellipsis */
+    display:-webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
+    overflow:hidden; text-overflow:ellipsis; white-space:normal; line-height:1.2;
+  }
+  .errgroup.error{background:var(--error-desat); border-bottom:2px solid var(--error)}
+  .errgroup.possible-error{background:var(--possible-error-desat); border-bottom:2px solid var(--possible-error)}
+  .errgroup.nitpick{background:var(--nitpick-desat); border-bottom:2px solid var(--nitpick)}
+  .errgroup.uncommon{background:var(--uncommon-desat); border-bottom:2px solid var(--uncommon)}
+  .sp{display:flex;align-items:center;justify-content:center;height:var(--glyph-size);width:100%}
+  .glyph{width:var(--glyph-size);height:var(--glyph-size);object-fit:contain;cursor:pointer}
+  .fallback{width:var(--glyph-size);height:var(--glyph-size);border:1px solid var(--sep);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:22px;color:#374151;cursor:pointer}
+  .tp{min-height:1.6rem;padding:3px 6px;text-align:center;font-size:1.33em;font-family:monospace;border:1px dashed transparent;border-radius:6px;cursor:text}
+  .tp[contenteditable="true"]:focus{outline:none;border-color:#cbd5e1;background:#fafafa}
+  .pop{position:absolute;z-index:100;background:#fff;border:1px solid #d1d5db;border-radius:10px;box-shadow:0 10px 25px rgba(0,0,0,.1);padding:10px;max-width:360px}
+  .pop h3{margin:0 0 6px;font-size:.95rem}
+  .pop ul{margin:6px 0 0;padding-left:18px}
+  .suggest{position:absolute;z-index:120;background:#fff;border:1px solid #d1d5db;border-radius:8px;box-shadow:0 8px 18px rgba(0,0,0,.12);padding:8px;display:none;flex-direction:column;gap:6px;min-width:160px}
+  .sug-item{display:flex;align-items:center;gap:8px;padding:6px;border-radius:6px;cursor:pointer}
+  .sug-item:hover{background:#f5f5f5}
+  .sug-item .glyph{width:32px;height:32px}
+  .sug-tp{font-weight:600}
+  #meas{position:absolute;left:-9999px;top:-9999px;visibility:hidden;white-space:nowrap;font-weight:600}
+  body.no-glyphs .sp{display:none}
+
+  /* ---- Mobile ergonomics (desktop behavior unchanged) ---- */
+  .tp,.en,.glyph,.fallback,.sug-item,button{touch-action:manipulation}
+  body.split-mode{height:100dvh; overflow:hidden; margin:0}
+  body.split-mode #app{height:100%; display:flex; flex-direction:column; padding:20px}
+  body.split-mode #main{flex:1; min-height:0; display:flex; flex-direction:column; gap:var(--gap)}
+  body.split-mode #editorPane{flex: 1 1 55%; min-height:0; overflow:auto}
+  body.split-mode #dictPane{flex: 1 1 45%; min-height:0; overflow:auto; display:block}
+  #dictPane{display:none}
+  .dict-pane{padding:0} /* avoid scrollable padding above sticky header */
+  .dict-head{
+    position:sticky;
+    top:0;
+    z-index:10;
+    background:#fff; /* prevent content showing through while scrolling */
+    padding:16px 10px 10px; /* extra top padding so content never peeks above */
+    border-bottom:1px dashed var(--sep);
+    border-top-left-radius:12px;
+    border-top-right-radius:12px;
+  }
+  .dict-head input{
+    width:100%; box-sizing:border-box;
+    padding:8px 10px; border:1px solid #d1d5db; border-radius:10px;
+    font-size:14px;
+  }
+  .dict-entry{padding:10px; border-bottom:1px dashed var(--sep); cursor:pointer}
+  .dict-entry.selected{background:#f8fafc}
+  .dict-entry.selected .dict-word{color:#0f172a}
+  .dict-word{font-weight:800; font-size:1.05rem; margin:0 0 6px}
+  .dict-entry ul{margin:0; padding-left:18px}
+  .dict-entry li{margin:4px 0}
+  @media (max-width: 640px){
+    :root{ --gap:8px; --glyph-size:56px; --err-area:52px; }
+    body{margin:12px}
+    body.split-mode #app{padding:12px}
+    .toolbar{
+      position:sticky; top:0; z-index:300;
+      background:rgba(255,255,255,.96);
+      backdrop-filter: blur(6px);
+      padding:8px 0;
+    }
+    .panel{padding:10px}
+    .line{gap:8px}
+    .en{
+      white-space:normal;
+      height:auto;
+      line-height:1.15;
+      font-size:.95rem;
+    }
+    .en.multiline,
+    .en.grammar.multiline{
+      white-space:pre-line;
+      min-height:var(--en-height);
+      height:var(--en-height);
+      line-height:1.05;
+      overflow:visible;
+      position:relative;
+      top:-0.9em;
+    }
+    .tp{
+      min-height:2.3rem;
+      padding:8px 10px;
+      border-color:var(--sep);
+    }
+    .tp[contenteditable="true"]:focus{background:#fff}
+    .pop{max-width: calc(100vw - 16px)}
+    .suggest{max-width: calc(100vw - 16px)}
+    .toolbar button{padding:10px 12px !important; font-size:16px !important}
+    #options label{display:inline-flex; align-items:center; gap:8px; margin:8px 0}
+    #options input[type="checkbox"]{width:18px; height:18px}
+  }
+</style>
+</head>
+<body class="no-glyphs">
+  <div id="app">
+    <h1>Editor de Toki Pona</h1>
+    <!-- Glyph click mode toggle removed: dictionary lookup is now hover-based. -->
+    <div class="toolbar">
+      <button id="erase" type="button">🗑️ Borrar todo</button>
+      <button id="toggleDict" type="button">📖 Mostrar diccionario</button>
+      <button id="toggleGlyphs" type="button">🗿 Mostrar jeroglíficos</button>
+      <button id="toggleAdvanced" type="button">⚙️ Mostrar opciones avanzadas</button>
+    </div>
+    <p id="options" style="margin:6px 0 12px; color:var(--muted); display:none">
+      <label><input id="ignore-nitpick" type="checkbox"> Ocultar nimiedades</label>
+      <span style="margin:0 8px"></span>
+      <label><input id="ignore-possible-error" type="checkbox"> Ocultar posibles errores</label>
+      <span style="margin:0 8px"></span>
+      <label><input id="ignore-uncommon" type="checkbox"> Ocultar palabras poco comunes</label>
+      <span style="margin:0 8px"></span>
+      <label><input id="useSandbox" type="checkbox"> Detectar sandbox de Linku</label>
+    </p>
+
+    <div id="main">
+      <div id="editorPane">
+        <section id="output" class="panel"></section>
+      </div>
+      <div id="dictPane" class="panel dict-pane">
+        <div class="dict-head">
+          <input id="dictFilter" type="text" placeholder="Filtrar diccionario…" autocomplete="off" spellcheck="false" autocorrect="off" autocapitalize="none"/>
+          <div id="dictCount" style="margin-top:6px; color:var(--muted); font-size:12px"></div>
+        </div>
+        <div id="dictContent"></div>
+      </div>
+    </div>
+
+    <div id="popup" class="pop" style="display:none"></div>
+    <div id="suggestion" class="suggest"></div>
+    <span id="meas"></span>
+    <div id="err-measure" class="errgroup" style="position:absolute; left:-99999px; top:-99999px; visibility:hidden"></div>
+  </div>
+
+<!-- Load telo-misikeke engine -->
+<script src="telo-misikeke.gitlab.io/Parser.js"></script>
+<script src="telo-misikeke.gitlab.io/rules_sp.js"></script>
+
+<script>
+const GLYPH_PREFIX = "sitelen/";
+let currentFocus = null; // {li, ti} when editing a token
+let lineMeta = [{ explicitStart: false }]; // per-line metadata: true if user-pressed Enter created this line
+let lastPointerType = 'mouse';
+document.addEventListener('pointerdown', (e)=>{ lastPointerType = e.pointerType || 'mouse'; }, true);
+// Some mobile browsers won't send PointerEvents for all interactions; keep a touch hint too.
+document.addEventListener('touchstart', ()=>{ lastPointerType = 'touch'; }, { capture:true, passive:true });
+const TOUCH_CAPABLE = (('ontouchstart' in window) || (navigator.maxTouchPoints > 0));
+function isTouchLikeEvent(e){
+  const pt = (e && e.pointerType) || lastPointerType || (TOUCH_CAPABLE ? 'touch' : 'mouse');
+  return pt && pt !== 'mouse';
+}
+let lastEditAt = 0; // used to avoid hover popups while actively editing
+let lastEditorFocus = { li: 0, ti: 0 }; // persists even when editor blurs (e.g. user typing in dictionary filter)
+
+/* ===== PU dictionary (POS stripped) ===== */
+const DICT = {
+  "a":["énfasis, emoción o confirmación"],
+  "akesi":["reptil, anfibio"],
+  "ala":["no, nada, cero"],
+  "alasa":["cazar, recolectar, buscar"],
+  "ale":["todo; abundante, incontable, copioso, cada, numeroso","abundancia, todo, vida, universo","100"],
+  "ali":["todo; abundante, incontable, copioso, cada, numeroso","abundancia, todo, vida, universo","100"],
+  "anpa":["abajo, hacia abajo, inclinado, humilde, bajo; dependiente"],
+  "ante":["diferente, alterado, cambiado, otro"],
+  "anu":["o; elegir"],
+  "awen":["esperar; duradero, mantenido, protegido, seguro; quedarse","Preverbo: seguir (haciendo algo)"],
+  "e":["Introduce el objeto directo"],
+  "en":["y (entre varios sujetos)"],
+  "esun":["negocio, transacción, comercio, mercado, tienda, feria, bazar"],
+  "ijo":["cosa, fenómeno, objeto, materia"],
+  "ike":["malo, negativo; no esencial, irrelevante"],
+  "ilo":["herramienta, implemento, máquina, dispositivo"],
+  "insa":["dentro, centro, contenido, entre; órgano interno, estómago"],
+  "jaki":["asqueroso, obsceno, enfermizo, tóxico, sucio, insalubre"],
+  "jan":["persona, ser humano, alguien"],
+  "jelo":["amarillo, amarillento"],
+  "jo":["tener, llevar, contener, sostener"],
+  "kala":["pez, animal marino, criatura del mar"],
+  "kalama":["sonido; producir un sonido, recitar, decir en voz alta"],
+  "kama":["llegar\nconvertirse, venir, futuro, convocado","Preverbo: convertirse, lograr, tener éxito en"],
+  "kasi":["planta, vegetación; hierba, hoja"],
+  "ken":["poder, ser capaz de, tener permiso, quizá. (Preverbo) ","posible"],
+  "kepeken":["usar\nusando, mediante"],
+  "kili":["fruta, verdura, hongo"],
+  "kiwen":["roca, metal, piedra, objeto duro"],
+  "ko":["semisólido, polvo, arcilla, forma pegajosa, masa, pasta"],
+  "kon":["aire, aliento; esencia, espíritu; realidad oculta, agente invisible"],
+  "kule":["color, colorido, pigmentado, pintado"],
+  "kulupu":["grupo, comunidad, empresa, nación, sociedad, tribu"],
+  "kute":["oír, escuchar; prestar atención a, obedecer","oreja"],
+  "la":["(entre la frase de contexto y la oración principal)"],
+  "lape":["dormir, descansar"],
+  "laso":["azul\nverde"],
+  "lawa":["cabeza, mente","controlar, dirigir, guiar, liderar, poseer, planear, regular, gobernar"],
+  "len":["tela, ropa, tejido, textil; cubrir, capa de privacidad"],
+  "lete":["frío, fresco; sin cocinar, crudo"],
+  "li":["Introduce el predicado\nSe omite cuando \"mi\" o solo \"sina\" es el sujeto\n Puede introducir un segundo predicado para el mismo sujeto"],
+  "lili":["pequeño, corto; pocos; un poco; joven"],
+  "linja":["línea, cosa larga y flexible; cuerda, pelo, soga, hilo, estambre"],
+  "lipu":["libro, objeto plano, documento, tarjeta, papel, registro, sitio web"],
+  "loje":["rojo, rojizo"],
+  "lon":["loc.\nverdadero, presente en, real, existente"],
+  "luka":["mano, brazo, órgano táctil","cinco"],
+  "lukin":["ver, mirar, examinar, observar, leer, ver","ojo","Preverbo: buscar, intentar"],
+  "lupa":["agujero\npuerta, orificio, ventana"],
+  "ma":["tierra\nexterior, mundo; país, territorio; suelo"],
+  "mama":["padre/madre, ancestro; creador/originador; cuidador, sustentador"],
+  "mani":["dinero, efectivo, ahorros, riqueza; animal doméstico grande"],
+  "meli":["mujer, hembra, persona femenina; esposa"],
+  "mi":["yo, me, nosotros, nos"],
+  "mije":["hombre, macho, persona masculina; marido"],
+  "moku":["comer\ncomida, bebida, consumir, tragar, ingerir"],
+  "moli":["muerto, moribundo; matar"],
+  "monsi":["espalda, detrás, trasero"],
+  "mu":["muuu (ruido o comunicación animal)"],
+  "mun":["luna, estrella, objeto del cielo nocturno"],
+  "musi":["diversión\nartístico, juego, entretenido, frívolo, juguetón, recreativo"],
+  "mute":["muchos, un montón, más, mucho, varios, muy","cantidad"],
+  "nanpa":["número","-ésimo (número ordinal)"],
+  "nasa":["raro, inusual, extraño, aleatorio; tonto, loco; borracho, intoxicado"],
+  "nasin":["camino, costumbre, doctrina, método, senda, carretera"],
+  "nena":["bulto, nariz, montaña, colina, botón, protuberancia"],
+  "ni":["este, ese"],
+  "nimi":["palabra, nombre"],
+  "noka":["pie, pierna, órgano de locomoción; base, parte inferior"],
+  "o":["¡eh! (vocativo o imperativo)"],
+  "olin":["amar, tener compasión por, respetar, mostrar afecto"],
+  "ona":["ellos\nello, ella, él"],
+  "open":["abrir\nempezar, comenzar; encender"],
+  "pakala":["romper, estropear, herir; dañado, perjudicado, hecho un lío"],
+  "pali":["hacer\ntrabajar, actuar; construir, preparar"],
+  "palisa":["palo, rama, vara; cosa larga y dura"],
+  "pan":["cereal, grano; cebada, maíz, avena, arroz, trigo; pan, pasta"],
+  "pana":["dar, enviar, emitir, proporcionar, poner, soltar"],
+  "pi":["de"],
+  "pilin":["sentir, sentimiento (una emoción, una experiencia directa)","corazón (físico o emocional)"],
+  "pimeja":["negro, oscuro, sin luz"],
+  "pini":["terminado\npasado, hace, completado, acabado"],
+  "pipi":["bicho, insecto, hormiga, araña"],
+  "poka":["cerca, al lado, próximo, vecindad; lado, cadera"],
+  "poki":["contenedor, bolsa, cuenco, caja, vaso, armario, cajón, recipiente"],
+  "pona":["bueno, positivo, útil; amable, pacífico; simple"],
+  "pu":["libro oficial de TP, o interactuar con él"],
+  "sama":["igual, similar; entre sí; hermano, par, compañero","como, similar a"],
+  "seli":["fuego; elemento de cocina, reacción química, fuente de calor"],
+  "selo":["piel, corteza, cáscara, concha, forma exterior, capa exterior; límite"],
+  "seme":["qué, cuál"],
+  "sewi":["arriba/divino, zona de arriba, parte más alta, algo elevado","impresionante, sagrado, sobrenatural"],
+  "sijelo":["cuerpo (de persona o animal), estado físico, torso"],
+  "sike":["redondo\nciclo, cosa circular; bola, círculo, esfera, rueda","de un año"],
+  "sin":["nuevo, fresco; adicional, otro, extra"],
+  "sina":["tú"],
+  "sinpin":["cara, lo de delante, frente, pared"],
+  "sitelen":["imagen\nescritura, dibujo, representación, símbolo, marca"],
+  "sona":["saber, tener habilidad en, ser sabio sobre, tener información sobre","Preverbo: saber cómo"],
+  "soweli":["animal, bestia, mamífero terrestre"],
+  "suli":["grande, pesado, largo, alto; importante; adulto"],
+  "suno":["sol; luz, brillo, resplandor, radiancia; fuente de luz"],
+  "supa":["superficie horiz., cosa para poner o apoyar algo"],
+  "suwi":["dulce, fragante; bonito, inocente, adorable"],
+  "tan":["porque\nde/por"],
+  "taso":["pero/solo, únicamente"],
+  "tawa":["moverse\nhacia, ir a, desde la perspectiva de"],
+  "telo":["agua, líquido, fluido, sustancia mojada; bebida"],
+  "tenpo":["tiempo, duración, momento, ocasión, período, situación"],
+  "toki":["hablar, comunicarse, decir, idioma, pensar"],
+  "tomo":["habitación\ncasa, espacio interior; edificio, hogar"],
+  "tu":["dos"],
+  "unpa":["sexo, tener relaciones sexuales o matrimoniales con"],
+  "uta":["boca, labios, cavidad oral, mandíbula"],
+  "utala":["luchar, batalla, desafío, competir contra, forcejear contra"],
+  "walo":["blanco, blanquecino; de color claro, pálido"],
+  "wan":["uno","único, unir"],
+  "waso":["pájaro, criatura voladora, animal alado"],
+  "wawa":["fuerte, poderoso; confiado, seguro; enérgico, intenso"],
+  "weka":["lejos, ausente, ignorado"],
+  "wile":["querer, deber, necesitar, requerir, debería, deseo. (Preverbo) "]
+};
+
+
+/* Grammar + punctuation labels */
+const EN_MAP = {
+  ".": { gloss: ".", punctuation: true },
+  ",": { gloss: ",", punctuation: true },
+  ":": { gloss: ":", punctuation: true },
+  "a":  { gloss: "énf.",             grammar: true },
+  "e":  { gloss: "e (obj. dir.)",    grammar: true },
+  "li": { gloss: "li (predicado)",   grammar: true },
+  "la": { gloss: "Fin ctxt.",        grammar: true },
+  "o":  { gloss: "orden/deseo",      grammar: true },
+  "pi": { gloss: "de",               grammar: true },
+  "seme": { gloss: "qué",            grammar: true }
+};
+
+const ALLOWED = new Set(Object.keys(DICT));
+const PUNCT = new Set([".",",",":"]);
+
+/* ---------- Suggestion source: separate dictionary ---------- */
+/* Construye un mapa Español→array<TP> a partir de SUG_TP2EN. */
+  /* ---------- Suggestion source (CASE-SENSITIVE) ----------
+     You edit here: each TP word maps to a space-separated string of
+     disparadores en español. Se comparan *exactamente* como se escriben
+     (sensible a mayúsculas). Ej.: "Yo" → mi, pero "yo" también si está en la lista. */
+const SUG_TP2EN = {
+  a: "enfasis énfasis énfatico énfático confirmacion confirmación confirmar ! ¡ guau",
+  akesi: "reptil anfibio reptiles anfibios lagarto serpiente cocodrilo tortuga dragon dragón",
+  ala: "no nada cero ninguno ninguna ningun ningún",
+  alasa: "cazar caza buscar busqueda búsqueda recolectar perseguir explorar intentar",
+  ale: "todo todos toda todas cada totalidad completo entero universo cien 100 infinito incontable",
+  ali: "todo todos toda todas cada totalidad completo entero universo cien 100 infinito incontable",
+  anpa: "abajo bajar caida caída caer bajo humilde dependiente fondo inferior",
+  ante: "diferente diferencia cambiar cambio alterado otro alternativa alternativo modificar transformacion transformación",
+  anu: "o u elegir",
+  awen: "quedarse permanecer esperar durar continuar seguro mantener proteger",
+  e: "objeto directo objdir od",
+  en: "y e además ademas junto",
+  esun: "comercio mercado tienda negocio trueque comprar vender",
+  ijo: "cosa objeto materia fenomeno fenómeno algo",
+  ike: "malo mal negativo incorrecto dañino danino problema complejo",
+  ilo: "herramienta maquina máquina dispositivo aparato instrumento",
+  insa: "dentro interior centro estomago estómago interno",
+  jaki: "sucio asqueroso repugnante enfermo enfermedad toxico tóxico basura caca mierda",
+  jan: "persona humano gente alguien individuo amigo",
+  jelo: "amarillo dorado",
+  jo: "tener sostener contener llevar poseer propiedad",
+  kala: "pez pescado marisco pulpo tiburon tiburón delfin delfín cangrejo",
+  kalama: "sonido ruido voz decir recitar gritar chillar",
+  kama: "venir llegar convertirse futuro llegada",
+  kasi: "planta vegetacion vegetación hoja hierba arbol árbol madera",
+  ken: "poder puede capaz posible permitido quiza quizá quizas quizás talvez tal vez",
+  kepeken: "usar uso usando utilizar mediante",
+  kili: "fruta verdura vegetal hongo",
+  kiwen: "roca piedra metal duro",
+  ko: "polvo arcilla masa pasta barro crema",
+  kon: "aire aliento espiritu espíritu esencia gas fantasma",
+  kule: "color colorido coloreado pigmento pintar pintado",
+  kulupu: "grupo comunidad empresa sociedad tribu organizacion organización equipo",
+  kute: "oir oír escuchar obedecer oreja",
+  la: "contexto marco",
+  lape: "dormir sueño sueno descansar descanso",
+  laso: "azul verde turquesa",
+  lawa: "cabeza mente dirigir guiar lider líder controlar planear gobernar",
+  len: "ropa tela tejido cubrir manta",
+  lete: "frio frío fresco crudo sincocinar hielo nieve",
+  li: "predicado verbo marca",
+  lili: "pequeño pequeno poco corto joven",
+  linja: "linea línea hilo cuerda soga pelo cable",
+  lipu: "papel libro documento web tarjeta registro pagina página",
+  loje: "rojo rojizo carmesi carmesí",
+  lon: "estar existir ubicado real verdadero presente",
+  luka: "mano brazo cinco 5",
+  lukin: "ver mirar observar leer ojo buscar intentar",
+  lupa: "agujero puerta ventana orificio",
+  ma: "tierra pais país mundo suelo territorio campo exterior",
+  mama: "padre madre progenitor ancestro creador cuidador",
+  mani: "dinero efectivo riqueza ganado vaca burro caballo",
+  meli: "mujer hembra esposa femenina chica",
+  mi: "yo Yo me nosotros nos",
+  mije: "hombre varon varón macho marido masculino",
+  moku: "comer beber comida bebida consumir ingerir desayuno almuerzo cena merienda",
+  moli: "muerto morir muerte matar",
+  monsi: "espalda detras detrás trasero",
+  mu: "muuu oink beee croac miau zumbido guau",
+  mun: "luna estrella",
+  musi: "jugar juego diversion diversión arte entretener entretenido",
+  mute: "mucho muchos varios cantidad muy",
+  nanpa: "numero número ordinal contar",
+  nasa: "raro extraño extrano loco borracho aleatorio",
+  nasin: "camino ruta metodo método manera costumbre doctrina",
+  nena: "nariz bulto montaña montana colina boton botón protuberancia",
+  ni: "este esta esto ese esa eso estos estas esos esas aquello",
+  nimi: "nombre palabra",
+  noka: "pie pierna base",
+  o: "imperativo orden deseo vocativo",
+  olin: "amor amar querer cariño carino respetar compasion compasión afecto",
+  ona: "él ella ello ellos ellas",
+  open: "abrir empezar comenzar iniciar encender",
+  pakala: "romper roto dañar danar daño dano error accidente herir",
+  pali: "hacer trabajo trabajar construir preparar",
+  palisa: "palo vara rama poste",
+  pan: "grano cereal arroz trigo pan pasta avena maiz maíz",
+  pana: "dar enviar ofrecer poner soltar emitir",
+  pi: "de del posesion posesión",
+  pilin: "sentir sentimiento emocion emoción corazon corazón",
+  pimeja: "negro oscuro noche",
+  pini: "terminar fin acabado completar pasado",
+  pipi: "bicho insecto hormiga araña arana",
+  poka: "lado cerca junto proximo próximo vecino cadera",
+  poki: "caja recipiente bolsa cuenco vaso contenedor cajon cajón",
+  pona: "bueno bien positivo util útil amable pacifico pacífico simple reparar",
+  pu: "libro oficial librooficial",
+  sama: "mismo similar igual como parecido entre",
+  seli: "fuego calor llama caliente cocinar",
+  selo: "piel cascara cáscara capa borde limite límite",
+  seme: "que qué cual cuales",
+  sewi: "arriba encima alto cielo divino sagrado dios",
+  sijelo: "cuerpo torso fisico físico",
+  sike: "circulo círculo redondo rueda pelota ciclo año ano",
+  sin: "nuevo fresca fresco adicional otra otro extra",
+  sina: "tu tú usted vosotros",
+  sinpin: "cara frente pared",
+  sitelen: "escribir dibujo dibujar imagen simbolo símbolo signo texto",
+  sona: "saber conocer conocimiento entender",
+  soweli: "animal bestia mamifero mamífero mascota",
+  suli: "grande largo alto pesado importante adulto",
+  suno: "sol luz brillante dia día",
+  supa: "superficie mesa",
+  suwi: "dulce bonito lindo adorable fragante",
+  tan: "porque causa desde origen",
+  taso: "pero solo solamente",
+  tawa: "ir mover viajar hacia",
+  telo: "agua liquido líquido bebida lluvia mar rio río",
+  tenpo: "tiempo momento periodo período ocasion ocasión epoca época",
+  toki: "hablar decir conversar idioma lengua hola",
+  tomo: "casa hogar edificio habitacion habitación cuarto",
+  tu: "dos pareja doble",
+  unpa: "sexo sexual",
+  uta: "boca labios mandibula mandíbula",
+  utala: "luchar pelea pelear batalla guerra competir desafio desafío",
+  walo: "blanco claro palido pálido",
+  wan: "uno unico único unir unidad",
+  waso: "pajaro pájaro ave volar ala",
+  wawa: "fuerte fuerza poder energia energía intenso",
+  weka: "lejos ausente quitar eliminar borrar",
+  wile: "querer necesitar deber deseo obligacion obligación"
+};
+
+/* Construye un índice (sensible a mayúsculas) Español → [TP…] desde SUG_TP2EN */
+const EN_INDEX = (() => {
+  const m = new Map();
+  for (const [tp, triggers] of Object.entries(SUG_TP2EN)) {
+    for (const w of triggers.split(/\s+/).filter(Boolean)) {
+      if (!m.has(w)) m.set(w, new Set());
+      m.get(w).add(tp);
+    }
+  }
+  // convert to plain object of arrays for easy access if you prefer
+  const out = {};
+  for (const [k, set] of m.entries()) out[k] = [...set];
+  return out;
+})();
+
+  /* ---------- Measurements for fixed column width ---------- */
+function setFixedWidth(){
+  const meas = document.getElementById("meas");
+  let max = 0;
+  const consider = (str, small=false) => {
+    const words = String(str).split(/[^A-Za-z]+/).filter(Boolean);
+    meas.style.fontWeight="600";
+    meas.style.fontSize = small ? ".8rem" : "";
+    for (const w of (words.length?words:[str])){
+      meas.textContent = w;
+      max = Math.max(max, Math.ceil(meas.getBoundingClientRect().width));
+    }
+  };
+  for (const [tok, entry] of Object.entries(EN_MAP)) consider(entry.gloss, !!entry.grammar);
+  for (const [tok, senses] of Object.entries(DICT)){
+    if (!senses[0]) continue;
+    const first = (senses[0].split(/;|,/)[0]||senses[0]).trim();
+    consider(first);
+  }
+  const base = max + 16;
+  let col = base;
+  const avail = (document.getElementById('output')?.clientWidth) || window.innerWidth || base;
+  if (avail){
+    const gap = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--gap')) || 12;
+    const glyph = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--glyph-size')) || 80;
+    const usable = Math.max(0, avail - 8);
+
+    // On narrow viewports (mobile or split windows), shrink columns to avoid wasted side space.
+    if (usable && avail <= 1100){
+      const cols = (avail <= 640)
+        ? 4
+        : clamp(Math.floor((usable + gap) / (glyph + gap)), 2, 10);
+      const byCols = Math.floor((usable - (cols - 1) * gap) / cols);
+      col = Math.min(base, Math.max(glyph, byCols));
+    }
+  }
+  document.documentElement.style.setProperty("--col-width", col + "px");
+}
+setFixedWidth();
+
+/* ---------- Model ---------- */
+let model = [[""]]; // start with one blank token
+
+/* ---------- Undo (Ctrl/Cmd+Z) ---------- */
+const UNDO_MAX = 30;
+let undoStack = []; // stack of snapshots (pre-change)
+let redoStack = []; // stack of snapshots (to restore on redo)
+let undoGroupDepth = 0;
+let undoRestoring = false;
+let typingUndoKey = null;     // "li:ti" for the currently focused cell
+let typingUndoPending = false; // push snapshot on first edit within that focus session
+let inheritUndoForNextFocusKey = null; // when a new cell is created, typing in it is part of that same undo step
+
+function cloneModel(m){ return (m||[]).map(line => Array.isArray(line) ? line.slice() : []); }
+function cloneLineMeta(meta){ return (meta||[]).map(x => ({ explicitStart: !!(x && x.explicitStart) })); }
+function snapshotUndoState(){
+  return {
+    model: cloneModel(model),
+    lineMeta: cloneLineMeta(lineMeta),
+    focus: currentFocus ? { li: currentFocus.li, ti: currentFocus.ti } : null,
+  };
+}
+function pushSnapshot(stack, snap){
+  stack.push(snap);
+  if (stack.length > UNDO_MAX) stack.shift();
+}
+function pushUndoState(){
+  if (undoRestoring) return;
+  redoStack = []; // standard editor behavior: new edits clear redo history
+  pushSnapshot(undoStack, snapshotUndoState());
+}
+function maybePushUndoState(){
+  if (undoRestoring) return;
+  if (undoGroupDepth > 0) return;
+  pushUndoState();
+}
+function beginUndoGroup(){
+  if (undoRestoring) return;
+  if (undoGroupDepth === 0) pushUndoState();
+  undoGroupDepth++;
+}
+function endUndoGroup(){
+  if (undoGroupDepth > 0) undoGroupDepth--;
+}
+function beginTypingUndoSession(li, ti){
+  typingUndoKey = li + ':' + ti;
+  typingUndoPending = true;
+}
+function endTypingUndoSession(){
+  typingUndoKey = null;
+  typingUndoPending = false;
+}
+function inheritUndoForNextFocus(li, ti){
+  inheritUndoForNextFocusKey = li + ':' + ti;
+}
+function maybePushUndoStateForTyping(li, ti, newRaw){
+  if (undoRestoring) return;
+  if (undoGroupDepth > 0) return;
+  if (!typingUndoPending) return;
+  if (typingUndoKey !== (li + ':' + ti)) return;
+  const prev = (model[li]?.[ti] ?? "");
+  if (String(newRaw) === String(prev)) return;
+  pushUndoState();
+  typingUndoPending = false;
+}
+function undo(){
+  if (undoRestoring) return;
+  const st = undoStack.pop();
+  if (!st) return;
+  endTypingUndoSession();
+  pushSnapshot(redoStack, snapshotUndoState());
+  undoRestoring = true;
+  model = cloneModel(st.model);
+  lineMeta = cloneLineMeta(st.lineMeta);
+  render();
+  let li = st.focus?.li ?? 0;
+  let ti = st.focus?.ti ?? 0;
+  if (li < 0) li = 0;
+  if (li >= model.length) li = Math.max(0, model.length - 1);
+  const rowLen = (model[li]?.length || 1);
+  if (ti < 0) ti = 0;
+  if (ti >= rowLen) ti = Math.max(0, rowLen - 1);
+  undoRestoring = false;
+  setTimeout(()=>{
+    focusCell(li, ti, true);
+  }, 0);
+}
+
+function redo(){
+  if (undoRestoring) return;
+  const st = redoStack.pop();
+  if (!st) return;
+  endTypingUndoSession();
+  pushSnapshot(undoStack, snapshotUndoState());
+  undoRestoring = true;
+  model = cloneModel(st.model);
+  lineMeta = cloneLineMeta(st.lineMeta);
+  render();
+  let li = st.focus?.li ?? 0;
+  let ti = st.focus?.ti ?? 0;
+  if (li < 0) li = 0;
+  if (li >= model.length) li = Math.max(0, model.length - 1);
+  const rowLen = (model[li]?.length || 1);
+  if (ti < 0) ti = 0;
+  if (ti >= rowLen) ti = Math.max(0, rowLen - 1);
+  undoRestoring = false;
+  setTimeout(()=>{
+    focusCell(li, ti, true);
+  }, 0);
+}
+
+/* ---------- Utils ---------- */
+const $ = s => document.querySelector(s);
+function clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }
+function escapeHTML(s){
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+function formatSenseHTML(s){
+  // Support both literal "\\n" and real newlines in DICT entries.
+  const normalized = String(s).replace(/\\n/g, '\n');
+  return escapeHTML(normalized).replace(/\n/g, '<br>');
+}
+function positionFloating(el, anchorRect, opts){
+  const o = opts || {};
+  const margin = (o.margin ?? 8);
+  const preferBelow = !!o.preferBelow;
+  const preferRight = (o.preferRight ?? !preferBelow);
+  const maxW = (o.maxWidth ?? 360);
+
+  // Ensure measurable box
+  el.style.maxWidth = Math.min(maxW, Math.max(140, window.innerWidth - margin*2)) + 'px';
+  el.style.visibility = 'hidden';
+  el.style.display = (o.display || el.style.display || 'block');
+
+  const rEl = el.getBoundingClientRect();
+  const vw = window.innerWidth, vh = window.innerHeight;
+  const narrow = vw <= 640;
+
+  let left = anchorRect.left;
+  let top = anchorRect.bottom + margin;
+
+  if (preferRight && !narrow){
+    left = anchorRect.right + margin;
+    top = anchorRect.top;
+  }
+  if (preferBelow || narrow){
+    left = anchorRect.left;
+    top = anchorRect.bottom + margin;
+  }
+
+  // Flip horizontally if needed
+  if (left + rEl.width > vw - margin){
+    left = (preferRight && !preferBelow) ? (anchorRect.left - margin - rEl.width) : (vw - margin - rEl.width);
+  }
+  // Flip vertically if needed
+  if (top + rEl.height > vh - margin){
+    top = anchorRect.top - margin - rEl.height;
+  }
+
+  left = clamp(left, margin, Math.max(margin, vw - margin - rEl.width));
+  top  = clamp(top, margin, Math.max(margin, vh - margin - rEl.height));
+
+  el.style.left = (left + window.scrollX) + 'px';
+  el.style.top  = (top + window.scrollY) + 'px';
+  el.style.visibility = 'visible';
+}
+function getColW(){ return parseInt(getComputedStyle(document.documentElement).getPropertyValue('--col-width'))||120; }
+function outputWidth(){ return $("#output").clientWidth || window.innerWidth; }
+function wouldOverflowCount(count){
+  if (count<=0) return false;
+  const gap = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--gap'))||12;
+  const w = count*getColW() + (count-1)*gap;
+  return w + 8 > outputWidth();
+}
+
+/* ---------- Local storage (persist editor content) ---------- */
+const STORAGE_KEY = 'tp_editor_state_es_v1';
+const DEFAULT_FIRST_VISIT_STATE = {
+  v: 1,
+  model: [
+    ["tomo","loje"],
+    ["loje","tomo"],
+    ["jan","utala","suli","ike"],
+    ["jan","utala","suli"],
+    ["jan","pi","utala","suli"],
+    ["jan","pi","utala","suli","ike"],
+    ["jan","ike","pi","utala","suli"],
+    ["poki","moku"],
+    ["moku","poki"],
+    ["ilo","kalama","suli"],
+    ["ilo","pi","kalama","suli"],
+    ["ilo","pi","sitelen","tawa"],
+    ["ilo","sitelen","tawa"],
+    ["telo","soweli","suli"],
+    ["telo","pi","soweli","suli"]
+  ],
+  lineMeta: [
+    {"explicitStart":false},
+    {"explicitStart":true},
+    {"explicitStart":true},
+    {"explicitStart":true},
+    {"explicitStart":true},
+    {"explicitStart":true},
+    {"explicitStart":true},
+    {"explicitStart":true},
+    {"explicitStart":true},
+    {"explicitStart":true},
+    {"explicitStart":true},
+    {"explicitStart":true},
+    {"explicitStart":true},
+    {"explicitStart":true},
+    {"explicitStart":true}
+  ],
+  history: { undoStack: [], redoStack: [] },
+  ui: {
+    noGlyphs: true,
+    optionsVisible: false,
+    dictVisible: false,
+    checks: {
+      ignoreNitpick: false,
+      ignorePossible: false,
+      ignoreUncommon: false,
+      useSandbox: false,
+    }
+  }
+};
+let saveTimer = null;
+let suppressSave = false;
+
+function ensureFirstVisitSeed(){
+  try{
+    const existing = localStorage.getItem(STORAGE_KEY);
+    if (existing != null) return;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_FIRST_VISIT_STATE));
+  } catch(_) {}
+}
+
+function syncAdvancedToggleLabel(){
+  const opts = document.getElementById('options');
+  const isHidden = (opts.style.display === 'none' || getComputedStyle(opts).display === 'none');
+  const btn = document.getElementById('toggleAdvanced');
+  if (btn) btn.textContent = isHidden ? '⚙️ Mostrar opciones avanzadas' : '⚙️ Ocultar opciones avanzadas';
+}
+function syncGlyphToggleLabel(){
+  const btn = document.getElementById('toggleGlyphs');
+  if (!btn) return;
+  const isHidden = document.body.classList.contains('no-glyphs');
+  btn.textContent = isHidden ? '🗿 Mostrar jeroglíficos' : '🗿 Ocultar jeroglíficos';
+}
+function syncDictToggleLabel(){
+  const btn = document.getElementById('toggleDict');
+  if (!btn) return;
+  const isShown = document.body.classList.contains('split-mode');
+  btn.textContent = isShown ? '📖 Ocultar diccionario' : '📖 Mostrar diccionario';
+}
+
+let dictBuilt = false;
+let dictEntries = []; // [{el, hay, word}]
+let dictVisibleIdx = []; // indexes into dictEntries
+let dictSel = -1; // -1 = none selected (only filter input)
+
+function setDictSelection(next){
+  const prev = dictSel;
+  if (prev >= 0){
+    const pi = dictVisibleIdx[prev];
+    const p = (pi !== undefined) ? dictEntries[pi] : null;
+    if (p && p.el) p.el.classList.remove('selected');
+  }
+  dictSel = next;
+  if (dictSel >= 0){
+    const vi = dictVisibleIdx[dictSel];
+    const v = (vi !== undefined) ? dictEntries[vi] : null;
+    if (v && v.el){
+      v.el.classList.add('selected');
+      try{ v.el.scrollIntoView({ block:'nearest', inline:'nearest' }); } catch(_) {}
+    }
+  }
+}
+
+function selectedDictWord(){
+  if (dictSel < 0) return null;
+  const vi = dictVisibleIdx[dictSel];
+  const v = (vi !== undefined) ? dictEntries[vi] : null;
+  return v ? v.word : null;
+}
+
+function insertWordFromDictionary(word){
+  const w = String(word||'').trim();
+  if (!w) return false;
+  maybePushUndoState();
+
+  let base = currentFocus || lastEditorFocus;
+  if (!base || base.li == null || base.ti == null){
+    base = { li: Math.max(0, model.length-1), ti: Math.max(0, (model[model.length-1]?.length||1)-1) };
+  }
+  let baseLi = +base.li, baseTi = +base.ti;
+  if (!Number.isFinite(baseLi) || !Number.isFinite(baseTi)) { baseLi = 0; baseTi = 0; }
+  baseLi = clamp(baseLi, 0, Math.max(0, model.length-1));
+  baseTi = clamp(baseTi, 0, Math.max(0, (model[baseLi]?.length||1)-1));
+
+  const baseRaw = String(model[baseLi]?.[baseTi] ?? '');
+  const includeBase = (baseRaw.trim() === '');
+
+  // Find next empty slot after (or at) base.
+  let slot = null;
+  for (let li=baseLi; li<model.length; li++){
+    const startTi = (li===baseLi) ? baseTi : 0;
+    for (let ti=startTi; ti<(model[li]?.length||0); ti++){
+      if (!includeBase && li===baseLi && ti===baseTi) continue;
+      const raw = String(model[li]?.[ti] ?? '');
+      if (raw.trim() === ''){ slot = {li, ti}; break; }
+    }
+    if (slot) break;
+  }
+
+  if (!slot){
+    // No empties ahead: insert a new token right after the base (respect wrap).
+    const marker = '__DICT__' + Math.random().toString(16).slice(2) + '_' + Date.now();
+    model[baseLi].splice(baseTi + 1, 0, marker);
+    ensureWrap(baseLi);
+    // Find marker after wrapping
+    for (let l=0; l<model.length; l++){
+      for (let t=0; t<(model[l]?.length||0); t++){
+        if (model[l][t] === marker){
+          model[l][t] = w;
+          slot = { li: l, ti: t };
+          break;
+        }
+      }
+      if (slot) break;
+    }
+    // Fallback: if marker somehow vanished, append to end.
+    if (!slot){
+      const li = Math.max(0, model.length-1);
+      model[li].push(w);
+      slot = { li, ti: model[li].length-1 };
+    }
+  } else {
+    model[slot.li][slot.ti] = w;
+  }
+
+  lastEditorFocus = { li: slot.li, ti: slot.ti };
+  render();
+  return true;
+}
+
+function buildDictionaryOnce(){
+  if (dictBuilt) return;
+  const host = document.getElementById('dictContent');
+  if (!host) return;
+  host.innerHTML = '';
+  dictEntries = [];
+  dictVisibleIdx = [];
+  dictSel = -1;
+  const words = Object.keys(DICT).sort((a,b)=>a.localeCompare(b));
+  for (const w of words){
+    const senses = DICT[w] || [];
+    const entry = document.createElement('div');
+    entry.className = 'dict-entry';
+    const h = document.createElement('div');
+    h.className = 'dict-word';
+    h.textContent = w;
+    const ul = document.createElement('ul');
+    for (const s of senses){
+      const li = document.createElement('li');
+      // Preserve newlines from DICT (both literal "\\n" and real ones)
+      li.innerHTML = formatSenseHTML(s);
+      ul.appendChild(li);
+    }
+    entry.appendChild(h);
+    entry.appendChild(ul);
+    host.appendChild(entry);
+    const hay = (w + ' ' + senses.join(' ')).toLowerCase();
+    const idx = dictEntries.length;
+    dictEntries.push({ el: entry, hay, word: w });
+    const onPick = (e)=>{
+      e.preventDefault();
+      e.stopPropagation();
+      // Sync selection for visual feedback (if this entry is currently visible).
+      const pos = dictVisibleIdx.indexOf(idx);
+      setDictSelection(pos >= 0 ? pos : -1);
+      insertWordFromDictionary(w);
+    };
+    let lastTouchLikeAt = 0;
+    const HAS_POINTER = !!window.PointerEvent;
+
+    // Mouse: use click for standard behavior.
+    entry.addEventListener('click', (e)=>{
+      // Suppress synthetic click after touch/pen interactions (prevents double-insert and scroll-as-tap).
+      if (Date.now() - lastTouchLikeAt < 800) return;
+      onPick(e);
+    });
+
+    // Touch/pen: pick on a "tap" (not a scroll/drag).
+    if (HAS_POINTER){
+      let down = null; // {id, x, y, moved}
+      entry.addEventListener('pointerdown', (e)=>{
+        if (e.pointerType === 'mouse') return;
+        down = { id: e.pointerId, x: e.clientX, y: e.clientY, moved: false };
+      }, { passive:true });
+      entry.addEventListener('pointermove', (e)=>{
+        if (!down || e.pointerId !== down.id) return;
+        const dx = e.clientX - down.x, dy = e.clientY - down.y;
+        if ((dx*dx + dy*dy) > 100) down.moved = true; // >10px
+      }, { passive:true });
+      entry.addEventListener('pointerup', (e)=>{
+        if (!down || e.pointerId !== down.id) return;
+        lastTouchLikeAt = Date.now();
+        const moved = down.moved;
+        down = null;
+        if (moved) return;
+        onPick(e);
+      }, { passive:false });
+      entry.addEventListener('pointercancel', ()=>{
+        lastTouchLikeAt = Date.now();
+        down = null;
+      }, { passive:true });
+    } else {
+      let start = null; // {x, y, moved}
+      entry.addEventListener('touchstart', (e)=>{
+        const t = e.touches && e.touches[0];
+        if (!t) return;
+        start = { x: t.clientX, y: t.clientY, moved: false };
+      }, { passive:true });
+      entry.addEventListener('touchmove', (e)=>{
+        if (!start) return;
+        const t = e.touches && e.touches[0];
+        if (!t) return;
+        const dx = t.clientX - start.x, dy = t.clientY - start.y;
+        if ((dx*dx + dy*dy) > 100) start.moved = true; // >10px
+      }, { passive:true });
+      entry.addEventListener('touchend', (e)=>{
+        if (!start) return;
+        lastTouchLikeAt = Date.now();
+        const moved = start.moved;
+        start = null;
+        if (moved) return;
+        onPick(e);
+      }, { passive:false });
+      entry.addEventListener('touchcancel', ()=>{
+        lastTouchLikeAt = Date.now();
+        start = null;
+      }, { passive:true });
+    }
+  }
+  dictBuilt = true;
+  filterDictionary(document.getElementById('dictFilter')?.value || '');
+}
+function filterDictionary(q){
+  // Clear any prior selection before rebuilding the visible list.
+  setDictSelection(-1);
+  const needle = String(q||'').trim().toLowerCase();
+  let shown = 0;
+  dictVisibleIdx = [];
+  for (let i=0; i<dictEntries.length; i++){
+    const it = dictEntries[i];
+    const ok = !needle || it.hay.includes(needle);
+    it.el.style.display = ok ? '' : 'none';
+    if (ok){ dictVisibleIdx.push(i); shown++; }
+    else { it.el.classList.remove('selected'); }
+  }
+  const c = document.getElementById('dictCount');
+  if (c) c.textContent = needle ? `${shown} / ${dictEntries.length} entradas` : `${dictEntries.length} entradas`;
+}
+function setDictionaryVisible(visible){
+  const v = !!visible;
+  document.body.classList.toggle('split-mode', v);
+  syncDictToggleLabel();
+  if (v) buildDictionaryOnce();
+  scheduleSaveState();
+}
+
+function scheduleSaveState(){
+  if (suppressSave) return;
+  if (saveTimer) clearTimeout(saveTimer);
+  saveTimer = setTimeout(()=>{
+    saveTimer = null;
+    saveState();
+  }, 250);
+}
+
+function saveState(){
+  if (suppressSave) return;
+  try {
+    const state = {
+      v: 1,
+      model,
+      lineMeta,
+      history: {
+        undoStack,
+        redoStack,
+      },
+      ui: {
+        noGlyphs: document.body.classList.contains('no-glyphs'),
+        optionsVisible: !(document.getElementById('options').style.display === 'none' || getComputedStyle(document.getElementById('options')).display === 'none'),
+        dictVisible: document.body.classList.contains('split-mode'),
+        checks: {
+          ignoreNitpick: !!document.getElementById('ignore-nitpick')?.checked,
+          ignorePossible: !!document.getElementById('ignore-possible-error')?.checked,
+          ignoreUncommon: !!document.getElementById('ignore-uncommon')?.checked,
+          useSandbox: !!document.getElementById('useSandbox')?.checked,
+        }
+      }
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch(err) {
+    // If history makes the payload too large, fall back to saving content/UI only.
+    try{
+      const minimal = {
+        v: 1,
+        model,
+        lineMeta,
+        ui: {
+          noGlyphs: document.body.classList.contains('no-glyphs'),
+          optionsVisible: !(document.getElementById('options').style.display === 'none' || getComputedStyle(document.getElementById('options')).display === 'none'),
+          dictVisible: document.body.classList.contains('split-mode'),
+          checks: {
+            ignoreNitpick: !!document.getElementById('ignore-nitpick')?.checked,
+            ignorePossible: !!document.getElementById('ignore-possible-error')?.checked,
+            ignoreUncommon: !!document.getElementById('ignore-uncommon')?.checked,
+            useSandbox: !!document.getElementById('useSandbox')?.checked,
+          }
+        }
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(minimal));
+    } catch(_) {}
+  }
+}
+
+function loadState(){
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return false;
+    const parsed = JSON.parse(raw);
+    if (!parsed || parsed.v !== 1) return false;
+    if (Array.isArray(parsed.model) && parsed.model.every(x=>Array.isArray(x) && x.every(t=>typeof t === 'string'))){
+      model = parsed.model;
+    }
+    if (Array.isArray(parsed.lineMeta) && parsed.lineMeta.every(x=>x && typeof x === 'object')){
+      lineMeta = parsed.lineMeta.map(x=>({ explicitStart: !!x.explicitStart }));
+    } else {
+      lineMeta = model.map((_, i)=>({ explicitStart: i===0 ? false : false }));
+    }
+    // Ensure meta length matches model length
+    if (lineMeta.length !== model.length){
+      const nm = model.map((_, i)=> lineMeta[i] ? { explicitStart: !!lineMeta[i].explicitStart } : { explicitStart:false });
+      nm[0] = { explicitStart:false };
+      lineMeta = nm;
+    }
+
+    // Restore undo/redo history
+    function sanitizeStack(arr){
+      if (!Array.isArray(arr)) return [];
+      const ok = [];
+      for (const it of arr){
+        if (!it || typeof it !== 'object') continue;
+        const m = it.model;
+        const lm = it.lineMeta;
+        if (!Array.isArray(m) || !m.every(x=>Array.isArray(x) && x.every(t=>typeof t === 'string'))) continue;
+        if (!Array.isArray(lm) || !lm.every(x=>x && typeof x === 'object' && 'explicitStart' in x)) continue;
+        const focus = (it.focus && typeof it.focus === 'object' && Number.isFinite(it.focus.li) && Number.isFinite(it.focus.ti))
+          ? { li: it.focus.li, ti: it.focus.ti }
+          : null;
+        ok.push({ model: cloneModel(m), lineMeta: cloneLineMeta(lm), focus });
+      }
+      // Keep only the most recent UNDO_MAX
+      return ok.slice(-UNDO_MAX);
+    }
+    const hist = parsed.history || {};
+    undoStack = sanitizeStack(hist.undoStack);
+    redoStack = sanitizeStack(hist.redoStack);
+
+    // Apply UI state (checkboxes + visibility + glyph toggle)
+    const ui = parsed.ui || {};
+    const checks = ui.checks || {};
+    const setCheck = (id, val)=>{ const el=document.getElementById(id); if (el) el.checked = !!val; };
+    setCheck('ignore-nitpick', checks.ignoreNitpick);
+    setCheck('ignore-possible-error', checks.ignorePossible);
+    setCheck('ignore-uncommon', checks.ignoreUncommon);
+    setCheck('useSandbox', checks.useSandbox);
+    const opts = document.getElementById('options');
+    if (opts) opts.style.display = ui.optionsVisible ? '' : 'none';
+    if (ui.noGlyphs) document.body.classList.add('no-glyphs'); else document.body.classList.remove('no-glyphs');
+    if (ui.dictVisible) document.body.classList.add('split-mode'); else document.body.classList.remove('split-mode');
+    syncAdvancedToggleLabel();
+    syncGlyphToggleLabel();
+    syncDictToggleLabel();
+    if (ui.dictVisible) buildDictionaryOnce();
+
+    // Wrap according to current width but keep explicit breaks
+    reflowRespectingExplicit();
+    return true;
+  } catch(_) { return false; }
+}
+// Reflow all lines honoring explicit breaks, removing implicit ones when possible
+function reflowRespectingExplicit(){
+  // Flatten tokens and capture explicit boundary indexes
+  const flat=[]; const explicit=new Set();
+  let idx=0;
+  for (let li=0; li<model.length; li++){
+    if (li>0 && lineMeta[li] && lineMeta[li].explicitStart) explicit.add(idx);
+    for (let ti=0; ti<model[li].length; ti++){
+      flat.push(model[li][ti]); idx++;
+    }
+  }
+  // Rebuild
+  const nm=[]; const nmMeta=[];
+  nm.push([]); nmMeta.push({explicitStart:false});
+  let curCount=0; // tokens in current line
+  for (let i=0; i<flat.length; i++){
+    const tok = flat[i];
+    // explicit break before this token (and not at line start)
+    if (explicit.has(i) && curCount>0){ nm.push([]); nmMeta.push({explicitStart:true}); curCount=0; }
+    // wrap if needed
+    if (curCount>0 && wouldOverflowCount(curCount+1)){
+      nm.push([]); nmMeta.push({explicitStart:false}); curCount=0;
+    }
+    nm[nm.length-1].push(tok); curCount++;
+  }
+  model = nm; lineMeta = nmMeta;
+}
+function ensureWrap(li){
+  while (wouldOverflowCount(model[li].length)){
+    const last = model[li].pop();
+    if (li+1 >= model.length){ model.push([]); lineMeta.push({explicitStart:false}); }
+    model[li+1].unshift(last);
+    li++;
+  }
+}
+function normalize(x){ return (x||"").toLowerCase(); }
+function mainGloss(tok){
+  if (EN_MAP[tok]) return {text:EN_MAP[tok].gloss, grammar:!!EN_MAP[tok].grammar, punctuation:!!EN_MAP[tok].punctuation};
+  if (DICT[tok]){ const first=DICT[tok][0]; return {text:(first.split(/;|,/)[0]||first).trim(), grammar:false, punctuation:false}; }
+  return {text:tok, grammar:false, punctuation:false};
+}
+
+/* ---------- Rendering ---------- */
+let hoverDictTimer = null;
+let hoverDictKey = null;
+let hoverGrammarTimer = null;
+let hoverGrammarKey = null;
+let hideDictTimer = null;
+let popupPinned = false; // true when opened via touch/click; hover popups auto-hide on mouse-leave
+let hoveringDictAnchor = false;
+let hoveringDictPopup = false;
+function cancelHoverDict(){
+  if (hoverDictTimer){ clearTimeout(hoverDictTimer); hoverDictTimer = null; }
+  hoverDictKey = null;
+}
+function cancelHoverGrammar(){
+  if (hoverGrammarTimer){ clearTimeout(hoverGrammarTimer); hoverGrammarTimer = null; }
+  hoverGrammarKey = null;
+}
+function cancelHideDict(){
+  if (hideDictTimer){ clearTimeout(hideDictTimer); hideDictTimer = null; }
+}
+function scheduleHideDict(){
+  cancelHideDict();
+  hideDictTimer = setTimeout(()=>{
+    hideDictTimer = null;
+    if (!popupPinned && !hoveringDictAnchor && !hoveringDictPopup) hidePop();
+  }, 80);
+}
+function scheduleHoverDict(tok, cell){
+  cancelHoverGrammar();
+  cancelHoverDict();
+  if (!tok || !cell) return;
+  const key = 'dict|' + tok + '|' + cell.dataset.line + '|' + cell.dataset.token;
+  hoverDictKey = key;
+  hoverDictTimer = setTimeout(()=>{
+    hoverDictTimer = null;
+    if (hoverDictKey !== key) return;
+    showMeaningsForToken(tok, cell, { toggle:false, pinned:false });
+  }, 300);
+}
+function hoverDictHandlersForCell(cell){
+  if (!cell){
+    return {
+      onEnter: ()=>{},
+      onMove: ()=>{},
+      onLeave: ()=>{},
+      onDown: ()=>{},
+      onClick: ()=>{},
+    };
+  }
+  function maybeScheduleFromCell(){
+    const li = +cell.dataset.line, ti = +cell.dataset.token;
+    // Allow dictionary hover even on the focused token (useful while editing),
+    // but avoid popping up while the user is actively typing.
+    if (currentFocus && currentFocus.li === li && currentFocus.ti === ti){
+      if (Date.now() - lastEditAt < 250) return;
+    }
+    const raw = (model[li]?.[ti] ?? '').trim();
+    if (!raw || isNameToken(raw) || PUNCT.has(raw)) return;
+    scheduleHoverDict(normalize(raw), cell);
+  }
+  return {
+    onEnter: (e)=>{
+      if ((e.pointerType || lastPointerType) !== 'mouse') return;
+      hoveringDictAnchor = true;
+      cancelHideDict();
+      maybeScheduleFromCell();
+    },
+    onMove: (e)=>{
+      if ((e.pointerType || lastPointerType) !== 'mouse') return;
+      if (!hoveringDictAnchor) return;
+      // Only show after a brief pause without mouse movement.
+      maybeScheduleFromCell();
+    },
+    onLeave: ()=>{
+      hoveringDictAnchor = false;
+      cancelHoverDict();
+      scheduleHideDict();
+    },
+    onDown: ()=> cancelHoverDict(),
+	    onClick: (e)=>{
+	      // Mouse: clicking should edit.
+	      // Touch: first tap focuses (to show caret/keyboard), second tap toggles dictionary.
+	      e.preventDefault(); e.stopPropagation();
+	      const li = +cell.dataset.line, ti = +cell.dataset.token;
+	      const raw = (model[li]?.[ti] ?? '').trim();
+	      const touchLike = isTouchLikeEvent(e);
+	      if (!raw){
+	        if (touchLike){ hidePop(); activePopupKey=null; }
+	        focusCell(li, ti, true, { scroll:touchLike });
+	        return;
+	      }
+	      if (touchLike){
+	        const focused = !!(currentFocus && currentFocus.li === li && currentFocus.ti === ti);
+	        if (!focused){
+	          hidePop(); activePopupKey=null;
+	          focusCell(li, ti, true, { scroll:true });
+	          return;
+	        }
+	        if (!isNameToken(raw) && !PUNCT.has(raw)) showMeaningsForToken(normalize(raw), cell, { toggle:true, pinned:true });
+	        return;
+	      }
+	      focusCell(li, ti, true);
+	    }
+	  };
+	}
+
+function updateGlyph(sp, tok, raw){
+  sp.innerHTML = "";
+  // Show sitelen pona only when the original token matches dictionary exactly (respect capitalization)
+  const allowed = ((raw === tok) && ALLOWED.has(tok)) || PUNCT.has(raw) || EN_MAP[tok];
+  if (!allowed) return;
+  if (PUNCT.has(raw)){
+    const d = document.createElement("div"); d.className="fallback"; d.textContent = raw==="." ? "•" : raw;
+    d.onclick = ()=> focusCell(+sp.dataset.line, +sp.dataset.token, true);
+    sp.appendChild(d);
+    return;
+  }
+  const img = document.createElement("img");
+  img.className="glyph"; img.alt=tok; img.src = GLYPH_PREFIX + tok + ".svg";
+  const cell = sp.parentElement;
+  if (cell){
+    const h = hoverDictHandlersForCell(cell);
+    img.addEventListener('pointerenter', h.onEnter);
+    img.addEventListener('pointermove', h.onMove);
+    img.addEventListener('pointerleave', h.onLeave);
+    img.addEventListener('pointerdown', h.onDown);
+    img.addEventListener('click', h.onClick);
+  } else {
+    // Detached during initial build; fall back to edit focus.
+    img.addEventListener('click', ()=> focusCell(+sp.dataset.line, +sp.dataset.token, true));
+  }
+  img.onerror = ()=>{ sp.innerHTML=""; };
+  sp.appendChild(img);
+}
+
+function isNameToken(raw){
+  const t = String(raw||'').trim();
+  if (!t) return false;
+  if (!/^[A-Z]/.test(t)) return false;
+  if (PUNCT.has(t)) return false;
+  return true;
+}
+
+function buildCell(li, ti, raw){
+  const tok = normalize(raw);
+  const g = mainGloss(tok);
+
+  const cell = document.createElement("div");
+  cell.className = "cell"; cell.style.width = getColW()+"px";
+  cell.dataset.line=li; cell.dataset.token=ti;
+
+  const en = document.createElement("div");
+  if (isNameToken(raw)){
+    en.className = "en grammar";
+    en.textContent = `Nombre: ${raw}`;
+  } else {
+    let txt = String(g.text || '').replace(/\\n/g, '\n');
+    if (txt.includes('\n')) txt = txt.replace('\n', ' /\n');
+    en.className = "en" + (g.grammar?" grammar":"") + (txt.includes('\n') ? " multiline" : "");
+    en.textContent = txt;
+  }
+  {
+    const h = hoverDictHandlersForCell(cell);
+    en.addEventListener('pointerenter', h.onEnter);
+    en.addEventListener('pointermove', h.onMove);
+    en.addEventListener('pointerleave', h.onLeave);
+    en.addEventListener('pointerdown', h.onDown);
+    en.addEventListener('click', h.onClick);
+  }
+
+  const sp = document.createElement("div");
+  sp.className = "sp"; sp.dataset.line=li; sp.dataset.token=ti;
+
+  const tp = document.createElement("div");
+  tp.className = "tp"; tp.contentEditable = true; tp.textContent = raw;
+  tp.dataset.line=li; tp.dataset.token=ti;
+  // Disable browser autocorrect/autocapitalize/spellcheck for TP input
+  tp.setAttribute('spellcheck','false');
+  tp.setAttribute('autocorrect','off');
+  // iOS/Safari expects "none" (not "off"); other browsers ignore this on contenteditable anyway.
+  tp.setAttribute('autocapitalize','none');
+  {
+    // Hover dictionary on the toki pona word itself.
+    // (Do not attach click handler here; clicking should keep normal editing behavior.)
+    const h = hoverDictHandlersForCell(cell);
+    tp.addEventListener('pointerenter', h.onEnter);
+    tp.addEventListener('pointermove', h.onMove);
+    tp.addEventListener('pointerleave', h.onLeave);
+    tp.addEventListener('pointerdown', h.onDown);
+  }
+
+  // Horizontal band clicks
+  cell.addEventListener("mousedown", (ev)=>{
+    const y = ev.clientY;
+    const rEn = en.getBoundingClientRect(), rTp = tp.getBoundingClientRect();
+    if (y>=rEn.top && y<=rEn.bottom){
+      const curr = (model[li]?.[ti]||'').trim();
+      if (!curr){ ev.preventDefault(); ev.stopPropagation(); focusCell(li, ti, true); return; }
+      ev.preventDefault(); ev.stopPropagation(); return;
+    }
+    else if (y>=rTp.top && y<=rTp.bottom){
+      if (!ev.target.closest(".tp")){ ev.preventDefault(); ev.stopPropagation(); focusCell(li, ti, true); }
+    }
+  });
+
+  sp.addEventListener('mousedown', (e)=>{
+    const curr = (model[li]?.[ti]||'').trim();
+    if (!curr){ e.preventDefault(); e.stopPropagation(); focusCell(li, ti, true); }
+  });
+  wireTP(tp);
+
+  cell.append(en, sp, tp);
+  updateGlyph(sp, tok, raw);
+  return cell;
+}
+
+function render(){
+  cancelHoverDict();
+  cancelHoverGrammar();
+  hoveringDictAnchor = false;
+  hoveringDictPopup = false;
+  const out = $("#output");
+  out.innerHTML = "";
+  model.forEach((tokens, li)=>{
+    const line = document.createElement("div"); line.className="line";
+    tokens.forEach((raw, ti)=> line.appendChild(buildCell(li, ti, raw)));
+    out.appendChild(line);
+  });
+  // Debounced grammar recompute after DOM is updated
+  scheduleComputeGrammar();
+  scheduleSaveState();
+}
+
+function updateCellMinimal(li, ti){
+  const tp = document.querySelector(`.tp[data-line="${li}"][data-token="${ti}"]`);
+  if (!tp) return;
+  const raw = tp.textContent || "";
+  maybePushUndoStateForTyping(li, ti, raw);
+  model[li][ti] = raw;
+  const tok = normalize(raw);
+
+  // EN
+  const en = tp.previousElementSibling?.previousElementSibling;
+  if (en && en.classList.contains("en")){
+    if (isNameToken(raw)){
+      en.className = "en grammar";
+      en.textContent = `Nombre: ${raw}`;
+    } else {
+      const g = mainGloss(tok);
+      let txt = String(g.text || '').replace(/\\n/g, '\n');
+      if (txt.includes('\n')) txt = txt.replace('\n', ' /\n');
+      en.className = "en" + (g.grammar?" grammar":"") + (txt.includes('\n') ? " multiline" : "");
+      en.textContent = txt;
+    }
+  }
+  // SP
+  const sp = tp.previousElementSibling;
+  if (sp && sp.classList.contains("sp")) updateGlyph(sp, tok, raw);
+
+  // Suggestion refresh
+  showSuggestionFor(tp);
+  // Debounced grammar recompute + band refresh
+  scheduleComputeGrammar();
+  scheduleSaveState();
+}
+
+/* ---------- Caret & navigation ---------- */
+function focusCell(li, ti, toEnd=false, opts=null){
+  const el = document.querySelector(`.tp[data-line="${li}"][data-token="${ti}"]`);
+  if (!el) return;
+  el.focus();
+  if (toEnd){
+    const r = document.createRange(); r.selectNodeContents(el); r.collapse(false);
+    const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+  }
+  if (opts && opts.scroll){
+    requestAnimationFrame(()=>{
+      try{
+        el.scrollIntoView({ block:'center', inline:'nearest' });
+      } catch(_) {
+        try{ el.scrollIntoView(true); } catch(__) {}
+      }
+    });
+  }
+}
+function caretOffset(el){
+  const sel = window.getSelection(); if (!sel || sel.rangeCount===0) return (el.textContent||"").length;
+  const r = sel.getRangeAt(0); const pre = document.createRange(); pre.selectNodeContents(el); pre.setEnd(r.startContainer,r.startOffset);
+  return pre.toString().length;
+}
+function setCaretAt(el, pos){
+  const len = (el.textContent||'').length;
+  const npos = Math.max(0, Math.min(len, pos));
+  const range = document.createRange();
+  let node = el.firstChild;
+  if (!node){ el.appendChild(document.createTextNode('')); node = el.firstChild; }
+  range.setStart(node, npos);
+  range.setEnd(node, npos);
+  const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
+}
+
+/* Move to next token, creating one ONLY if none exists; auto-wrap if necessary */
+function moveToNextOrCreate(li, ti){
+  if (model[li][ti+1] !== undefined){ focusCell(li, ti+1, true); return; }
+  // need a new token; check wrap
+  maybePushUndoState();
+  if (wouldOverflowCount(model[li].length + 1)){
+    if (li+1 >= model.length){ model.push([]); lineMeta.push({explicitStart:false}); }
+    model[li+1].unshift("");
+    inheritUndoForNextFocus(li+1, 0);
+    render();
+    focusCell(li+1, 0, true);
+  } else {
+    model[li].push("");
+    inheritUndoForNextFocus(li, ti+1);
+    render();
+    focusCell(li, ti+1, true);
+  }
+}
+
+/* Create an empty token after current (space behavior), respecting wrap */
+function insertEmptyAfter(li, ti){
+  if (model[li][ti+1] !== undefined){ // already exists → just move
+    focusCell(li, ti+1, true);
+    return;
+  }
+  maybePushUndoState();
+  if (wouldOverflowCount(model[li].length + 1)){
+    if (li+1 >= model.length){ model.push([]); lineMeta.push({explicitStart:false}); }
+    model[li+1].unshift("");
+    inheritUndoForNextFocus(li+1, 0);
+    render();
+    focusCell(li+1, 0, true);
+  } else {
+    model[li].splice(ti+1,0,"");
+    inheritUndoForNextFocus(li, ti+1);
+    render();
+    focusCell(li, ti+1, true);
+  }
+}
+
+/* Split current token at caret, inserting a new token right after it (shifting existing tokens). */
+function splitTokenAtInModel(li, ti, at){
+  const cur = model[li][ti] || "";
+  const left = cur.slice(0, at);
+  const right = cur.slice(at);
+  const marker = '__SPLIT__' + Math.random().toString(16).slice(2) + '_' + Date.now();
+  model[li][ti] = left;
+  model[li].splice(ti+1, 0, marker);
+  // Wrap if needed (preserves order by moving last tokens down)
+  ensureWrap(li);
+  // Find marker after wrapping
+  for (let l=0; l<model.length; l++){
+    for (let t=0; t<model[l].length; t++){
+      if (model[l][t] === marker){
+        model[l][t] = right;
+        return { li:l, ti:t, right };
+      }
+    }
+  }
+  // Fallback: should not happen
+  return { li, ti: Math.min(ti+1, (model[li]?.length||1)-1), right };
+}
+
+/* Insert a token after (li, ti), wrapping as needed; returns new position. */
+function insertTokenAfterInModel(li, ti, token){
+  const marker = '__INS__' + Math.random().toString(16).slice(2) + '_' + Date.now();
+  model[li].splice(ti+1, 0, marker);
+  ensureWrap(li);
+  for (let l=0; l<model.length; l++){
+    for (let t=0; t<model[l].length; t++){
+      if (model[l][t] === marker){
+        model[l][t] = token;
+        return { li:l, ti:t };
+      }
+    }
+  }
+  // Fallback: append to end
+  const lastLi = Math.max(0, model.length-1);
+  model[lastLi].push(token);
+  return { li:lastLi, ti:model[lastLi].length-1 };
+}
+
+/* Treat any committed whitespace as token separators (mobile keyboards may batch " word"). */
+function commitWhitespaceDelimitedInput(li, ti, raw){
+  const normalized = String(raw||'').replace(/\u00A0/g, ' ');
+  if (!/\s/.test(normalized)) return false;
+  const endsWithSpace = /\s$/.test(normalized);
+  const tokens = normalized.trim().split(/\s+/).filter(Boolean).map(t => t.slice(0, 16));
+
+  beginUndoGroup();
+  try{
+    if (tokens.length === 0){
+      // User typed only whitespace: behave like pressing Space in an empty cell.
+      model[li][ti] = '';
+      if (endsWithSpace) insertEmptyAfter(li, ti);
+      else { render(); focusCell(li, ti, true); }
+      return true;
+    }
+
+    model[li][ti] = tokens[0];
+    let pos = { li, ti };
+    for (let i=1; i<tokens.length; i++){
+      pos = insertTokenAfterInModel(pos.li, pos.ti, tokens[i]);
+    }
+
+    if (endsWithSpace){
+      // Trailing whitespace means "space after last token" → advance.
+      insertEmptyAfter(pos.li, pos.ti);
+      return true;
+    }
+
+    render();
+    focusCell(pos.li, pos.ti, true);
+    setTimeout(()=>{
+      const el = document.querySelector(`.tp[data-line="${pos.li}"][data-token="${pos.ti}"]`);
+      if (el){ el.focus(); setCaretAt(el, (el.textContent||'').length); }
+    }, 0);
+    return true;
+  } finally {
+    endUndoGroup();
+  }
+}
+
+/* Insert punctuation token, except if current token empty: then fill current */
+function insertPunctuation(li, ti, ch, at){
+  const cur = model[li][ti] || "";
+  if (cur.length === 0){
+    maybePushUndoState();
+    model[li][ti] = ch; render(); focusCell(li, ti, true); return;
+  }
+  maybePushUndoState();
+  const left = cur.slice(0, at), right = cur.slice(at);
+  model[li][ti] = left;
+  // where to place punctuation / right considering wrap
+  if (wouldOverflowCount(model[li].length + 1)){
+    // put punctuation as first on next line
+    if (li+1 >= model.length) model.push([]);
+    model[li+1].unshift(ch);
+    if (right) model[li+1].splice(1,0,right);
+    render();
+    focusCell(li+1, 0, true);
+  } else {
+    model[li].splice(ti+1,0,ch);
+    if (right) model[li].splice(ti+2,0,right);
+    render();
+    focusCell(li, ti+1, true);
+  }
+}
+
+/* ---------- Sugerencias (Español → lista de TP) ---------- */
+let SUG = null; // { li, ti, items: [tp…] }
+
+function showSuggestionFor(tpEl){
+  const li = +tpEl.dataset.line, ti = +tpEl.dataset.token;
+  let val = (tpEl.textContent||"").trim();
+  const sug = $("#suggestion");
+
+  // clear when empty or already TP/punct
+  if (!val || ALLOWED.has(val) || PUNCT.has(val)){
+    SUG = null; sug.style.display="none"; return;
+  }
+
+  const items = EN_INDEX[val];
+  if (!items || items.length===0){ SUG=null; sug.style.display="none"; return; }
+
+  SUG = { li, ti, items: items.slice(0,8) }; // show up to 8
+  const r = tpEl.getBoundingClientRect();
+  sug.innerHTML = SUG.items.map(tp=>(
+    `<div class="sug-item" data-tp="${tp}">
+       <img class="glyph" alt="${tp}" src="${GLYPH_PREFIX+tp}.svg" onerror="this.style.display='none'"/>
+       <div class="sug-tp">${tp}</div>
+     </div>`
+  )).join("");
+  sug.style.left = (r.left + window.scrollX) + "px";
+  sug.style.top  = (r.bottom + window.scrollY) + "px";
+  sug.style.display = "flex";
+  positionFloating(sug, r, { preferBelow:true, maxWidth: 420, display:'flex' });
+
+  // click on a suggestion
+  let picked = false;
+  sug.querySelectorAll(".sug-item").forEach(div=>{
+    const pick = (e)=>{
+      if (picked) return;
+      picked = true;
+      e.preventDefault();
+      e.stopPropagation();
+      const tpWord = div.dataset.tp;
+      acceptSuggestion(tpWord);
+    };
+    div.addEventListener("mousedown", pick);
+    div.addEventListener("touchstart", pick, { passive:false });
+    div.addEventListener("pointerdown", pick);
+    div.addEventListener("click", pick);
+  });
+}
+
+function acceptSuggestion(tpWord = null){
+  if (!SUG) return false;
+  const {li, ti, items} = SUG;
+  const chosen = tpWord || items[0];
+  maybePushUndoState();
+  model[li][ti] = chosen;
+  render();
+  moveToNextOrCreate(li, ti);
+  SUG = null;
+  const sug = $("#suggestion"); sug.style.display="none"; sug.innerHTML="";
+  return true;
+}
+
+/* ---------- TP contenteditable wiring ---------- */
+function wireTP(tp){
+  let composing = false;
+  tp.addEventListener('compositionstart', ()=>{ composing = true; });
+  tp.addEventListener('compositionend', ()=>{ composing = false; });
+
+  tp.addEventListener('focus', ()=>{
+    const li = +tp.dataset.line, ti = +tp.dataset.token;
+    currentFocus = { li, ti };
+    lastEditorFocus = { li, ti };
+    beginTypingUndoSession(li, ti);
+    if (inheritUndoForNextFocusKey){
+      if (inheritUndoForNextFocusKey === (li + ':' + ti)){
+        // New cell creation already pushed an undo snapshot; keep typing in this cell part of that same step.
+        typingUndoPending = false;
+      }
+      inheritUndoForNextFocusKey = null; // one-shot
+    }
+    scheduleComputeGrammar();
+  });
+  tp.addEventListener('blur', ()=>{
+    currentFocus = null;
+    endTypingUndoSession();
+    scheduleComputeGrammar();
+  });
+  tp.addEventListener("keydown", (e)=>{
+    const li = +tp.dataset.line, ti = +tp.dataset.token;
+    const text = tp.textContent || "";
+    const off = caretOffset(tp);
+
+    // Undo (prefer our model-level undo over browser contenteditable undo)
+    if ((e.ctrlKey || e.metaKey) && !e.shiftKey && (e.key === 'z' || e.key === 'Z')){
+      e.preventDefault();
+      undo();
+      return;
+    }
+
+    // Arrow navigation UX
+    if (e.key === 'ArrowUp'){
+      e.preventDefault();
+      if (li>0){
+        const targetLi = li-1;
+        const targetTi = Math.min(ti, (model[targetLi]?.length||1)-1);
+        focusCell(targetLi, targetTi, true);
+      }
+      return;
+    }
+    if (e.key === 'ArrowDown'){
+      e.preventDefault();
+      if (li < model.length-1){
+        const targetLi = li+1;
+        const targetTi = Math.min(ti, (model[targetLi]?.length||1)-1);
+        focusCell(targetLi, targetTi, true);
+      }
+      return;
+    }
+    if (e.key === 'ArrowLeft' && off === 0){
+      e.preventDefault();
+      if (ti>0) focusCell(li, ti-1, true);
+      else if (li>0) focusCell(li-1, (model[li-1]?.length||1)-1, true);
+      return;
+    }
+    if (e.key === 'ArrowRight' && off === text.length){
+      e.preventDefault();
+      if (ti < (model[li]?.length||0)-1) focusCell(li, ti+1, true);
+      else if (li < model.length-1) focusCell(li+1, 0, true);
+      return;
+    }
+
+    // Accept suggestion with Tab (if visible for this token)
+    if (e.key==="Tab" && SUG && SUG.li===li && SUG.ti===ti){
+      e.preventDefault(); acceptSuggestion(); return;
+    }
+
+    // Ctrl+Backspace at end → remove whole token
+    if (e.key==="Backspace" && e.ctrlKey && off===text.length){
+      e.preventDefault();
+      maybePushUndoState();
+      if (model[li].length>1){ model[li].splice(ti,1); render(); focusCell(li, Math.max(0, ti-1), true); }
+      else if (li>0){ model.splice(li,1); lineMeta.splice(li,1); render(); focusCell(li-1, model[li-1].length-1, true); }
+      else { model[0][0]=""; render(); focusCell(0,0,true); }
+      return;
+    }
+
+    // Ctrl+Delete at end → remove next token (analogous to Ctrl+Backspace behavior)
+    if (e.key==="Delete" && e.ctrlKey && off===text.length){
+      e.preventDefault();
+      // nothing ahead
+      if (ti >= (model[li]?.length||0)-1 && li >= model.length-1) return;
+      maybePushUndoState();
+      if (ti < (model[li]?.length||0)-1){
+        model[li].splice(ti+1, 1);
+        render(); focusCell(li, ti, true);
+      } else if (li < model.length-1){
+        if ((model[li+1]?.length||0) > 1){
+          model[li+1].splice(0, 1);
+          render(); focusCell(li, ti, true);
+        } else {
+          model.splice(li+1, 1);
+          lineMeta.splice(li+1, 1);
+          render(); focusCell(li, ti, true);
+        }
+      }
+      return;
+    }
+
+    // Punctuation keys
+    if (e.key==="." || e.key==="," || e.key===":"){
+      e.preventDefault(); insertPunctuation(li, ti, e.key, off); return;
+    }
+
+    // Tab navigation (create only if none exists)
+    if (e.key==="Tab" && !e.shiftKey){ e.preventDefault(); moveToNextOrCreate(li, ti); return; }
+    if (e.key==="Tab" && e.shiftKey){ e.preventDefault(); if (ti>0) focusCell(li, ti-1, true); else if (li>0) focusCell(li-1, model[li-1].length-1, true); return; }
+
+    // Space → split token if caret is in the middle; otherwise go to (or create) next token
+    if (e.key===" "){
+      e.preventDefault();
+      if (off > 0 && off < text.length){
+        maybePushUndoState();
+        const loc = splitTokenAtInModel(li, ti, off);
+        inheritUndoForNextFocus(loc.li, loc.ti);
+        render();
+        setTimeout(()=>{
+          const el = document.querySelector(`.tp[data-line="${loc.li}"][data-token="${loc.ti}"]`);
+          if (el){ el.focus(); setCaretAt(el, 0); }
+        }, 0);
+      } else {
+        insertEmptyAfter(li, ti);
+      }
+      return;
+    }
+
+    // Enter → new line at caret
+    if (e.key==="Enter"){
+      e.preventDefault();
+      maybePushUndoState();
+      const left = text.slice(0, off), right = text.slice(off);
+      model[li][ti] = left;
+      const after = model[li].slice(ti+1);
+      const nextLine = (right?[right]:[]).concat(after);
+      model[li] = model[li].slice(0, ti+1);
+      model.splice(li+1, 0, nextLine.length ? nextLine : [""]);
+      lineMeta.splice(li+1, 0, {explicitStart:true});
+      // Reflow the entire layout to respect explicit breaks and current width
+      reflowRespectingExplicit();
+      render();
+      focusCell(li+1, 0, true);
+      return;
+    }
+
+    // Delete at end (or empty cell) → merge right (analogous to Backspace at start)
+    if (e.key==="Delete" && (off===text.length || text.length===0)){
+      e.preventDefault();
+      // nothing to delete
+      if (ti >= (model[li]?.length||0)-1 && li >= model.length-1) return;
+      maybePushUndoState();
+      if (ti < (model[li]?.length||0)-1){
+        const leftLen = (model[li][ti]||"").length;
+        const merged = (model[li][ti]||"") + (model[li][ti+1]||"");
+        model[li].splice(ti, 2, merged);
+        render();
+        setTimeout(()=>{
+          const el = document.querySelector(`.tp[data-line="${li}"][data-token="${ti}"]`);
+          if (el){ el.focus(); setCaretAt(el, leftLen); }
+        }, 0);
+      } else if (li < model.length-1){
+        const leftLen = (model[li][ti]||"").length;
+        const nextLine = model[li+1] || [""];
+        const merged = (model[li][ti]||"") + (nextLine[0]||"");
+        model[li][ti] = merged;
+        if (nextLine.length>1) model[li].push(...nextLine.slice(1));
+        model.splice(li+1,1);
+        lineMeta.splice(li+1,1);
+        // Reflow across all lines to remove implicit breaks where possible
+        reflowRespectingExplicit();
+        render();
+        setTimeout(()=>{
+          const el = document.querySelector(`.tp[data-line="${li}"][data-token="${ti}"]`);
+          if (el){ el.focus(); setCaretAt(el, Math.min(leftLen, (el.textContent||'').length)); }
+        }, 0);
+      }
+      return;
+    }
+
+    // Backspace at start → merge left
+    if (e.key==="Backspace" && off===0){
+      e.preventDefault();
+      maybePushUndoState();
+      if (ti>0){
+        const leftLen = (model[li][ti-1]||"").length;
+        const merged = (model[li][ti-1]||"") + text;
+        model[li].splice(ti-1, 2, merged);
+        render();
+        setTimeout(()=>{
+          const el = document.querySelector(`.tp[data-line="${li}"][data-token="${ti-1}"]`);
+          if (el){ el.focus(); setCaretAt(el, leftLen); }
+        }, 0);
+      } else if (li>0){
+        const prevLen = model[li-1].length;
+        const leftLen = (model[li-1][prevLen-1]||"").length;
+        model[li-1][prevLen-1] = (model[li-1][prevLen-1]||"") + text;
+        if (model[li].length>1) model[li-1].push(...model[li].slice(1));
+        model.splice(li,1);
+        lineMeta.splice(li,1);
+        // Reflow across all lines to remove implicit breaks where possible
+        reflowRespectingExplicit();
+        render();
+        setTimeout(()=>{
+          // Best-effort: try to place caret at the join point.
+          const targetLi = Math.max(0, li-1);
+          const targetTi = Math.max(0, (model[targetLi]?.length||1)-1);
+          const el = document.querySelector(`.tp[data-line="${targetLi}"][data-token="${targetTi}"]`);
+          if (el){ el.focus(); setCaretAt(el, Math.min(leftLen, (el.textContent||'').length)); }
+        }, 0);
+      }
+      return;
+    }
+  });
+
+  tp.addEventListener("input", ()=>{
+    lastEditAt = Date.now();
+    const li = +tp.dataset.line, ti = +tp.dataset.token;
+    const raw = tp.textContent || "";
+    if (!composing && commitWhitespaceDelimitedInput(li, ti, raw)) return;
+
+    // Enforce max 16 chars per token
+    const cur = raw;
+    if (cur.length > 16){
+      tp.textContent = cur.slice(0,16);
+      setCaretAt(tp, 16);
+    }
+    updateCellMinimal(li, ti);
+  });
+
+  // Handle paste as simulated typing (first 400 chars)
+  tp.addEventListener('paste', (e)=>{
+    e.preventDefault();
+    const li0 = +tp.dataset.line, ti0 = +tp.dataset.token;
+    let li = li0, ti = ti0;
+    let el = document.querySelector(`.tp[data-line="${li}"][data-token="${ti}"]`);
+    let off = caretOffset(el);
+    const clip = (e.clipboardData || window.clipboardData);
+    let text = '';
+    try { text = clip.getData('text'); } catch(err) { text = ''; }
+    text = (text||'').replace(/\r\n?/g, '\n');
+    const MAX = 400;
+    const s = text.slice(0, MAX);
+    beginUndoGroup();
+	    try {
+	      for (let i=0; i<s.length; i++){
+	        const ch = s[i];
+	        if (ch === ' '){
+	          const textCur = (model[li][ti]||'');
+	          if (off > 0 && off < textCur.length){
+	            const loc = splitTokenAtInModel(li, ti, off);
+	            render();
+	            li = loc.li; ti = loc.ti;
+	            el = document.querySelector(`.tp[data-line="${li}"][data-token="${ti}"]`);
+	            off = 0;
+	            if (el) setCaretAt(el, 0);
+	          } else {
+	            insertEmptyAfter(li, ti);
+	            if (currentFocus){ li = currentFocus.li; ti = currentFocus.ti; }
+	            el = document.querySelector(`.tp[data-line="${li}"][data-token="${ti}"]`);
+	            off = 0;
+	          }
+	          continue;
+	        }
+        if (ch === '\n'){
+          // Simulate Enter at current caret
+          const textCur = (model[li][ti]||'');
+          const left = textCur.slice(0, off), right = textCur.slice(off);
+          model[li][ti] = left;
+          const after = model[li].slice(ti+1);
+          const nextLine = (right?[right]:[]).concat(after);
+          model[li] = model[li].slice(0, ti+1);
+          model.splice(li+1, 0, nextLine.length ? nextLine : ['']);
+          lineMeta.splice(li+1, 0, {explicitStart:true});
+          reflowRespectingExplicit();
+          render();
+          li = li+1; ti = 0;
+          el = document.querySelector(`.tp[data-line="${li}"][data-token="${ti}"]`);
+          off = 0;
+          continue;
+        }
+        if (ch === '.' || ch === ',' || ch === ':'){
+          insertPunctuation(li, ti, ch, off);
+          if (currentFocus){ li = currentFocus.li; ti = currentFocus.ti; }
+          el = document.querySelector(`.tp[data-line="${li}"][data-token="${ti}"]`);
+          off = 0;
+          continue;
+        }
+        // Regular character: insert at caret respecting 16-char limit
+        let curText = model[li][ti] || '';
+        if (curText.length >= 16) continue;
+        const left = curText.slice(0, off), right = curText.slice(off);
+        curText = left + ch + right;
+        model[li][ti] = curText.slice(0,16);
+        render();
+        el = document.querySelector(`.tp[data-line="${li}"][data-token="${ti}"]`);
+        off = Math.min(16, off + 1);
+        setCaretAt(el, off);
+      }
+    } finally {
+      endUndoGroup();
+    }
+  });
+}
+
+/* ---------- Dictionary popup ---------- */
+function showMeaningsForToken(tok, cell){
+  // Toggle dictionary popup on repeated click
+  // (Hover callers should pass {toggle:false} to avoid closing on re-hover.)
+  const opts = arguments[2] || { toggle:true, pinned:false };
+  const senses = DICT[tok] || (EN_MAP[tok] ? [EN_MAP[tok].gloss] : null);
+  if (!senses || !senses.length) return;
+  const pop = $("#popup");
+  const key = 'dict|' + tok + '|' + cell.dataset.line + '|' + cell.dataset.token;
+  if (activePopupKey === key && pop.style.display === 'block'){
+    if (opts && opts.toggle === false) return;
+    hidePop(); activePopupKey=null; return;
+  }
+  hidePop();
+  pop.innerHTML = `<h3>${escapeHTML(tok)}</h3><ul>${senses.map(s=>`<li>${formatSenseHTML(s)}</li>`).join("")}</ul>`;
+  const r = cell.getBoundingClientRect();
+  pop.style.display = "block";
+  positionFloating(pop, r, { preferRight:true, maxWidth: 360, display:'block' });
+  activePopupKey = key;
+  popupPinned = !!(opts && opts.pinned);
+  // click-away handled by global click listener
+}
+function hidePop(){
+  const p=$("#popup");
+  p.style.display="none";
+  p.innerHTML="";
+  activePopupKey=null;
+  popupPinned = false;
+  cancelHideDict();
+  cancelHoverDict();
+  cancelHoverGrammar();
+}
+
+// Auto-hide hover dictionary when mouse leaves both anchor and popup
+{
+  const pop = $("#popup");
+  pop.addEventListener('pointerenter', (e)=>{
+    if ((e.pointerType || lastPointerType) !== 'mouse') return;
+    hoveringDictPopup = true;
+    cancelHideDict();
+  });
+  pop.addEventListener('pointerleave', (e)=>{
+    if ((e.pointerType || lastPointerType) !== 'mouse') return;
+    hoveringDictPopup = false;
+    scheduleHideDict();
+  });
+}
+
+/* ---------- Global clicks ---------- */
+document.body.addEventListener("click", (e)=>{
+  const focusLastToken = ()=>{
+    hidePop(); activePopupKey=null;
+    const li = Math.max(0, model.length-1);
+    const ti = Math.max(0, (model[li]?.length||1)-1);
+    focusCell(li, ti, true);
+  };
+  const focusLastTokenOfLineEl = (lineEl)=>{
+    hidePop(); activePopupKey=null;
+    const out = document.getElementById('output');
+    if (!out || !lineEl) return false;
+    const lines = Array.from(out.children).filter(el => el && el.classList && el.classList.contains('line'));
+    const li = lines.indexOf(lineEl);
+    if (li < 0) return false;
+    const ti = Math.max(0, (model[li]?.length||1)-1);
+    focusCell(li, ti, true);
+    return true;
+  };
+  const focusLastTokenOfLineIndex = (li)=>{
+    hidePop(); activePopupKey=null;
+    const lineIndex = clamp(+li, 0, Math.max(0, model.length-1));
+    const ti = Math.max(0, (model[lineIndex]?.length||1)-1);
+    focusCell(lineIndex, ti, true);
+    return true;
+  };
+
+  // Never force editor focus when the user clicks inside the dictionary pane.
+  if (e.target.closest('#dictPane')) return;
+
+  // Clicking anywhere outside the editor/dictionary panes focuses the last cell.
+  // (Useful on mobile where taps often land on surrounding whitespace.)
+  const inEditorPane = !!e.target.closest('#editorPane');
+  if (!inEditorPane){
+    // Don't steal focus from actual controls.
+    if (e.target.closest('button,a,input,select,textarea,label')) return;
+    try{ focusLastToken(); } catch(_) {}
+    return;
+  }
+
+  const out = document.getElementById('output');
+  const rb = out ? out.getBoundingClientRect() : null;
+  const belowEditable = rb ? (e.clientY > rb.bottom + 2) : false;
+  // If below the writable area, always focus the last token
+  if (belowEditable){
+    focusLastToken();
+    return;
+  }
+  // If click is on any known interactive element, let its own handler run
+  if (e.target.closest(".en,.sp,.tp,.pop,.suggest,.errgroup,button,a,input,select,textarea,label,#erase,.dict-pane")) return;
+  // Else, map clicks in the editor pane to a sensible focus target:
+  // - on a row → last token of that row
+  // - above first row → last token of first row
+  // - below last row → last token of document
+  // - in between → nearest row
+  const directLineEl = e.target.closest('.line');
+  if (directLineEl){
+    try{ if (focusLastTokenOfLineEl(directLineEl)) return; } catch(_) {}
+  }
+  if (out){
+    const lines = Array.from(out.children).filter(el => el && el.classList && el.classList.contains('line'));
+    if (lines.length > 0){
+      const y = e.clientY;
+      const rects = lines.map(el => el.getBoundingClientRect());
+      const first = rects[0];
+      const last = rects[rects.length - 1];
+      if (y < first.top){
+        try{ focusLastTokenOfLineIndex(0); } catch(_) {}
+        return;
+      }
+      if (y > last.bottom){
+        try{ focusLastToken(); } catch(_) {}
+        return;
+      }
+      for (let i=0; i<rects.length; i++){
+        const r = rects[i];
+        if (y >= r.top && y <= r.bottom){
+          try{ focusLastTokenOfLineIndex(i); } catch(_) {}
+          return;
+        }
+      }
+      // Between rows: pick the nearest row center.
+      let bestI = 0, bestD = Infinity;
+      for (let i=0; i<rects.length; i++){
+        const r = rects[i];
+        const mid = (r.top + r.bottom) / 2;
+        const d = Math.abs(y - mid);
+        if (d < bestD){ bestD = d; bestI = i; }
+      }
+      try{ focusLastTokenOfLineIndex(bestI); } catch(_) {}
+      return;
+    }
+  }
+  // Fallback: focus the last token of the whole document.
+  try{ focusLastToken(); } catch(_) {}
+});
+
+// Erase button: reset all tokens
+document.getElementById('erase').addEventListener('click', (e)=>{
+  e.preventDefault();
+  endTypingUndoSession();
+  maybePushUndoState();
+  model = [[""]];
+  lineMeta = [{explicitStart:false}];
+  render();
+});
+
+// Global undo: allow Ctrl/Cmd+Z even when no cell is focused
+document.addEventListener('keydown', (e)=>{
+  if ((e.ctrlKey || e.metaKey) && !e.shiftKey && (e.key === 'z' || e.key === 'Z')){
+    e.preventDefault();
+    e.stopPropagation();
+    undo();
+    return;
+  }
+  // Redo (Ctrl+Y / Cmd+Shift+Z)
+  if ((e.ctrlKey && !e.shiftKey && (e.key === 'y' || e.key === 'Y')) ||
+      (e.metaKey && e.shiftKey && (e.key === 'z' || e.key === 'Z'))){
+    e.preventDefault();
+    e.stopPropagation();
+    redo();
+  }
+}, true);
+
+// Advanced options toggle
+document.getElementById('toggleAdvanced').addEventListener('click', (e)=>{
+  e.preventDefault();
+  const opts = document.getElementById('options');
+  const isHidden = (opts.style.display === 'none' || getComputedStyle(opts).display === 'none');
+  opts.style.display = isHidden ? '' : 'none';
+  syncAdvancedToggleLabel();
+  scheduleSaveState();
+});
+
+// Glyph visibility toggle
+document.getElementById('toggleGlyphs').addEventListener('click', (e)=>{
+  e.preventDefault();
+  document.body.classList.toggle('no-glyphs');
+  syncGlyphToggleLabel();
+  scheduleSaveState();
+});
+
+// Dictionary pane toggle
+document.getElementById('toggleDict').addEventListener('click', (e)=>{
+  e.preventDefault();
+  const isShown = document.body.classList.contains('split-mode');
+  setDictionaryVisible(!isShown);
+});
+{
+  const f = document.getElementById('dictFilter');
+  if (f){
+    f.addEventListener('input', ()=>{
+      buildDictionaryOnce();
+      filterDictionary(f.value);
+    });
+    f.addEventListener('keydown', (e)=>{
+      // Keyboard navigation in dictionary pane (keep focus in the filter box).
+      if (e.key === 'ArrowDown'){
+        buildDictionaryOnce();
+        if (dictVisibleIdx.length <= 0) return;
+        e.preventDefault();
+        if (dictSel < 0) setDictSelection(0);
+        else setDictSelection(Math.min(dictSel + 1, dictVisibleIdx.length - 1));
+        return;
+      }
+      if (e.key === 'ArrowUp'){
+        buildDictionaryOnce();
+        if (dictSel < 0) return; // normal caret movement in input
+        e.preventDefault();
+        if (dictSel === 0) setDictSelection(-1);
+        else setDictSelection(Math.max(-1, dictSel - 1));
+        return;
+      }
+      if (e.key === 'Enter'){
+        const w = selectedDictWord();
+        if (!w) return;
+        e.preventDefault();
+        insertWordFromDictionary(w);
+      }
+    });
+  }
+}
+// If panes scroll (split-mode), hide floating UI that would otherwise detach from its anchor.
+{
+  const onScroll = ()=>{
+    hidePop();
+    const sug = document.getElementById('suggestion');
+    if (sug){ sug.style.display='none'; }
+  };
+  const ep = document.getElementById('editorPane');
+  const dp = document.getElementById('dictPane');
+  if (ep) ep.addEventListener('scroll', onScroll, { passive:true });
+  if (dp) dp.addEventListener('scroll', onScroll, { passive:true });
+}
+
+/* ================= telo-misikeke — grammar engine hookup ================= */
+// Build word list from local DICT as fallback (no network)
+function localWordList(){
+  const out=[]; const seen=new Set();
+  for (const w of Object.keys(DICT)){ out.push([w,'core']); seen.add(w); }
+  // NOTE: build_rules() treats word list entries as regex source; escape punctuation keys from EN_MAP
+  // so '.' doesn't turn into "match any character" and cause false positives.
+  for (const w of Object.keys(EN_MAP)){
+    if (seen.has(w)) continue;
+    const safe = /^[a-z]+$/.test(w) ? w : w.replace(/[\\^$.*+?()[\]{}|]/g, '\\$&');
+    out.push([safe,'core']);
+  }
+  return out;
+}
+
+let GRAM = { rules:null, parser:null };
+function initGrammarEngine(){
+  // Build rules from local word list
+  const wl = localWordList();
+  let rules = build_rules(wl);
+  // Disable some pi-related style/nitpick rules (requested)
+  delete rules.piXpi;      // "Suspicious usage of pi here..."
+  delete rules.multiplePi; // "Multiple pi can lead to ambiguous phrases..."
+  // Rename message for misplaced particles
+  if (rules.misplacedParticles) rules.misplacedParticles.message = 'Misplaced or sentence not finished';
+  // Shorten piOneWord message
+  if (rules.piOneWord && typeof rules.piOneWord.message === 'string'){
+    const prefix = '<em>pi</em> does not mean "of". ';
+    if (rules.piOneWord.message.startsWith(prefix)){
+      rules.piOneWord.message = rules.piOneWord.message.slice(prefix.length);
+    }
+  }
+  // Apply option filters
+  if ($('#ignore-nitpick').checked){ (rulesByCategory['nitpick']||[]).forEach(k=>{ delete rules[k]; }); }
+  if ($('#ignore-possible-error').checked){ (rulesByCategory['possible-error']||[]).forEach(k=>{ delete rules[k]; }); }
+  if ($('#ignore-uncommon').checked){ (rulesByCategory['uncommon']||[]).forEach(k=>{ delete rules[k]; }); }
+  const useLinebreaks = false;
+  // Patch nimiPuAla message to include the word text for debugging
+  if (rules.nimiPuAla){
+    rules.nimiPuAla.message = function(m){
+      const wMatch = (m[0]||'').match(/\b([a-z][a-zA-Z]*)\b/);
+      const w = wMatch ? wMatch[1] : '';
+      return (w||'(unknown)') + ': unknown word';
+    };
+  }
+  GRAM.rules = rules;
+  GRAM.parser = new ParserWithCallbacks(rules, useLinebreaks);
+}
+
+// Map of cellKey → { topCategory, items:[{category, ruleName, text, message}] }
+const grammarByCell = new Map();
+function keyFor(li,ti){ return li+":"+ti; }
+
+function mergedTextAndMap(){
+  // Build a flat string with single spaces between all tokens and between lines.
+  // No newlines are kept; this matches the desired behavior and the console log.
+  let txt = ""; const map=[];
+  for (let li=0; li<model.length; li++){
+    for (let ti=0; ti<model[li].length; ti++){
+      const raw = model[li][ti] || "";
+      const start = txt.length;
+      txt += raw; // preserve original casing for grammar engine
+      const end = txt.length;
+      map.push({li,ti,start,end});
+      if (!(li===model.length-1 && ti===model[li].length-1)) txt += ' ';
+    }
+  }
+  return { txt, map };
+}
+
+function severityRank(cat){ return cat==='error'?3 : cat==='possible-error'?2 : cat==='uncommon'?1 : cat==='nitpick'?0 : -1; }
+
+function computeGrammar(){
+  if (!GRAM.parser) initGrammarEngine();
+  grammarByCell.clear();
+  const {txt,map} = mergedTextAndMap();
+  const txtLower = txt.toLowerCase();
+  //try { console.log('I am checking the sentence: \"' + txtLower + '"'); } catch(e){}
+  // console.time && console.time('grammar-tokenize');
+  let tokens = [];
+  try {
+    tokens = GRAM.parser.tokenize(txtLower);
+  } catch (err){
+    console.error('Grammar tokenize failed:', err);
+    return;
+  } 
+  //finally {
+  //  console.timeEnd && console.timeEnd('grammar-tokenize');
+  //}
+  // Single-pass overlap: advance an index into the cell map
+  let pos = 0; // running character position in txt
+  let j = 0;  // index into map (cells sorted by start)
+  for (let i=0;i<tokens.length;i++){
+    const t = tokens[i];
+    const len = (t.text||'').length;
+    const start = pos; const end = start + len; pos = end;
+    const cat = getCategory(t.ruleName);
+    if (!cat) continue;
+    while (j < map.length && map[j].end <= start) j++;
+    let k = j;
+    while (k < map.length && map[k].start < end){
+      const cell = map[k];
+      const key = keyFor(cell.li, cell.ti);
+      // Suppress intrusive unknown-word while editing this token
+      if (currentFocus && currentFocus.li===cell.li && currentFocus.ti===cell.ti && t.ruleName==='nimiPuAla'){ k++; continue; }
+      // Suppress unknown-word for capitalized original tokens (we lowered for parsing)
+      if (t.ruleName==='nimiPuAla'){
+        const originalRaw = (model[cell.li]?.[cell.ti]||'');
+        if (/^[A-Z]/.test(originalRaw.trim())){ k++; continue; }
+      }
+      // Align with telo-misikeke: ignore one-letter capitalization warnings at sentence start
+      if (t.ruleName==='dontCapitalizeSentences'){
+        const m = (t.text||'').match(/\b([A-Z][a-z]*)\b/);
+        if (m && m[1] && m[1].length <= 1){ k++; continue; }
+      }
+      let info = grammarByCell.get(key);
+      if (!info){ info = { topCategory:null, items:[] }; grammarByCell.set(key, info); }
+      info.items.push({ category:cat, ruleName:t.ruleName, text:t.text, match:t.match, message:getMessage(t.ruleName, t.match) });
+      if (!info.topCategory || severityRank(cat) > severityRank(info.topCategory)) info.topCategory = cat;
+      k++;
+    }
+  }
+
+  // Add capitalization warnings based on the original (non-lowercased) tokens.
+  // We still parse grammar using lowercase to avoid spurious "unknown word" errors due to capitalization,
+  // but we want `dontCapitalizeSentences` to behave correctly.
+  (function injectCapitalizationWarnings(){
+    function isSentenceEndingToken(raw){
+      const t = String(raw||'').trim();
+      if (!t) return false;
+      if (t === '.' || t === '!' || t === '?' || t === '…' || t === '·' || t === ';') return true;
+      return /[.!?…·;]$/.test(t);
+    }
+    function addCapWarn(li, ti, raw){
+      const key = keyFor(li, ti);
+      let info = grammarByCell.get(key);
+      if (!info){ info = { topCategory:null, items:[] }; grammarByCell.set(key, info); }
+      if (info.items.some(it=>it.ruleName==='dontCapitalizeSentences')) return;
+      info.items.push({
+        category: 'error',
+        ruleName: 'dontCapitalizeSentences',
+        text: raw,
+        match: null,
+        message: 'Sentences should not start with a capital letter.'
+      });
+      if (!info.topCategory || severityRank('error') > severityRank(info.topCategory)) info.topCategory = 'error';
+    }
+
+    let atSentenceStart = true;
+    for (let li=0; li<model.length; li++){
+      for (let ti=0; ti<model[li].length; ti++){
+        const raw = String(model[li][ti] ?? '');
+        const t = raw.trim();
+        if (!t) continue;
+        if (isSentenceEndingToken(t)){ atSentenceStart = true; continue; }
+
+        if (atSentenceStart){
+          const lower = t.toLowerCase();
+          // Mirror telo-misikeke intent: only warn for capitalized forms of known words.
+          // Ignore one-letter tokens (aligns with our existing suppression).
+          if (t.length > 1 && /^[A-Z]/.test(t) && ALLOWED.has(lower)){
+            addCapWarn(li, ti, raw);
+          }
+        }
+        atSentenceStart = false;
+      }
+    }
+  })();
+
+  for (const [key,info] of grammarByCell.entries()){
+    const label = info.topCategory.replace(/-/g,' ');
+    info.tooltipTitle = label[0].toUpperCase()+label.slice(1);
+  }
+}
+
+let grammarTimer = null;
+function scheduleComputeGrammar(){
+  if (grammarTimer) clearTimeout(grammarTimer);
+  grammarTimer = setTimeout(()=>{
+    grammarTimer = null;
+    computeGrammar();
+    refreshErrorBands();
+    drawErrorGroups();
+  }, 120);
+}
+
+function showGrammarForCell(li, ti, cell){
+  hidePop();
+  const info = grammarByCell.get(keyFor(li,ti)); if (!info) return;
+  const pop = $("#popup");
+  const groups = {};
+  for (const it of info.items){ (groups[it.category]||(groups[it.category]=[])).push(it); }
+  const order = ['error','possible-error','uncommon','nitpick'];
+  let html = '';
+  for (const cat of order){ if (!groups[cat]) continue; const title = cat.replace(/-/g,' '); html += `<h3>${title}</h3>`; html += '<ul>' + groups[cat].map(it=>`<li>${it.message}</li>`).join('') + '</ul>'; }
+  if (!html) return;
+  pop.innerHTML = html;
+  const r = cell.getBoundingClientRect();
+  pop.style.display = "block";
+  positionFloating(pop, r, { preferBelow:true, maxWidth: 360, display:'block' });
+  setTimeout(()=>{
+    const onAway = (e)=>{ if (!e.target.closest(".pop")){ hidePop(); document.removeEventListener("mousedown", onAway, true);} };
+    document.addEventListener("mousedown", onAway, true);
+  },0);
+}
+
+function refreshErrorBands(){
+  // no-op: per-token bands removed in favor of grouped overlays
+}
+
+function primaryItem(info){
+  if (!info) return null;
+  const pri = info.items.find(it=>it.category===info.topCategory) || info.items[0] || null;
+  return pri;
+}
+
+let activePopupKey = null; // for toggle behavior
+function showGrammarPopupForGroup(g, band, opts){
+  const o = opts || { toggle:true, pinned:false };
+  const key = g.cat+'|'+g.rule+'|'+g.msg;
+  const pop = document.getElementById('popup');
+  if (activePopupKey===key && pop.style.display==='block'){
+    if (o.toggle === false) return;
+    hidePop(); activePopupKey=null; return;
+  }
+  hidePop();
+  const msgHtml = String(g.msg||'').replace(/\\n/g, '\n').replace(/\n/g, '<br>');
+  pop.innerHTML = '<h3>' + g.cat.replace(/-/g,' ') + '</h3><ul><li>' + msgHtml + '</li></ul>';
+  const r = band.getBoundingClientRect();
+  pop.style.display = 'block';
+  positionFloating(pop, r, { preferBelow:true, maxWidth: 360, display:'block' });
+  activePopupKey = key;
+  popupPinned = !!o.pinned;
+}
+function scheduleHoverGrammar(g, band){
+  cancelHoverDict();
+  cancelHoverGrammar();
+  if (!g || !band) return;
+  const key = g.cat+'|'+g.rule+'|'+g.msg;
+  hoverGrammarKey = key;
+  hoverGrammarTimer = setTimeout(()=>{
+    hoverGrammarTimer = null;
+    if (hoverGrammarKey !== key) return;
+    if (!document.body.contains(band)) return;
+    showGrammarPopupForGroup(g, band, { toggle:false, pinned:false });
+  }, 300);
+}
+function hoverGrammarHandlers(g, band){
+  return {
+    onEnter: (e)=>{
+      if ((e.pointerType || lastPointerType) !== 'mouse') return;
+      hoveringDictAnchor = true;
+      cancelHideDict();
+      scheduleHoverGrammar(g, band);
+    },
+    onMove: (e)=>{
+      if ((e.pointerType || lastPointerType) !== 'mouse') return;
+      if (!hoveringDictAnchor) return;
+      // Only show after a brief pause without mouse movement.
+      scheduleHoverGrammar(g, band);
+    },
+    onLeave: (e)=>{
+      if ((e.pointerType || lastPointerType) !== 'mouse') return;
+      hoveringDictAnchor = false;
+      cancelHoverGrammar();
+      scheduleHideDict();
+    },
+    onDown: ()=> cancelHoverGrammar(),
+    onClick: (ev)=>{
+      if (ev.target.closest('a')) return; // allow link clicks
+      ev.preventDefault(); ev.stopPropagation();
+      if ((lastPointerType || 'mouse') === 'touch'){
+        showGrammarPopupForGroup(g, band, { toggle:true, pinned:true });
+      }
+    }
+  };
+}
+function drawErrorGroups(){
+  // Clear previous overlays
+  document.querySelectorAll('.line').forEach(line=>{
+    line.querySelectorAll('.errgroup').forEach(el=>el.remove());
+  });
+
+  // Build global groups across lines (by primary error key)
+  const groups = []; // {cat, rule, msg, spans:[{li, startTi, endTi}]}
+  let cur=null;
+  const pushSpan=(li,startTi,endTi)=>{
+    if (!cur) return;
+    if (!cur.spans.length || cur.spans[cur.spans.length-1].li!==li){
+      cur.spans.push({li, startTi, endTi});
+    } else {
+      cur.spans[cur.spans.length-1].endTi = endTi;
+    }
+  };
+  for (let li=0; li<model.length; li++){
+    for (let ti=0; ti<model[li].length; ti++){
+      const info = grammarByCell.get(keyFor(li,ti));
+      const pri = primaryItem(info);
+      const key = pri ? (pri.category + '||' + pri.ruleName + '||' + pri.message) : null;
+      const curKey = cur ? (cur.cat + '||' + cur.rule + '||' + cur.msg) : null;
+      if (!key){ if (cur){ groups.push(cur); cur=null; } continue; }
+      if (!cur){ cur = {cat:pri.category, rule:pri.ruleName, msg:pri.message, spans:[{li, startTi:ti, endTi:ti}]}; }
+      else if (key===curKey){ pushSpan(li, ti, ti); }
+      else { groups.push(cur); cur = {cat:pri.category, rule:pri.ruleName, msg:pri.message, spans:[{li, startTi:ti, endTi:ti}]}; }
+    }
+    // Do not flush here: allow groups to continue across lines
+  }
+
+  // After scanning all lines, flush any pending group
+  if (cur){ groups.push(cur); cur=null; }
+
+  // Measurement helpers: two-line clamp with link-aware tokens
+  const meas = document.getElementById('err-measure');
+  function tokensThatFit(width, tokens){
+    if (!tokens.length) return 0;
+    meas.style.width = width + 'px';
+    let fit=0;
+    for (let i=1; i<=tokens.length; i++){
+      meas.innerHTML = tokens.slice(0,i).map(t=>t.html).join(' ');
+      if (meas.scrollHeight > meas.clientHeight + 0.5){ break; }
+      fit = i;
+    }
+    meas.innerHTML = '';
+    return fit;
+  }
+
+  function parseMessageToTokens(html){
+    // Preserve anchor tags; flatten other inline elements to text tokens
+    const wrap = document.createElement('div');
+    wrap.innerHTML = html;
+    const out = [];
+    function pushWords(text, href){
+      const words = String(text||'').split(/\s+/).filter(Boolean);
+      for (const w of words){
+        if (href) out.push({ html: `<a href="${href}" target="_blank">${w}</a>`, text: w });
+        else out.push({ html: w, text: w });
+      }
+    }
+    function walk(node, inHref){
+      if (node.nodeType===Node.TEXT_NODE){ pushWords(node.nodeValue, inHref); return; }
+      if (node.nodeType!==Node.ELEMENT_NODE) return;
+      const el = node;
+      if (el.tagName==='A'){
+        const href = el.getAttribute('href');
+        Array.from(el.childNodes).forEach(ch=>walk(ch, href));
+        return;
+      }
+      Array.from(el.childNodes).forEach(ch=>walk(ch, inHref));
+    }
+    Array.from(wrap.childNodes).forEach(n=>walk(n, null));
+    return out;
+  }
+
+  // Draw overlays per span, continuing message across lines without word-breaking
+  for (const g of groups){
+    const tokens = parseMessageToTokens(g.msg);
+    let used = 0;
+    for (const span of g.spans){
+      const lineEl = document.querySelectorAll('.line')[span.li]; if (!lineEl) continue;
+      const cells = Array.from(lineEl.querySelectorAll('.cell'));
+      const firstCell = cells[span.startTi]; const lastCell = cells[span.endTi];
+      if (!firstCell || !lastCell) continue;
+      const rLine = lineEl.getBoundingClientRect();
+      const r1 = firstCell.getBoundingClientRect();
+      const r2 = lastCell.getBoundingClientRect();
+      const left = r1.left - rLine.left;
+      const width = (r2.right - r1.left);
+      const band = document.createElement('div');
+      band.className = 'errgroup ' + g.cat;
+      band.style.left = left + 'px';
+      band.style.top = '8px';
+      band.style.width = width + 'px';
+      band.dataset.cat = g.cat;
+      band.dataset.msg = g.msg;
+      // Figure how many tokens fit on this span
+      const remaining = tokens.slice(used);
+      let take = tokensThatFit(width, remaining);
+      // If previous lines already covered entire message
+      if (remaining.length===0){
+        band.textContent = '';
+      } else {
+        const shown = remaining.slice(0, take);
+        if (shown.length){
+          band.innerHTML = shown.map(t=>t.html).join(' ');
+          used += shown.length;
+          // Add ellipsis only on the last span if the full text didn't fit
+          const isLastSpan = (span === g.spans[g.spans.length-1]);
+          if (isLastSpan && used < tokens.length){ band.innerHTML += ' …'; }
+        } else {
+          // Nothing fits: show just color
+          band.innerHTML = '';
+        }
+      }
+      const h = hoverGrammarHandlers(g, band);
+      band.addEventListener('pointerenter', h.onEnter);
+      band.addEventListener('pointermove', h.onMove);
+      band.addEventListener('pointerleave', h.onLeave);
+      band.addEventListener('pointerdown', h.onDown);
+      band.addEventListener('click', h.onClick);
+      lineEl.appendChild(band);
+    }
+  }
+}
+
+// Option changes → rebuild grammar engine and recompute
+['ignore-nitpick','ignore-possible-error','ignore-uncommon','useSandbox'].forEach(id=>{
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('change', ()=>{ initGrammarEngine(); render(); scheduleSaveState(); });
+});
+
+/* ---------- Boot ---------- */
+// Restore previous content (if any) before initializing grammar/render.
+suppressSave = true;
+ensureFirstVisitSeed();
+loadState();
+suppressSave = false;
+syncAdvancedToggleLabel();
+syncGlyphToggleLabel();
+syncDictToggleLabel();
+initGrammarEngine();
+computeGrammar();
+render();
+setTimeout(()=> focusCell(0,0,true), 0);
+
+/* ---------- Reflow on resize ---------- */
+window.addEventListener("resize", ()=>{
+  setFixedWidth();
+  reflowRespectingExplicit();
+  render();
+  // draw overlays again after layout changes
+  scheduleComputeGrammar();
+});
+</script>
+</body>
+</html>

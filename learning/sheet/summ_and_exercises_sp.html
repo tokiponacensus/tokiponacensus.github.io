@@ -1,0 +1,904 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Toki Pona – Ejercicios</title>
+  <link rel="stylesheet" href="littlefoot.css">
+  <style>
+    :root { --max: 980px; }
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 24px; line-height: 1.35; }
+    header { max-width: var(--max); margin: 0 auto 18px; }
+    h1 { margin: 0 0 6px; font-size: 26px; }
+    .sub { color: #444; margin: 0 0 14px; }
+    main { max-width: var(--max); margin: 0 auto; }
+    section { padding-top: 16px; margin-top: 16px; }
+    section + section { border-top: 1px solid #ddd; }
+    h2 { margin: 0 0 10px; font-size: 20px; }
+    p { margin: 8px 0; }
+    label { font-weight: 600; }
+    input[type="text"], textarea, select {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 8px 10px;
+      border: 1px solid #bbb;
+      border-radius: 10px;
+      font-size: 14px;
+      background: #fff;
+    }
+    textarea { resize: vertical; min-height: 36px; }
+    .toolbar {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      align-items: center; margin: 10px 0 2px;
+    }
+    button {
+      border: 1px solid #bbb;
+      background: #f7f7f7;
+      padding: 8px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    button:hover { background: #f0f0f0; }
+    .note { color: #555; font-size: 13px; margin-top: 6px; }
+    .rule { background: #fafafa; border: 1px solid #e3e3e3; border-radius: 14px; padding: 10px 12px; }
+    code.inline { background: #f3f3f3; padding: 2px 6px; border-radius: 8px; }
+
+    /* Littlefoot minimal styling (works even if littlefoot.css is absent) */
+    .littlefoot__button, [data-footnote-button]{
+      font: inherit;
+      font-size: 1em !important;
+      cursor: pointer;
+      background: none !important;
+      border: 0 !important;
+      padding: 0 !important;
+      margin: 0 0 0 .1em !important;
+      box-shadow: none !important;
+      color: inherit !important;
+      height: auto !important;
+      min-width: auto !important;
+      line-height: 1 !important;
+      vertical-align: baseline;
+    }
+    /* Render as a classic small numeric footnote marker instead of the default "…" (svg) */
+    .littlefoot__button svg, [data-footnote-button] svg{ display:none !important; }
+    .littlefoot__button::before, [data-footnote-button]::before{ content:'' !important; display:none !important; }
+    .littlefoot__button::after, [data-footnote-button]::after{
+      content: attr(data-footnote-number) !important;
+      font-size: .72em;
+      vertical-align: super;
+      color: inherit;
+    }
+    .littlefoot-footnote__popover {
+      position: absolute;
+      z-index: 9999;
+      max-width: min(520px, 90vw);
+      padding: 10px 12px;
+      border: 1px solid #ccc;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 6px 30px rgba(0,0,0,.15);
+    }
+    .tabbed {
+      text-indent: 2em;
+    }
+
+    /* Examples with grammar tags under each word */
+    .examples { display: grid; gap: 10px; margin: 10px 0 14px; }
+    .example { padding: 10px 12px; border: 1px solid #e3e3e3; border-radius: 14px; background: #fff; }
+    .exampleRow { display: grid; grid-template-columns: minmax(180px, 260px) 1fr; column-gap: 12px; align-items: start; }
+    .ex-english { font-weight: 700; color: #111; }
+    .tpline { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-start; justify-content: flex-start; }
+    .token { display: inline-flex; flex-direction: column; align-items: center; gap: 2px; }
+    .word { font-size: 16px; }
+    .tag { font-size: 11px; color: #666; }
+
+    /* Exercise grids */
+    .twoCol { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; }
+    .item { display: grid; grid-template-columns: 1fr; gap: 6px; padding: 10px 12px; border: 1px solid #eee; border-radius: 14px; background: #fff; }
+    .prompt { font-weight: 700; }
+    .small { font-weight: 600; color: #333; }
+    .inlineFill { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .inlineFill em { font-style: italic; }
+    .inlineFill select { width: 160px; }
+    .inlineFill .b3-english { margin-left: auto; font-weight: 700; color: #444; }
+
+    .miniRow{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin: 12px 0 8px;
+    }
+    .miniRow .small{margin:0}
+    .miniRow select{
+      width: min(260px, 55vw);
+      padding: 8px 10px;
+      border: 1px solid #bbb;
+      border-radius: 10px;
+      font-size: 14px;
+      background: #fff;
+    }
+
+	    @media (max-width: 820px) {
+	      .twoCol { grid-template-columns: 1fr; }
+	      .exampleRow { grid-template-columns: 1fr; row-gap: 6px; }
+	    }
+	  </style>
+</head>
+<body>
+<header>
+  <h1>Toki Pona – Guía rápida y ejercicios</h1>
+  <p class="sub">Sintagmas nominales | Verbos + objetos directos | Adverbios | Complementos preposicionales</p>
+
+  <div class="toolbar">
+    <button id="clearBtn" type="button">Borrar todo</button>
+  </div>
+</header>
+
+<main>
+
+		  <section>
+		    <h2>1. Ortografía y pronunciación</h2>
+		    <div class="rule">
+		      <ul style="margin:0; padding-left:20px">
+		        <li><strong>5 vocales:</strong> a, e, i, o, u. Suenan como en español/italiano.</li>
+		        <li><strong>9 consonantes:</strong> j, k, s, l, m, n, p, t, w. Se parecen a las del inglés, excepto <strong>j</strong>, que es como una <strong>y</strong> inglesa.
+		          <ul style="margin:6px 0 0; padding-left:18px">
+		            <li><strong>Ejemplo:</strong> En toki pona, «yellow» viene del inglés y es <code class="inline">jelo</code> (pero se pronuncia como «yelo»).</li>
+		          </ul>
+		        </li>
+		        <li>Las frases <strong>no empiezan</strong> con mayúscula: <code class="inline">ni li nasin.</code></li>
+		        <li>El acento de cada palabra va en la primera sílaba: <code class="inline"><strong>mi ke</strong>peken<strong> mu</strong>si</code></li>
+		      </ul>
+		    </div>
+
+		  </section>
+
+	  <section>
+	    <h2>2. Palabras y significados</h2>
+	    <div class="rule">
+	        <!-- <p>Toki Pona has a few <strong>particles</strong>: They mark the grammar but don't mean much by themselves (more on that later).</p> -->
+	      <p>1. Toki Pona tiene (A) <strong>palabras de contenido</strong>, que encapsulan significados de conceptos, y (B) <strong>partículas gramaticales</strong>. Veremos algunas más adelante.</p>
+	      <p>
+	      2. <strong>Posición de las palabras:</strong> Todas las palabras de contenido pueden ser sustantivos, adjetivos, verbos o adverbios (y algunas pueden ser preposiciones o verbos antes de verbos), según dónde las <em>coloques</em> en la frase. Veremos cómo.
+	      </p>
+	      <p>3. <strong>Muchos significados:</strong> Una palabra puede tener varios significados a la vez. El <em>contexto</em> y especificar con otras palabras ayuda a interpretar lo que se quiso decir. Ej. <code class="inline">lon</code> puede significar real, existir, estar situado en, verdadero…
+	      </p>
+	      <p>4. <strong>No hay derivadas:</strong> No hay plurales, género, tiempos verbales ni otras flexiones. De nuevo: el significado se infiere.
+	      </p>
+	      
+	      <p>5. <strong>Grupos semánticos:</strong> una palabra puede significar cualquier cosa que puedas imaginar relacionada con su entrada de diccionario (y que no encaje mejor con otra palabra).</p>
+	      <p>Vamos a practicarlo. Mira los ejemplos y resuelve un ejercicio aleatorio.</p>
+	    </div>
+
+		    <div class="miniRow">
+		      <p class="small"><strong>Imaginar significados</strong></p>
+		      <select id="imagineSelect">
+		        <option value="" selected>Selecciona un ejemplo o ejercicio</option>
+		        <option value="pona">pona — bueno</option>
+		        <option value="wile">wile — querer</option>
+		        <option value="sama">sama — igual</option>
+		        <option value="lupa">lupa — agujero/puerta</option>
+		        <option value="random">Ejercicio aleatorio</option>
+		      </select>
+		    </div>
+		    <div id="imagineDictBox" class="rule" style="margin:0 0 12px">
+		      <div style="font-weight:800; margin:0 0 6px">diccionario <span style="font-weight:600; color:#666">(definiciones en inglés)</span></div>
+		      <div id="imagineDictWord" style="font-weight:800"></div>
+		      <ul id="imagineDictSenses" style="margin:6px 0 0; padding-left:18px;"></ul>
+		    </div>
+			    <div class="twoCol">
+			      <div class="item">
+			        <div class="prompt">como sustantivo</div>
+			        <input type="text" data-key="W1.1" placeholder="Escribe tu toki pona…" />
+			      </div>
+		      <div class="item">
+		        <div class="prompt">como verbo</div>
+		        <input type="text" data-key="W1.2" placeholder="Escribe tu toki pona…" />
+		      </div>
+		      <div class="item">
+		        <div class="prompt">como adjetivo</div>
+		        <input type="text" data-key="W1.3" placeholder="Escribe tu toki pona…" />
+		      </div>
+		      <div class="item">
+		        <div class="prompt">como adverbio</div>
+		        <input type="text" data-key="W1.4" placeholder="Escribe tu toki pona…" />
+		      </div>
+		      <div class="item">
+		        <div class="prompt">otro significado</div>
+		        <input type="text" data-key="W1.5" placeholder="Escribe tu toki pona…" />
+		      </div>
+		    </div>
+
+
+  </section>
+
+	  <!-- ===================================================== -->
+	  <section>
+	    <h2>A) Sintagmas nominales</h2>
+
+	    <div class="rule">
+	        <!-- Really, without particles or prepositions. Mhh -->
+	        <p><strong>Varias palabras sin partículas:</strong> La primera es un sustantivo; y cada palabra siguiente modifica todo lo anterior: <code class="inline">jan utala suli = ((person fight) big)</code> = un guerrero grande.
+	      </p>
+	      <p>Podemos usar la partícula <code class="inline">pi</code> para cambiar los paréntesis: <code class="inline">jan pi utala suli = (person (fight big))</code> = una persona de guerra.
+	      </p>
+	      <p>
+	      Las partículas <code class="inline">en</code> ("y", en sujetos) y <code class="inline">anu</code> (es "o") pueden usarse para unir grupos de palabras.
+	      </p>
+	      <p><strong>Estructura de los sintagmas nominales.</strong> (<strong>*</strong> significa 0 o más veces)</p>
+      <p>
+        <code class="inline">Sustantivo (Adjetivo)* (pi SintagmaNominal)* (en SintagmaNominal)* (anu SintagmaNominal)*</code>
+      </p>
+      <!-- <p>Numbers often appear at the end of the NounPhrase (common style).</p> -->
+    </div>
+
+    <div class="examples">
+      <div class="example">
+        <div class="exampleRow" aria-label="Ejemplo en toki pona con etiquetas gramaticales">
+	          <div class="ex-english">casa grande</div>
+	          <div class="tpline">
+	            <span class="token"><span class="word"><em>tomo</em></span><span class="tag">Sustantivo</span></span>
+	            <span class="token"><span class="word"><em>suli</em></span><span class="tag">Adjetivo</span></span>
+	          </div>
+	        </div>
+	      </div>
+
+      <div class="example">
+        <div class="exampleRow">
+	          <div class="ex-english">la casa del líder</div>
+	          <div class="tpline">
+	            <span class="token"><span class="word"><em>tomo</em></span><span class="tag">Sustantivo</span></span>
+	            <span class="token"><span class="word"><em>pi</em></span><span class="tag">pi</span></span>
+	            <span class="token"><span class="word"><em>jan</em></span><span class="tag">Sustantivo</span></span>
+	            <span class="token"><span class="word"><em>lawa</em></span><span class="tag">Adjetivo</span></span>
+	          </div>
+	        </div>
+	      </div>
+
+      <div class="example">
+        <div class="exampleRow">
+	          <div class="ex-english">té o agua</div>
+	          <div class="tpline">
+	            <span class="token"><span class="word"><em>telo kasi</em></span><span class="tag">Sintagma nominal</span></span>
+	            <span class="token"><span class="word"><em>anu</em></span><span class="tag">anu</span></span>
+	            <span class="token"><span class="word"><em>telo taso</em></span><span class="tag">Sintagma nominal</span></span>
+	          </div>
+	        </div>
+	      </div>
+	    </div>
+
+	    <p class="small"><strong>A1. Español → toki pona</strong> (solo sintagmas nominales)</p>
+	    <div class="twoCol">
+	      <div class="item">
+	        <div class="prompt">1) mi libro pequeño</div>
+	        <input type="text" data-key="A1.1" placeholder="Escribe tu sintagma nominal en toki pona…" />
+	      </div>
+	      <div class="item">
+	        <div class="prompt">2) carretera larga</div>
+	        <input type="text" data-key="A1.2" placeholder="Escribe tu sintagma nominal en toki pona…" />
+	      </div>
+	      <div class="item">
+	        <div class="prompt">3) dos herramientas</div>
+	        <input type="text" data-key="A1.4" placeholder="Escribe tu sintagma nominal en toki pona…" />
+	      </div>
+	      <div class="item">
+	        <div class="prompt">4) la puerta de la persona</div>
+	        <input type="text" data-key="A1.5" placeholder="…" />
+	      </div>
+	      <div class="item">
+	        <div class="prompt">5) agua del río (usa 2+ palabras para «río»)</div>
+	        <input type="text" data-key="A1.6" placeholder="…" />
+	      </div>
+	      <div class="item">
+	        <div class="prompt">6) mi ciudad (usa 2+ palabras para «ciudad»)</div>
+	        <input type="text" data-key="A1.7" placeholder="…" />
+	      </div>
+	    </div>
+
+	    <p class="small" style="margin-top:14px;"><strong>A2. toki pona → español</strong> (solo sintagmas nominales)</p>
+	    <div class="twoCol">
+	      <div class="item">
+	        <div class="prompt">1) <em>tomo lili</em></div>
+	        <input type="text" data-key="A2.1" placeholder="Español…" />
+	      </div>
+	      <div class="item">
+	        <div class="prompt">2) <em>ilo pona</em></div>
+	        <input type="text" data-key="A2.2" placeholder="Español…" />
+	      </div>
+	      <div class="item">
+	        <div class="prompt">3) <em>jan pi tomo pali</em></div>
+	        <input type="text" data-key="A2.3" placeholder="Español…" />
+	      </div>
+	      <div class="item">
+	        <div class="prompt">4) <em>tenpo suno mute</em></div>
+	        <input type="text" data-key="A2.5" placeholder="Español…" />
+	      </div>
+	      <div class="item">
+	        <div class="prompt">5) <em>moku pi soweli lili</em></div>
+	        <input type="text" data-key="A2.6" placeholder="Español…" />
+	      </div>
+	      <div class="item">
+	        <div class="prompt">6) <em>kili suwi tu</em></div>
+	        <input type="text" data-key="A2.8" placeholder="Español…" />
+	      </div>
+	      <div class="item">
+	        <div class="prompt">7) <em>tomo pi jan pona mi</em></div>
+	        <input type="text" data-key="A2.8" placeholder="Español…" />
+	      </div>
+	      <div class="item">
+	        <div class="prompt">8) <em>moku pi telo suwi</em></div>
+	        <input type="text" data-key="A2.8" placeholder="Español…" />
+	      </div>
+	    </div>
+
+
+  </section>
+
+  <!-- ===================================================== -->
+	  <section>
+	    <h2>B) Verbos, objetos directos (li / e) y preposiciones</h2>
+
+	    <div class="rule">
+		      <p><strong>Estructura de la frase.</strong> (<strong>*</strong> significa 0 o más veces)</p>
+	      <p>
+	        <code class="inline">SujetoSintagmaNominal li Verbo (Adverbio)* (e SintagmaNominal)* (Preposition SintagmaNominal)*</code>
+	      </p>
+	      <ol style="margin:8px 0 0; padding-left: 18px;">
+	        <li><strong>li</strong> cierra el sujeto y comienza el predicado.
+	          <ul style="margin:6px 0 0; padding-left: 18px;">
+	            <li>Si el sujeto es solo <strong>mi</strong> o solo <strong>sina</strong>, se omite <strong>li</strong>.</li>
+	          </ul>
+	        </li>
+	        <li>Un <strong>objeto directo</strong> se hace con <strong>e</strong> + Sintagma Nominal.</li>
+	        <li>Un <strong>adverbio</strong> (una palabra modificadora después del verbo) describe cómo ocurre la acción.</li>
+	        <li>Un <strong>complemento preposicional</strong> es <strong>Preposición + Sintagma Nominal</strong>.
+	          <ul style="margin:6px 0 0; padding-left: 18px;">
+	            <li>Hay cinco preposiciones: <strong>lon</strong> (en), <strong>tawa</strong> (hacia), <strong>kepeken</strong> (con / usando), <strong>sama</strong> (como), <strong>tan</strong> (de / porque).</li>
+	            <li>Ten en cuenta que las preposiciones también son palabras de contenido.</li>
+	          </ul>
+	        </li>
+        <li>No hay «y» para predicados, objetos directos o dentro de complementos preposicionales: simplemente repite <strong>li</strong>, <strong>e</strong> o la preposición.</li>
+      </ol>
+    </div>
+
+    <div class="examples">
+      <div class="example">
+        <div class="exampleRow">
+          <div class="ex-english">La persona come fruta dulce.</div>
+          <div class="tpline">
+            <span class="token"><span class="word"><em>jan</em></span><span class="tag">Sujeto (sintagma nominal)</span></span>
+            <span class="token"><span class="word"><em>li</em></span><span class="tag">li</span></span>
+            <span class="token"><span class="word"><em>moku</em></span><span class="tag">Verbo</span></span>
+            <span class="token"><span class="word"><em>e</em></span><span class="tag">e</span></span>
+            <span class="token"><span class="word"><em>kili</em></span><span class="tag">Objeto directo</span></span>
+            <span class="token"><span class="word"><em>suwi</em></span><span class="tag">Adjetivo</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="example">
+        <div class="exampleRow">
+          <div class="ex-english">Yo veo la casa de esta persona.</div>
+          <div class="tpline">
+            <span class="token"><span class="word"><em>mi</em></span><span class="tag">Sujeto (sintagma nominal)</span></span>
+            <span class="token"><span class="word"><em>lukin</em></span><span class="tag">Verbo</span></span>
+            <span class="token"><span class="word"><em>e</em></span><span class="tag">e</span></span>
+            <span class="token"><span class="word"><em>tomo</em></span><span class="tag">Objeto directo</span></span>
+            <span class="token"><span class="word"><em>pi</em></span><span class="tag">pi</span></span>
+            <span class="token"><span class="word"><em>jan ni</em></span><span class="tag">Sintagma nominal</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="examples">
+      <div class="example">
+        <div class="exampleRow">
+          <div class="ex-english">El gato duerme en casa.</div>
+          <div class="tpline">
+            <span class="token"><span class="word"><em>soweli</em></span><span class="tag">Sujeto (sintagma nominal)</span></span>
+            <span class="token"><span class="word"><em>li</em></span><span class="tag">li</span></span>
+            <span class="token"><span class="word"><em>lape</em></span><span class="tag">Verbo</span></span>
+            <span class="token"><span class="word"><em>lon</em></span><span class="tag">Preposición</span></span>
+            <span class="token"><span class="word"><em>tomo</em></span><span class="tag">Sintagma nominal</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="example">
+        <div class="exampleRow">
+          <div class="ex-english">La persona habla bien.</div>
+          <div class="tpline">
+            <span class="token"><span class="word"><em>jan</em></span><span class="tag">Sujeto (sintagma nominal)</span></span>
+            <span class="token"><span class="word"><em>li</em></span><span class="tag">li</span></span>
+            <span class="token"><span class="word"><em>toki</em></span><span class="tag">Verbo</span></span>
+            <span class="token"><span class="word"><em>pona</em></span><span class="tag">Adverbio</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+      <div class="example">
+        <div class="exampleRow">
+          <div class="ex-english">Esta persona es una buena persona y trabaja mucho en dibujo y música.</div>
+          <div class="tpline">
+            <span class="token"><span class="word"><em>jan ni</em></span><span class="tag">Sujeto (sintagma nominal)</span></span>
+            <span class="token"><span class="word"><em>li</em></span><span class="tag">li</span></span>
+            <span class="token"><span class="word"><em>jan pona</em></span><span class="tag">predicado («ser»)</span></span>
+            <span class="token"><span class="word"><em>li</em></span><span class="tag">li</span></span>
+            <span class="token"><span class="word"><em>pali</em></span><span class="tag">Verbo</span></span>
+            <span class="token"><span class="word"><em>mute</em></span><span class="tag">Adverbio</span></span>
+            <span class="token"><span class="word"><em>e</em></span><span class="tag">e</span></span>
+            <span class="token"><span class="word"><em>sitelen kule</em></span><span class="tag">Obj. dir.</span></span>
+            <span class="token"><span class="word"><em>e</em></span><span class="tag">e</span></span>
+            <span class="token"><span class="word"><em>kalama musi</em></span><span class="tag">Obj. dir.</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <p class="small" style="margin-top:14px;">Observa qué pasa al usar <strong>e</strong> o una de las 5 preposiciones {<strong>lon</strong>, <strong>tawa</strong>, <strong>kepeken</strong>, <strong>sama</strong>, <strong>tan</strong>}.</p>
+
+	    <div class="item">
+	      <div class="inlineFill">
+	        <span class="prompt"><em>mi lukin</em></span>
+	        <select data-key="B3.1">
+	          <option value=""></option>
+	          <option>e</option><option>lon</option><option>tawa</option><option>kepeken</option><option>sama</option><option>tan</option>
+	        </select>
+	        <span class="prompt"><em>sitelen.</em></span>
+	        <span class="b3-english" data-b3="B3.1"></span>
+	      </div>
+	    </div>
+
+	    <div class="item">
+	      <div class="inlineFill">
+	        <span class="prompt"><em>jan li tawa</em></span>
+	        <select data-key="B3.2">
+	          <option value=""></option>
+	          <option>e</option><option>lon</option><option>tawa</option><option>kepeken</option><option>sama</option><option>tan</option>
+	        </select>
+	        <span class="prompt"><em>tomo.</em></span>
+	        <span class="b3-english" data-b3="B3.2"></span>
+	      </div>
+	    </div>
+
+	    <div class="item">
+	      <div class="inlineFill">
+	        <span class="prompt"><em>mi moku</em></span>
+	        <select data-key="B3.3">
+	          <option value=""></option>
+	          <option>e</option><option>lon</option><option>tawa</option><option>kepeken</option><option>sama</option><option>tan</option>
+	        </select>
+	        <span class="prompt"><em>kili.</em></span>
+	        <span class="b3-english" data-b3="B3.3"></span>
+	      </div>
+	    </div>
+
+	    <div class="item">
+	      <div class="inlineFill">
+	        <span class="prompt"><em>mi moku</em></span>
+	        <select data-key="B3.4">
+	          <option value=""></option>
+	          <option>e</option><option>lon</option><option>tawa</option><option>kepeken</option><option>sama</option><option>tan</option>
+	        </select>
+	        <span class="prompt"><em>ilo.</em></span>
+	        <span class="b3-english" data-b3="B3.4"></span>
+	      </div>
+	    </div>
+
+	    <div class="item">
+	      <div class="inlineFill">
+	        <span class="prompt"><em>mi kama</em></span>
+	        <select data-key="B3.5">
+	          <option value=""></option>
+	          <option>e</option><option>lon</option><option>tawa</option><option>kepeken</option><option>sama</option><option>tan</option>
+	        </select>
+	        <span class="prompt"><em>ma tomo.</em></span>
+	        <span class="b3-english" data-b3="B3.5"></span>
+	      </div>
+	    </div>
+
+    <p class="small"><strong>B1. Español → toki pona (Verbos y objetos directos)</strong></p>
+    <!-- <div class="item"><div class="prompt">1) The teacher reads a book.</div><textarea data-key="B1.1" rows="1" placeholder="…"></textarea></div> -->
+    <div class="item"><div class="prompt">1) Mi amigo abre la puerta.</div><textarea data-key="B1.2" rows="1" placeholder="…"></textarea></div>
+    <div class="item"><div class="prompt">2) El niño bebe agua.</div><textarea data-key="B1.3" rows="1" placeholder="…"></textarea></div>
+    <div class="item"><div class="prompt">3) Quiero comida.</div><textarea data-key="B1.5" rows="1" placeholder="…"></textarea></div>
+    <div class="item"><div class="prompt">4) Vemos una película.</div><textarea data-key="B1.4" rows="1" placeholder="…"></textarea></div>
+
+    <p class="small" style="margin-top:14px;"><strong>B2. toki pona → español (Verbos y objetos directos)</strong></p>
+    <div class="item"><div class="prompt">1) <em>mi jo e lipu.</em></div><textarea data-key="B2.1" rows="1" placeholder="Español…"></textarea></div>
+    <div class="item"><div class="prompt">2) <em>sina pali e tomo.</em></div><textarea data-key="B2.2" rows="1" placeholder="Español…"></textarea></div>
+    <div class="item"><div class="prompt">3) <em>jan li alasa e kili.</em></div><textarea data-key="B2.3" rows="1" placeholder="Español…"></textarea></div>
+    <div class="item"><div class="prompt">4) <em>ona li pana e moku.</em></div><textarea data-key="B2.4" rows="1" placeholder="Español…"></textarea></div>
+    <!-- <div class="item"><div class="prompt">5) <em>jan pona mi li kama e ni.</em></div><textarea data-key="B2.5" rows="1" placeholder="English…"></textarea></div> -->
+
+    <p class="small"><strong>B3. Español → toki pona (Adverbios y preposiciones)</strong></p>
+    <div class="item"><div class="prompt">1) Trabajo bien.</div><textarea data-key="C1.1" rows="1" placeholder="…"></textarea></div>
+    <div class="item"><div class="prompt">2) La persona habla mucho.</div><textarea data-key="C1.2" rows="1" placeholder="…"></textarea></div>
+    <div class="item"><div class="prompt">3) El niño duerme en la casa.</div><textarea data-key="C1.3" rows="1" placeholder="…"></textarea></div>
+    <div class="item"><div class="prompt">4) Vamos a la ciudad.</div><textarea data-key="C1.4" rows="1" placeholder="…"></textarea></div>
+    <div class="item"><div class="prompt">5) Lo rompo con una herramienta.</div><textarea data-key="C1.5" rows="1" placeholder="…"></textarea></div>
+    <div class="item"><div class="prompt">6) El perro viene de la casa.</div><textarea data-key="C1.6" rows="1" placeholder="…"></textarea></div>
+
+    <p class="small" style="margin-top:14px;"><strong>B4. toki pona → español (Adverbios y preposiciones)</strong></p>
+    <div class="item"><div class="prompt">1) <em>jan li toki ike.</em></div><textarea data-key="C2.1" rows="1" placeholder="Español…"></textarea></div>
+    <div class="item"><div class="prompt">2) <em>mi pali mute lon tomo.</em></div><textarea data-key="C2.2" rows="1" placeholder="Español…"></textarea></div>
+    <div class="item"><div class="prompt">3) <em>ona li pana e lipu tawa mi.</em></div><textarea data-key="C2.3" rows="1" placeholder="Español…"></textarea></div>
+    <div class="item"><div class="prompt">4) <em>soweli li tawa kepeken noka.</em></div><textarea data-key="C2.4" rows="1" placeholder="Español…"></textarea></div>
+    <div class="item"><div class="prompt">5) <em>mi kama tan ma.</em></div><textarea data-key="C2.5" rows="1" placeholder="Español…"></textarea></div>
+    <div class="item"><div class="prompt">6) <em>jan li lukin sama sina.</em></div><textarea data-key="C2.6" rows="1" placeholder="Español…"></textarea></div>
+
+    <!--
+    <p class="small" style="margin-top:14px;"><strong>C3.</strong> Añade un complemento preposicional (<strong>Preposición + sintagma nominal</strong>).</p>
+    <div class="item"><div class="prompt">1) <em>mi moku e kili.</em></div><textarea data-key="C3.1" rows="1" placeholder="Escribe la nueva frase completa…"></textarea></div>
+    <div class="item"><div class="prompt">2) <em>jan li toki.</em></div><textarea data-key="C3.2" rows="1" placeholder="Escribe la nueva frase completa…"></textarea></div>
+    <div class="item"><div class="prompt">3) <em>soweli li lape.</em></div><textarea data-key="C3.3" rows="1" placeholder="Escribe la nueva frase completa…"></textarea></div>
+-->
+
+  </section>
+
+</main>
+
+
+<script>
+(() => {
+  const STORAGE_KEY = "tp_exercises_es_v1";
+  const UNDO_MAX = 30;
+  let clearUndoStack = [];
+
+  /** Load */
+  let state = {};
+  try {
+    state = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+  } catch { state = {}; }
+
+  const fields = Array.from(document.querySelectorAll("[data-key]"));
+
+  function cloneState(s){
+    try { return JSON.parse(JSON.stringify(s || {})); } catch { return {}; }
+  }
+  function isStateEmpty(s){
+    if (!s) return true;
+    return Object.values(s).every(v => v === "" || v == null);
+  }
+
+  function setFieldValue(el, value) {
+    if (el.tagName === "SELECT") {
+      el.value = value ?? "";
+    } else {
+      el.value = value ?? "";
+    }
+    autoGrow(el);
+  }
+
+  fields.forEach(el => {
+    const key = el.dataset.key;
+    setFieldValue(el, state[key]);
+  });
+
+  /** Imagining words meanings helper */
+  const DICT = {
+    "a":["emphasis, emotion or confirmation"],
+    "akesi":["reptile, amphibian"],
+    "ala":["not, no, zero"],
+    "alasa":["hunt, forage, search"],
+    "ale":["all; abundant, countless, bountiful, every, plentiful","abundance, everything, life, universe","100"],
+    "ali":["all; abundant, countless, bountiful, every, plentiful","abundance, everything, life, universe","100"],
+    "anpa":["down, downward, bowing, humble, lowly, dependent"],
+    "ante":["different, altered, changed, other"],
+    "anu":["or, to choose"],
+    "awen":["wait, enduring, kept, protected, safe, staying","Pre-Verb: to continue to"],
+    "e":["Introduces the direct object"],
+    "en":["and, (between multiple subjects)"],
+    "esun":["business, transaction, trade, market, shop, fair, bazaar"],
+    "ijo":["thing, phenomenon, object, matter"],
+    "ike":["bad, negative; non-essential, irrelevant"],
+    "ilo":["tool, implement, machine, device"],
+    "insa":["inside, centre, content, between; internal organ, stomach"],
+    "jaki":["disgusting, obscene, sickly, toxic, unclean, unsanitary"],
+    "jan":["person, human being, somebody"],
+    "jelo":["yellow, yellowish"],
+    "jo":["have, carry, contain, hold"],
+    "kala":["fish, marine animal, sea creature"],
+    "kalama":["sound; to produce a sound, recite, utter aloud"],
+    "kama":["arrive, coming, future, summoned","Pre-Verb: to become, manage to, succeed in"],
+    "kasi":["plant, vegetation; herb, leaf"],
+    "ken":["can, to be able to, be allowed to, may. (Pre-Verb) ","possible"],
+    "kepeken":["use, using, by means of"],
+    "kili":["fruit, vegetable, mushroom"],
+    "kiwen":["rock, metal, stone, hard object"],
+    "ko":["semi-solid, powder, clay, clinging form, dough, paste"],
+    "kon":["air, breath; essence, spirit; hidden reality, unseen agent"],
+    "kule":["color, colourful, pigmented, painted"],
+    "kulupu":["group, community, company, nation, society, tribe"],
+    "kute":["hear, listen; pay attention to, obey", "ear"],
+    "la":["(between the context phrase and the main sentence)"],
+    "lape":["sleep, rest"],
+    "laso":["blue/green"],
+    "lawa":["head, mind","to control, direct, guide, lead, own, plan, regulate, rule"],
+    "len":["cloth, clothing, fabric, textile; cover, layer of privacy"],
+    "lete":["cold, cool; uncooked, raw"],
+    "li":["Introduces the predicate\nOmmited when \"mi\" or only \"sina\" alone is the subject\n Can introduce a second predicate for the same subject"],
+    "lili":["little, small, short; few; a bit; young"],
+    "linja":["line, long and flexible thing; cord, hair, rope, thread, yarn"],
+    "lipu":["book, flat object, document, card, paper, record, website"],
+    "loje":["red, reddish"],
+    "lon":["loc.at/true, present at, real, existing"],
+    "luka":["hand, arm, tactile organ","five"],
+    "lukin":["see, to look at, examine, observe, read, watch","eye","Pre-Verb: to seek, look for, try to"],
+    "lupa":["hole/door, orifice, window"],
+    "ma":["land/outdoors, earth, world; country, territory; soil"],
+    "mama":["parent, ancestor; creator, originator; caretaker, sustainer"],
+    "mani":["money, cash, savings, wealth; large domesticated animal"],
+    "meli":["woman, female, feminine person; wife"],
+    "mi":["I, me, we, us"],
+    "mije":["man, male, masculine person; husband"],
+    "moku":["eat/food, drink, consume, swallow, ingest"],
+    "moli":["dead, dying, kill"],
+    "monsi":["back, behind, rear"],
+    "mu":["moo (animal noise or communication)"],
+    "mun":["moon, star, night sky object"],
+    "musi":["fun/artistic, game, entertaining, frivolous, playful, recreational"],
+    "mute":["many, a lot, more, much, several, very","quantity"],
+    "nanpa":["number","-th (ordinal number)"],
+    "nasa":["weird, unusual, strange, random; foolish, crazy; drunk, intoxicated"],
+    "nasin":["way, custom, doctrine, method, path, road"],
+    "nena":["bump, nose, mountain, hill, button, protuberance"],
+    "ni":["this, that"],
+    "nimi":["word, name"],
+    "noka":["foot, leg, organ of locomotion; bottom, lower part"],
+    "o":["hey! (vocative or imperative)"],
+    "olin":["love, have compassion for, respect, show affection to"],
+    "ona":["they/it, she, he"],
+    "open":["open/begin, start; turn on"],
+    "pakala":["break, botch, hurt; damaged, harmed, messed up"],
+    "pali":["make/do/work, take action on, work on; build, prepare"],
+    "palisa":["stick, branch, rod; long hard thing"],
+    "pan":["cereal, grain; barley, corn, oat, rice, wheat; bread, pasta"],
+    "pana":["give, send, emit, provide, put, release"],
+    "pi":["of"],
+    "pilin":["feeling, (an emotion, a direct experience)", "heart (physical or emotional)",],
+    "pimeja":["black, dark, unlit"],
+    "pini":["finished/past, ago, completed, ended"],
+    "pipi":["bug, insect, ant, spider"],
+    "poka":["near, next to, nearby, vicinity; side, hip"],
+    "poki":["container, bag, bowl, box, cup, cupboard, drawer, vessel"],
+    "pona":["good, positive, useful; friendly, peaceful; simple"],
+    "pu":["official tp book, or interacting with it"],
+    "sama":["same, similar; each other; sibling, peer, fellow","as, like"],
+    "seli":["fire; cooking element, chemical reaction, heat source"],
+    "selo":["skin, bark, peel, shell, outer form, outer layer; boundary"],
+    "seme":["what which"],
+    "sewi":["up/divine, area above, highest part, something elevated","awe-inspiring, sacred, supernatural"],
+    "sijelo":["body, (of person or animal), physical state, torso"],
+    "sike":["round/cycle, circular thing; ball, circle, sphere, wheel","of one year"],
+    "sin":["new, fresh; additional, another, extra"],
+    "sina":["you"],
+    "sinpin":["face, foremost, front, wall"],
+    "sitelen":["image/writing, picture, representation, symbol, mark"],
+    "sona":["know, be skilled in, be wise about, have information on","Pre-Verb: to know how to"],
+    "soweli":["animal, beast, land mammal"],
+    "suli":["big, heavy, large, long, tall; important; adult"],
+    "suno":["sun; light, brightness, glow, radiance, shine; light source"],
+    "supa":["horiz. surface, thing to put or rest something on"],
+    "suwi":["sweet, fragrant; cute, innocent, adorable"],
+    "tan":["because/from, by"],
+    "taso":["but/only, alone"],
+    "tawa":["move/toward, going to, from the perspective of"],
+    "telo":["water, liquid, fluid, wet substance; beverage"],
+    "tenpo":["time, duration, moment, occasion, period, situation"],
+    "toki":["talk, to communicate, say, speak, language, think"],
+    "tomo":["room/house, indoor space; building, home"],
+    "tu":["two"],
+    "unpa":["sex, to have sexual or marital relations with"],
+    "uta":["mouth, lips, oral cavity, jaw"],
+    "utala":["fight, battle, challenge, compete against, struggle against"],
+    "walo":["white, whitish; light-coloured, pale"],
+    "wan":["one", "unique, to unite"],
+    "waso":["bird, flying creature, winged animal"],
+    "wawa":["strong, powerful; confident, sure; energetic, intense"],
+    "weka":["away, absent, ignored"],
+    "wile":["want, must, need, require, should, wish. (Pre-Verb) "]
+  };
+  const IMAGINE = {
+    pona: { noun: "bondad; mejora; positividad", verb: "mejorar; arreglar; hacer que algo sea bueno", adj: "bueno; simple; amable…", adv: "bien", other: "guay" },
+    wile: { noun: "un deseo; una necesidad", verb: "querer; necesitar; deber", adj: "deseado; necesario", adv: "voluntariamente", other: "deseo" },
+    sama: { noun: "similitud; igualdad", verb: "parecerse; coincidir; igualar", adj: "igual; similar", adv: "de forma similar", other: "equivalencia" },
+    lupa: { noun: "agujero; puerta; abertura", verb: "hacer un agujero; abrir un paso", adj: "perforado; con agujero; tipo puerta", adv: "a través de una abertura; en un umbral", other: "un pozo" },
+  };
+  const imagineSel = document.getElementById("imagineSelect");
+  const imagineWordEl = document.getElementById("imagineDictWord");
+  const imagineSensesEl = document.getElementById("imagineDictSenses");
+  const RANDOM_EXCLUDE = new Set(["a","la","li","pi","e","en","anu"]);
+  let randomLast = null;
+
+  function renderImagineDictionary(word){
+    if (!imagineWordEl || !imagineSensesEl) return;
+    const w = String(word || "").trim();
+    imagineSensesEl.innerHTML = "";
+    if (!w){
+      imagineWordEl.textContent = "—";
+      return;
+    }
+    imagineWordEl.textContent = w;
+    const senses = DICT[w] || [];
+    for (const s of senses){
+      const li = document.createElement("li");
+      li.textContent = s;
+      imagineSensesEl.appendChild(li);
+    }
+  }
+
+  function clearImagineFields(){
+    ["W1.1","W1.2","W1.3","W1.4","W1.5"].forEach(k=>{
+      const el = document.querySelector(`[data-key="${k}"]`);
+      if (!el) return;
+      setFieldValue(el, "");
+      state[k] = "";
+    });
+    scheduleSave();
+  }
+
+  function randomContentWord(){
+    const words = Object.keys(DICT).filter(w => !RANDOM_EXCLUDE.has(w));
+    if (words.length === 0) return null;
+    let w = null;
+    for (let tries=0; tries<40; tries++){
+      const cand = words[Math.floor(Math.random() * words.length)];
+      if (cand && cand !== randomLast){ w = cand; break; }
+    }
+    if (!w) w = words[Math.floor(Math.random() * words.length)];
+    randomLast = w;
+    return w;
+  }
+  function setImagineFields(word){
+    const m = IMAGINE[word];
+    if (!m) return;
+    const map = {
+      "W1.1": m.noun,
+      "W1.2": m.verb,
+      "W1.3": m.adj,
+      "W1.4": m.adv,
+      "W1.5": m.other ?? "",
+    };
+    Object.entries(map).forEach(([k,v])=>{
+      const el = document.querySelector(`[data-key="${k}"]`);
+      if (!el) return;
+      setFieldValue(el, v);
+      state[k] = v;
+    });
+    scheduleSave();
+  }
+  if (imagineSel){
+    imagineSel.addEventListener("change", ()=>{
+      const w = String(imagineSel.value || "").trim();
+      if (!w){
+        renderImagineDictionary("");
+        return;
+      }
+      if (w === "random"){
+        const rw = randomContentWord();
+        renderImagineDictionary(rw);
+        clearImagineFields();
+        imagineSel.value = ""; // allow reroll by selecting again
+        return;
+      }
+      renderImagineDictionary(w);
+      setImagineFields(w);
+    });
+    renderImagineDictionary("");
+  }
+
+  function particleToSpanish(p){
+    switch(String(p||'').trim()){
+      case 'lon': return 'en';
+      case 'tawa': return 'hacia';
+      case 'kepeken': return 'usando';
+      case 'sama': return 'como';
+      case 'tan': return 'desde/(debido a)';
+      default: return '';
+    }
+  }
+
+  const B3 = {
+    "B3.1": { subj:"Yo", eVerb:"veo/miro", prepVerb:"veo/miro", obj:"la imagen" },
+    "B3.2": { subj:"La persona", eVerb:"mueve", prepVerb:"va", obj:"la casa" },
+    "B3.3": { subj:"Yo", eVerb:"como", prepVerb:"como", obj:"la fruta" },
+    "B3.4": { subj:"Yo", eVerb:"como", prepVerb:"como", obj:"la herramienta" },
+    "B3.5": { subj:"Yo", eVerb:"traigo", prepVerb:"vengo/llego", obj:"la ciudad" },
+  };
+
+  function updateB3Translation(key){
+    const sel = document.querySelector(`select[data-key="${key}"]`);
+    const out = document.querySelector(`[data-b3="${key}"]`);
+    if (!sel || !out) return;
+    const p = String(sel.value||'').trim();
+    if (!p){ out.textContent = ''; return; }
+    const t = B3[key];
+    if (!t){ out.textContent = ''; return; }
+    if (p === 'e'){
+      out.textContent = `${t.subj} ${t.eVerb} ${t.obj}.`;
+      return;
+    }
+    const prep = particleToSpanish(p);
+    out.textContent = prep ? `${t.subj} ${t.prepVerb} ${prep} ${t.obj}.` : '';
+  }
+
+  /** Autosave (debounced) */
+  let saveTimer = null;
+  function scheduleSave() {
+    if (saveTimer) clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch (_) {
+        // silent
+      }
+    }, 200);
+  }
+
+  function autoGrow(el) {
+    if (!el || el.tagName !== "TEXTAREA") return;
+    el.style.height = "auto";
+    el.style.height = (el.scrollHeight) + "px";
+  }
+
+  fields.forEach(el => {
+    el.addEventListener("input", () => {
+      const key = el.dataset.key;
+      state[key] = el.value;
+      autoGrow(el);
+      scheduleSave();
+      if (key && key.startsWith("B3.")) updateB3Translation(key);
+    });
+    if (el.tagName === "TEXTAREA") {
+      el.addEventListener("change", () => autoGrow(el));
+      // initial grow handled in setFieldValue
+    }
+  });
+
+  // Initialize B3 translation labels
+  Object.keys(B3).forEach(updateB3Translation);
+
+  /** Clear */
+  document.getElementById("clearBtn").addEventListener("click", () => {
+    clearUndoStack.push(cloneState(state));
+    if (clearUndoStack.length > UNDO_MAX) clearUndoStack.shift();
+    state = {};
+    try { localStorage.removeItem(STORAGE_KEY); } catch {}
+    fields.forEach(el => setFieldValue(el, ""));
+  });
+
+  // Undo "Clear all" with Ctrl/Cmd+Z (only when currently cleared)
+  document.addEventListener("keydown", (e) => {
+    if (!((e.ctrlKey || e.metaKey) && !e.shiftKey && (e.key === "z" || e.key === "Z"))) return;
+    if (clearUndoStack.length === 0) return;
+    if (!isStateEmpty(state)) return; // let normal undo work while editing
+    e.preventDefault();
+    const prev = clearUndoStack.pop();
+    state = cloneState(prev);
+    fields.forEach(el => setFieldValue(el, state[el.dataset.key]));
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch {}
+  }, true);
+})();
+</script>
+
+<script src="scripts/littlefoot.js"></script>
+<script>
+  if (window.littlefoot && typeof window.littlefoot.littlefoot === "function") {
+    window.littlefoot.littlefoot({});
+    // Ensure our numeric marker CSS has a number to show.
+    document.querySelectorAll(".littlefoot__button, [data-footnote-button]").forEach((btn, i) => {
+      if (btn.dataset.footnoteNumber) return;
+      const label = btn.getAttribute("aria-label") || "";
+      const m = label.match(/(\d+)/);
+      btn.dataset.footnoteNumber = m ? m[1] : String(i + 1);
+    });
+  }
+</script>
+</body>
+</html>
