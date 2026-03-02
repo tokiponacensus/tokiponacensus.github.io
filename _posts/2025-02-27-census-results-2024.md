@@ -58,7 +58,7 @@ We used a Google form in English and Toki Pona and a Tencent QQ form in Chinese 
 
 The respondents in Toki Pona increased to about 16% from the almost 14% from 2022 and the 10.8% of 2021. This percentage highly correlates with the people that reported to have an advanced or fluent level, whereas people with an intermediate level or below tend to prefer answering the census in English, despite most of them using Toki Pona a few times per week, as reported below.
 
-**Btw, I created [a Discord server](https://discord.gg/9dByQ3JT) for playing and contributing to a game inspired by Toki Pona designed to grow the Toki Pona community. [This is a post about it]({% post_url 2025-05-31-musi-supa %}).**
+**Btw, I created [a Discord server](https://discord.gg/zTT77cra6Z) for playing and contributing to a game inspired by Toki Pona designed to grow the Toki Pona community. [This is a post about it]({% post_url 2025-05-31-musi-supa %}).**
 
 <div id="24toki seme?"></div>
 
@@ -283,7 +283,7 @@ There are not significant differences in the gender distribution between the glo
 
 <div id="24What is your gender?"></div>
 
-**Btw, I created [a Discord server](https://discord.gg/9dByQ3JT) for playing and contributing to a game inspired by Toki Pona designed to grow the Toki Pona community. [This is a post about it]({% post_url 2025-05-31-musi-supa %}).**
+**Btw, I created [a Discord server](https://discord.gg/zTT77cra6Z) for playing and contributing to a game inspired by Toki Pona designed to grow the Toki Pona community. [This is a post about it]({% post_url 2025-05-31-musi-supa %}).**
 
 <div id="24What is your gender?_tp"></div>
 {% include free_text/24_What_is_your_gender.html %}
@@ -361,4 +361,4 @@ This year I put together the data from all previous years to show when people fi
 <br>
 That's it. I hope you enjoyed it. If you have any sort of feedback, you can send us <a href="mailto:tokiponacensus@gmail.com">an email</a>.
 
-**Btw, I created [a Discord server](https://discord.gg/9dByQ3JT) for playing and contributing to a game inspired by Toki Pona designed to grow the Toki Pona community. [This is a post about it]({% post_url 2025-05-31-musi-supa %}).**
+**Btw, I created [a Discord server](https://discord.gg/zTT77cra6Z) for playing and contributing to a game inspired by Toki Pona designed to grow the Toki Pona community. [This is a post about it]({% post_url 2025-05-31-musi-supa %}).**

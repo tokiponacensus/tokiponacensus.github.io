@@ -46,7 +46,7 @@ April 23, 2021. The Toki Pona census is released. After about a month and a half
 
 Most people used the English version of the form. A bit more than 10% used the Toki Pona version. Some languages could have been used more but one has to take into account that some translations only came after the census was released (Chinese, French, Esperanto).
 
-**Btw, I created [a Discord server](https://discord.gg/9dByQ3JT) for playing and contributing to a game inspired by Toki Pona designed to grow the Toki Pona community. [This is a post about it]({% post_url 2025-05-31-musi-supa %}).**
+**Btw, I created [a Discord server](https://discord.gg/zTT77cra6Z) for playing and contributing to a game inspired by Toki Pona designed to grow the Toki Pona community. [This is a post about it]({% post_url 2025-05-31-musi-supa %}).**
 
 <div id="toki seme?"></div>
 
@@ -239,5 +239,5 @@ We asked people to add anything else they wanted and we received quite a few ans
 ---
 This is it! We hope you enjoyed it. If you have any feedback, feel free to drop us <a href="mailto:tokiponacensus@gmail.com">an email</a>.
 
-**Btw, I created [a Discord server](https://discord.gg/9dByQ3JT) for playing and contributing to a game inspired by Toki Pona designed to grow the Toki Pona community. [This is a post about it]({% post_url 2025-05-31-musi-supa %}).**
+**Btw, I created [a Discord server](https://discord.gg/zTT77cra6Z) for playing and contributing to a game inspired by Toki Pona designed to grow the Toki Pona community. [This is a post about it]({% post_url 2025-05-31-musi-supa %}).**
 

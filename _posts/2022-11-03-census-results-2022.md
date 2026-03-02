@@ -49,7 +49,7 @@ Thank you to everyone that contributed to this project. o lukin pona a!
 
 Most people used the English version of the form. Almost 14% of people used the Toki Pona version, which is greater than last time's 10.8%.
 
-**Btw, I created [a Discord server](https://discord.gg/9dByQ3JT) for playing and contributing to a game inspired by Toki Pona designed to grow the Toki Pona community. [This is a post about it]({% post_url 2025-05-31-musi-supa %}).**
+**Btw, I created [a Discord server](https://discord.gg/zTT77cra6Z) for playing and contributing to a game inspired by Toki Pona designed to grow the Toki Pona community. [This is a post about it]({% post_url 2025-05-31-musi-supa %}).**
 
 <div id="22toki seme?"></div>
 
@@ -230,7 +230,7 @@ There are not very big differences between the global and the Toki Pona segments
 
 <div id="22What is your gender?"></div>
 
-**Btw, I created [a Discord server](https://discord.gg/9dByQ3JT) for playing and contributing to a game inspired by Toki Pona designed to grow the Toki Pona community. [This is a post about it]({% post_url 2025-05-31-musi-supa %}).**
+**Btw, I created [a Discord server](https://discord.gg/zTT77cra6Z) for playing and contributing to a game inspired by Toki Pona designed to grow the Toki Pona community. [This is a post about it]({% post_url 2025-05-31-musi-supa %}).**
 
 <div id="22What is your gender?_tp"></div>
 {% include free_text/22_What_is_your_gender.html %}
@@ -284,4 +284,4 @@ Thanks to everyone for participating! See you maybe at the next one, for which w
 ---
 And that's about it. I hope you had a great time reading the results. If you have any feedback, feel free to drop us <a href="mailto:tokiponacensus@gmail.com">an email</a>.
 
-**Btw, I created [a Discord server](https://discord.gg/9dByQ3JT) for playing and contributing to a game inspired by Toki Pona designed to grow the Toki Pona community. [This is a post about it]({% post_url 2025-05-31-musi-supa %}).**
+**Btw, I created [a Discord server](https://discord.gg/zTT77cra6Z) for playing and contributing to a game inspired by Toki Pona designed to grow the Toki Pona community. [This is a post about it]({% post_url 2025-05-31-musi-supa %}).**

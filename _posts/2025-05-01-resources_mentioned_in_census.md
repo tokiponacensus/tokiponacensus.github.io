@@ -15,7 +15,7 @@ related: false
 
 + [Pu and Ku](https://tokipona.org/)
 
-+ **Btw, I created [a Discord server](https://discord.gg/9dByQ3JT) for playing and contributing to a game inspired by Toki Pona designed to grow the Toki Pona community. [This is a post about it]({% post_url 2025-05-31-musi-supa %}).**
++ **Btw, I created [a Discord server](https://discord.gg/zTT77cra6Z) for playing and contributing to a game inspired by Toki Pona designed to grow the Toki Pona community. [This is a post about it]({% post_url 2025-05-31-musi-supa %}).**
 
 ---
 # nimi pi pu ala
