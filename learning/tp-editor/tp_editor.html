@@ -278,7 +278,7 @@ const DICT = {
   "la":["(between the context phrase and the main sentence)"],
   "lape":["sleep, rest"],
   "laso":["blue\ngreen"],
-  "lawa":["head, mind","to control, direct, guide, lead, own, plan, regulate, rule"],
+  "lawa":["head\nlead, mind","to control, direct, guide, own, plan, regulate, rule"],
   "len":["cloth, clothing, fabric, textile; cover, layer of privacy"],
   "lete":["cold, cool; uncooked, raw"],
   "li":["Introduces the predicate\nOmmited when \"mi\" or only \"sina\" alone is the subject\n Can introduce a second predicate for the same subject"],
@@ -826,6 +826,9 @@ const STORAGE_KEY = 'tp_editor_state_v1';
 const DEFAULT_FIRST_VISIT_STATE = {
   v: 1,
   model: [
+    ["ni","li", "nasin"],
+    ["mi","kepeken", "musi"],
+    ["mi","moli"],
     ["tomo","loje"],
     ["loje","tomo"],
     ["jan","utala","suli","ike"],
@@ -833,6 +836,7 @@ const DEFAULT_FIRST_VISIT_STATE = {
     ["jan","pi","utala","suli"],
     ["jan","pi","utala","suli","ike"],
     ["jan","ike","pi","utala","suli"],
+    ["ilo","kasi"],
     ["poki","moku"],
     ["moku","poki"],
     ["ilo","kalama","suli"],
@@ -844,6 +848,10 @@ const DEFAULT_FIRST_VISIT_STATE = {
   ],
   lineMeta: [
     {"explicitStart":false},
+    {"explicitStart":true},
+    {"explicitStart":true},
+    {"explicitStart":true},
+    {"explicitStart":true},
     {"explicitStart":true},
     {"explicitStart":true},
     {"explicitStart":true},

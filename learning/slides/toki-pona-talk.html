@@ -78,6 +78,157 @@
 				height: 56vh;
 			}
 
+			.reveal .spotify-grid {
+				display: grid;
+				grid-template-columns: repeat(2, minmax(0, 1fr));
+				gap: 1.25rem;
+				margin-top: 1rem;
+				align-items: start;
+			}
+
+			.reveal iframe.spotify-embed {
+				width: 100%;
+				height: 352px;
+				border: 0;
+				border-radius: 16px;
+			}
+
+			.reveal iframe.spotify-embed-playlist {
+				height: 58vh;
+			}
+
+			.reveal section.spotify-playlist-slide h2 {
+				font-size: 1.15em;
+				margin-bottom: 0.35rem;
+			}
+
+			.reveal .spotify-playlist-note {
+				font-size: 0.52em;
+				opacity: 0.82;
+				margin: 0 0 0.55rem;
+				text-align: center;
+			}
+
+			.reveal .spotify-open-link {
+				display: inline-block;
+				margin-top: 0.25rem;
+				padding: 0.35rem 0.8rem;
+				border: 1px solid rgba(185, 227, 255, 0.45);
+				border-radius: 999px;
+				text-decoration: none;
+			}
+
+			.reveal section.magazine-slide h2 {
+				margin-bottom: 0.25rem;
+			}
+
+			.reveal section.magazine-slide img {
+				margin-top: -0.6rem;
+				max-height: 68vh;
+			}
+
+			.reveal section.gloss-slide {
+				font-size: 0.82em;
+			}
+
+			.reveal section.gloss-slide ul,
+			.reveal section.gloss-slide li,
+			.reveal section.gloss-slide li code {
+				text-align: left;
+			}
+
+			.reveal section.gloss-slide ul {
+				display: block;
+				margin-left: 1.4rem;
+				margin-right: 0;
+			}
+
+			.reveal section.gloss-slide li code {
+				display: inline;
+			}
+
+			.reveal section.np-gloss-slide {
+				font-size: 0.76em;
+			}
+
+			.reveal section.np-gloss-slide .gloss-example {
+				margin: 0.72rem 0 0.9rem;
+			}
+
+			.reveal section.direct-objects-gloss-slide .gloss-example {
+				grid-template-columns: 42rem minmax(4rem, 1fr);
+				column-gap: 1.2rem;
+			}
+
+			.reveal section.direct-objects-gloss-slide .gloss-grid {
+				column-gap: 0.45rem;
+			}
+
+			.reveal section.direct-objects-gloss-slide .gloss-en {
+				font-size: 0.94em;
+			}
+
+			.reveal section.other-particles-gloss-slide .gloss-example {
+				grid-template-columns: 31rem minmax(9rem, 1fr);
+				column-gap: 1.2rem;
+			}
+
+			.reveal section.other-particles-gloss-slide .gloss-grid {
+				column-gap: 0.65rem;
+			}
+
+			.reveal section.other-particles-gloss-slide .gloss-final {
+				max-width: 16rem;
+				line-height: 1.2;
+			}
+
+			.reveal .gloss-example {
+				display: grid;
+				grid-template-columns: 28rem minmax(15rem, 1fr);
+				column-gap: 1.5rem;
+				align-items: start;
+				margin: 1rem 0 1.2rem;
+			}
+
+			.reveal .gloss-grid {
+				display: grid;
+				grid-template-columns: repeat(var(--cols), minmax(0, max-content));
+				column-gap: 0.8rem;
+				row-gap: 0.15rem;
+				justify-content: start;
+				margin: 0.35rem 0 0.3rem 1.4rem;
+			}
+
+			.reveal .gloss-grid span {
+				text-align: center;
+				white-space: nowrap;
+			}
+
+			.reveal .gloss-tp {
+				font-family: monospace;
+				font-size: 1.02em;
+			}
+
+			.reveal .gloss-en {
+				font-size: 1.02em;
+				opacity: 0.86;
+			}
+
+			.reveal .gloss-final {
+				align-self: center;
+				font-size: 1.06em;
+				line-height: 1.3;
+				padding-top: 0.15rem;
+				color: #b9e3ff;
+				text-align: left;
+			}
+
+			.reveal .spotify-fallbacks {
+				font-size: 0.6em;
+				margin-top: 0.85rem;
+				text-align: center;
+			}
+
 			.reveal section.compact {
 				font-size: 0.82em;
 			}
@@ -88,6 +239,81 @@
 
 			.reveal section.popularity img {
 				margin-top: -0.75rem;
+			}
+
+			.reveal section.conlang-chart-slide {
+				font-size: 0.7em;
+			}
+
+			.reveal .conlang-chart-wrap {
+				margin-top: 1rem;
+			}
+
+			.reveal .conlang-chart-legend {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.75rem 1rem;
+				justify-content: center;
+				font-size: 0.9em;
+				margin-bottom: 0.9rem;
+			}
+
+			.reveal .conlang-chart-legend span {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.35rem;
+			}
+
+			.reveal .conlang-chart-legend i {
+				width: 1.1rem;
+				height: 1.1rem;
+				display: inline-block;
+				border-radius: 999px;
+			}
+
+			.reveal .conlang-chart {
+				display: grid;
+				gap: 0.26rem;
+			}
+
+			.reveal .conlang-row {
+				display: grid;
+				grid-template-columns: 23% 1fr 10%;
+				align-items: center;
+				gap: 0.65rem;
+			}
+
+			.reveal .conlang-name {
+				text-align: right;
+				font-size: 0.94em;
+				line-height: 1.1;
+			}
+
+			.reveal .conlang-bar {
+				display: flex;
+				height: 1.15rem;
+				border-radius: 999px;
+				overflow: hidden;
+				background: rgba(255, 255, 255, 0.08);
+				box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+			}
+
+			.reveal .conlang-segment {
+				height: 100%;
+				min-width: 0;
+			}
+
+			.reveal .conlang-total {
+				font-size: 1em;
+				text-align: left;
+				opacity: 0.9;
+			}
+
+			.reveal .conlang-chart-note {
+				font-size: 0.5em;
+				margin-top: 0.8rem;
+				opacity: 0.75;
+				text-align: center;
 			}
 
 			.reveal strong,
@@ -113,8 +339,7 @@
 
 - Toki Pona is a simple, easy-to-learn constructed language.
 - It has between 120 - 135 words
-- Sonja Lang envisioned it in 2001, and went through many modifications.
-- In 2014, the first official book was published, that fixed many things about how it works.
+- Created in 2001, has gone through many modifications.
 - It's an artistic language, but mostly works as an auxiliary language..
 - It's alive and evolves.
 - Doesn't intend to be the simplest language.
@@ -126,13 +351,19 @@
 
 					<section data-background-image="figs/non_pu_words.png" data-background-size="contain" data-background-repeat="no-repeat" data-background-position="center"></section>
 
-						<section class="center popularity">
+						<section class="center conlang-chart-slide" data-no-fragments>
 							<h2>Popularity</h2>
-							<ul>
-	                            <li>It's the second most popular constructed language after Esperanto<br>
-	                            <small class="muted">~14% of Esperanto speakers speak Toki Pona).</small></li>
-							</ul>
-							<img class="img-med" style="max-height: 55vh;" src="figs/second_conlang.png" alt="Second most popular constructed language after Esperanto">
+                            <small class="muted">~14% of Esperanto speakers speak Toki Pona).</small></li>
+							<div class="conlang-chart-wrap">
+								<div class="conlang-chart-legend">
+									<span><i style="background: #6dd3ce;"></i>Discord</span>
+									<span><i style="background: #ffd166;"></i>Reddit</span>
+									<span><i style="background: #ef476f;"></i>Facebook</span>
+									<span><i style="background: #a78bfa;"></i>Telegram</span>
+									<span><i style="background: #8bd450;"></i>In-person</span>
+								</div>
+								<div id="conlang-chart" class="conlang-chart"></div>
+							</div>
 						</section>
 
 					<section>
@@ -163,38 +394,6 @@
 							</div>
 						</div>
 					</section>
-
-					<section>
-						<h2>Community - Where</h2>
-						<iframe
-							class="embed"
-							title="lipu pi sona ma (map)"
-							src="https://umap.openstreetmap.fr/en/map/lipu-pi-sona-ma_1114317#6/41.236511/-3.999023"
-							loading="lazy"
-							referrerpolicy="no-referrer"
-						></iframe>
-						<p class="muted" style="margin-top: 0.75rem;">
-							Fallback: <a href="https://umap.openstreetmap.fr/en/map/lipu-pi-sona-ma_1114317#6/41.236511/-3.999023" target="_blank" rel="noreferrer">open the map</a>
-						</p>
-					</section>
-
-					<section data-markdown>
-						<textarea data-template>
-## Community - Who and What
-
-- How many? (my estimations)
-    - ~Around 20,000 people know a lot about Toki Pona.
-    - ~Around 1,000 speak it fluently
-- Projects and Events
-    - Yearly Toki pona convention (in Europe and the US)
-    - Virtual 24h stream for tp's birthday
-    - Projects: magazines, books, translations, songs, podcasts, videos, games, etc.
-						</textarea>
-					</section>
-
-					<section data-background-image="figs/pepper_and_carrot.png" data-background-size="contain" data-background-repeat="no-repeat" data-background-position="center"></section>
-
-					<section data-background-image="figs/musi_supa_low_res.jpg" data-background-size="contain" data-background-repeat="no-repeat" data-background-position="center"></section>
 
 					<section class="center">
 						<h2>Toki Pona++: Writing systems</h2>
@@ -227,21 +426,105 @@
 						</p>
 					</section>
 
+					<section>
+						<h2>Community - Where</h2>
+						<iframe
+							class="embed"
+							title="lipu pi sona ma (map)"
+							src="https://umap.openstreetmap.fr/en/map/lipu-pi-sona-ma_1114317#6/41.236511/-3.999023"
+							loading="lazy"
+							referrerpolicy="no-referrer"
+						></iframe>
+						<p class="muted" style="margin-top: 0.75rem;">
+							Fallback: <a href="https://umap.openstreetmap.fr/en/map/lipu-pi-sona-ma_1114317#6/41.236511/-3.999023" target="_blank" rel="noreferrer">open the map</a>
+						</p>
+					</section>
+
+					<section data-markdown>
+						<textarea data-template>
+## Community - Who and What
+
+- How many? (my estimations)
+    - ~Around 20,000 people know a lot about Toki Pona.
+    - ~Around 1,000 speak it fluently
+- Projects and Events
+    - Yearly Toki pona convention (in Europe & USA). This year '26: In Spain! Aug 9 - Aug 16
+    - Virtual 24h stream for tp's birthday
+    - Projects: magazines, books, translations, songs, podcasts, videos, games, etc.
+    <!-- The Wonderful Wizard of Oz, half of the Bible, The Life of Merlin, Grimms' Fairy Tales -->
+						</textarea>
+					</section>
+
+					<section class="center magazine-slide">
+						<h2>A MAGAZINE</h2>
+						<img class="img-med" src="figs/liputenpo_covers.jpg" alt="lipu tenpo magazine covers">
+					</section>
+
+					<section data-background-image="figs/pepper_and_carrot2.png" data-background-size="contain" data-background-repeat="no-repeat" data-background-position="center"></section>
+
+					<section data-background-image="figs/musi_ilo.png" data-background-size="contain" data-background-repeat="no-repeat" data-background-position="center"></section>
+
+					<section data-background-image="figs/musi_supa_low_res.jpg" data-background-size="contain" data-background-repeat="no-repeat" data-background-position="center"></section>
+
+                    <!--
+					<section>
+						<h2>Toki Pona Music</h2>
+						<div class="spotify-grid">
+							<iframe
+								class="spotify-embed"
+								title="Spotify embed for track 742dPIyzVeOLB7VkqywAXD"
+								src="https://open.spotify.com/embed/track/742dPIyzVeOLB7VkqywAXD?utm_source=generator"
+								loading="lazy"
+								allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+							></iframe>
+							<iframe
+								class="spotify-embed"
+								title="Spotify embed for track 2mTAXRCQmXiPrA4zPmDrFP"
+								src="https://open.spotify.com/embed/track/2mTAXRCQmXiPrA4zPmDrFP?utm_source=generator"
+								loading="lazy"
+								allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+							></iframe>
+						</div>
+						<p class="spotify-fallbacks">
+							Fallback:
+							<a href="https://open.spotify.com/track/742dPIyzVeOLB7VkqywAXD" target="_blank" rel="noreferrer">track 1</a>
+							|
+							<a href="https://open.spotify.com/track/2mTAXRCQmXiPrA4zPmDrFP" target="_blank" rel="noreferrer">track 2</a>
+						</p>
+					</section>
+
+                    -->
+
+					<section class="spotify-playlist-slide">
+						<h2>Music in Toki Pona</h2>
+						<iframe
+							class="spotify-embed spotify-embed-playlist"
+							title="Spotify embed for Toki Pona playlist"
+							src="https://open.spotify.com/embed/playlist/0jNVZdISRRIuExWtYov6I1?utm_source=generator"
+							loading="lazy"
+							allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+						></iframe>
+						<p class="spotify-fallbacks">
+							<a class="spotify-open-link" href="https://open.spotify.com/playlist/0jNVZdISRRIuExWtYov6I1?si=1594552114e146f7" target="_blank" rel="noreferrer">Open the full playlist in Spotify</a>
+						</p>
+					</section>
+
+
 				</section>
 
 				<section>
 					<section class="center">
 						<h2 class="r-fit-text">How does Toki Pona work?</h2>
-                        <h5>(~70% of all Toki Pona rules)</h5>
-                        <small>(But you must know: there are no rules!)</small>
+                        <h5>(~65% of all Toki Pona rules)</h5>
+                        <!-- <small>(But you must know: there are no rules!)</small> -->
 					</section>
 
 					<section data-markdown>
 						<textarea data-template>
 ## Spelling and Pronunciation
 
-- **5 vowels**: a, e, i, o, u. They are like in Spanish/Italian.
-- **9 consonants**: j, k, s, l, m, n, p, t, w. They are like in English, except for j, which is pronounced like a y. <small class="muted">(Pronunciation is like the one of the International Phonetic Alphabet)</small>
+- **5 vowels**: a, e, i, o, u. <small class="muted">They are like in Spanish/Italian.</small>
+- **9 consonants**: j, k, s, l, m, n, p, t, w. <small class="muted">They are like in English, except for j, which is pronounced like a y.</small><br><small class="muted">(Pronunciation is like the one of the International Phonetic Alphabet)</small>
 - Sentences do not start with an upper case letter: 
     - `ni li nasin`.
 - Stress of every word is in the first syllable
@@ -250,6 +533,7 @@
 						<aside class="notes">No vowel reduction. palisa. ala.</aside>
 					</section>
 
+<!--
 					<section data-markdown>
 						<textarea data-template>
 ## Word Structure
@@ -263,31 +547,8 @@
     - ...
 						</textarea>
 					</section>
+-->
 
-					<section data-markdown>
-						<textarea data-template>
-## Word Structure
-
-- Syllables are CV with possibly an n at the end.
-- Beginning of a word? One can remove the initial C
-- Examples:
-    - si-te-len,
-    - a-la-sa
-    - an-pa
-    - ke-pe-ken
-						</textarea>
-					</section>
-
-					<section data-markdown>
-						<textarea data-template>
-## Word Structure
-
-- Proper names get adjusted to Toki Pona's phonetics. They use capitalization, and are preceded by what they are.
-    - damaru -> jan **Ta**malu
-    - España -> ma **E**panja
-    - Minecraft -> musi **Man**ka
-						</textarea>
-					</section>
 
 					<section>
 						<h2>Types of words</h2>
@@ -306,13 +567,9 @@
 							<div class="col">
 								<div class="col-title"><strong>Grammar particles</strong></div>
 								<ul>
-									<li><strong>li</strong>: Introduces predicate</li>
-									<li><strong>e</strong>: Introduces direct object</li>
-									<li><strong>en</strong>: Separates sentence subjects</li>
-									<li><strong>anu</strong>: or</li>
-									<li><strong>la</strong>: Marks end of context</li>
-									<li><strong>o</strong>: Calling someone, commands, or wishes.</li>
-								</ul>
+                                    <li><strong>li, e, en, anu, la, o.</strong></p></li>
+                                    <li><small>  Introduce predicate (li), introduce direct object (e), separate subjects (en), or (anu), mark end of context (la), calling someone, commands, or wishes(o)</small></li>
+                                </ul>
 							</div>
 						</div>
 					</section>
@@ -352,9 +609,13 @@
 						<img class="img-full" src="figs/mi_suli.jpg" alt="mi suli meaning example">
 					</section>
 
+					<section class="center">
+						<img class="img-full" src="figs/mi_moli.jpeg" alt="mi moli meaning example">
+					</section>
+
 					<section data-markdown>
 						<textarea data-template>
-## Examples
+## Example
 
 - **pona**: good, positive, useful; friendly, peaceful; simple
     - **As a noun**: goodness; improvement; positiveness
@@ -365,6 +626,7 @@
 						</textarea>
 					</section>
 
+<!--
 					<section data-markdown>
 						<textarea data-template>
 ## Examples
@@ -391,50 +653,160 @@
 						</textarea>
 						<aside class="notes">(*As preposition*: as, like)</aside>
 					</section>
+-->
 
 					<section data-markdown>
 						<textarea data-template>
 ## Detour over words
 
-- Let's open the dictionary grouped by topic
+- Let's do some exercises
 						</textarea>
 					</section>
 
-					<section class="compact" data-markdown>
-						<textarea data-template>
-## Noun Phrases
 
-- **Several words without particles**:
-    - First one is a Noun
-    - Next words modify all that came before
+					<section class="gloss-slide np-gloss-slide">
+						<h2>Noun Phrases</h2>
+						<ul>
+							<li><strong>Several words without particles</strong>:
+								<ul>
+									<li>First one is a noun.</li>
+									<li>Next words modify all that came before.</li>
+								</ul>
+							</li>
+						</ul>
 
-- `tomo loje` = (house red) = red house.
-- `loje tomo` = (red house) = the redness of the house.
-- `jan utala suli` = ((person fight) big) = big warrior.
-- `jan utala suli ike` = (((person fight) big) evil) = an evil big warrior.
-						</textarea>
+						<div class="gloss-example">
+							<div class="gloss-grid" style="--cols: 2;">
+								<span class="gloss-tp">tomo</span>
+								<span class="gloss-tp">loje</span>
+
+								<span class="gloss-en">house</span>
+								<span class="gloss-en">red</span>
+							</div>
+							<div class="gloss-final">red house</div>
+						</div>
+
+						<div class="gloss-example">
+							<div class="gloss-grid" style="--cols: 2;">
+								<span class="gloss-tp">loje</span>
+								<span class="gloss-tp">tomo</span>
+
+								<span class="gloss-en">red</span>
+								<span class="gloss-en">house</span>
+							</div>
+							<div class="gloss-final">the redness of the house</div>
+						</div>
+
+						<div class="gloss-example">
+							<div class="gloss-grid" style="--cols: 3;">
+								<span class="gloss-tp">jan</span>
+								<span class="gloss-tp">utala</span>
+								<span class="gloss-tp">suli</span>
+
+								<span class="gloss-en">(person</span>
+								<span class="gloss-en">fight)</span>
+								<span class="gloss-en">big</span>
+							</div>
+							<div class="gloss-final">big warrior</div>
+						</div>
+
+						<div class="gloss-example">
+							<div class="gloss-grid" style="--cols: 4;">
+								<span class="gloss-tp">jan</span>
+								<span class="gloss-tp">utala</span>
+								<span class="gloss-tp">suli</span>
+								<span class="gloss-tp">ike</span>
+
+								<span class="gloss-en">((person</span>
+								<span class="gloss-en">fight)</span>
+								<span class="gloss-en">big)</span>
+								<span class="gloss-en">evil</span>
+							</div>
+							<div class="gloss-final">an evil big warrior</div>
+						</div>
 					</section>
 
+
+					<section class="gloss-slide np-gloss-slide">
+						<h2>Noun Phrases</h2>
+						<ul>
+							<li><strong>The particle <code>pi</code> alters parentheses</strong>:</li>
+						</ul>
+
+						<div class="gloss-example">
+							<div class="gloss-grid" style="--cols: 3;">
+								<span class="gloss-tp">jan</span>
+								<span class="gloss-tp">utala</span>
+								<span class="gloss-tp">suli</span>
+
+								<span class="gloss-en">((person</span>
+								<span class="gloss-en">fight)</span>
+								<span class="gloss-en">big)</span>
+							</div>
+							<div class="gloss-final">a big fighter</div>
+						</div>
+
+						<div class="gloss-example">
+							<div class="gloss-grid" style="--cols: 4;">
+								<span class="gloss-tp">jan</span>
+								<span class="gloss-tp">pi</span>
+								<span class="gloss-tp">utala</span>
+								<span class="gloss-tp">suli</span>
+
+								<span class="gloss-en">(person</span>
+								<span class="gloss-en"></span>
+								<span class="gloss-en">(fight</span>
+								<span class="gloss-en">big))</span>
+							</div>
+							<div class="gloss-final">a person of war, soldier</div>
+						</div>
+
+						<div class="gloss-example">
+							<div class="gloss-grid" style="--cols: 5;">
+								<span class="gloss-tp">jan</span>
+								<span class="gloss-tp">pi</span>
+								<span class="gloss-tp">utala</span>
+								<span class="gloss-tp">suli</span>
+								<span class="gloss-tp">ike</span>
+
+								<span class="gloss-en">(person</span>
+								<span class="gloss-en"></span>
+								<span class="gloss-en">((fight</span>
+								<span class="gloss-en">big)</span>
+								<span class="gloss-en">bad))</span>
+							</div>
+							<div class="gloss-final">a person of a bad war</div>
+						</div>
+
+						<div class="gloss-example">
+							<div class="gloss-grid" style="--cols: 5;">
+								<span class="gloss-tp">jan</span>
+								<span class="gloss-tp">ike</span>
+								<span class="gloss-tp">pi</span>
+								<span class="gloss-tp">utala</span>
+								<span class="gloss-tp">suli</span>
+
+								<span class="gloss-en">((person</span>
+								<span class="gloss-en">bad)</span>
+								<span class="gloss-en"></span>
+								<span class="gloss-en">(fight</span>
+								<span class="gloss-en">big))</span>
+							</div>
+							<div class="gloss-final">a bad person of war</div>
+						</div>
+					</section>
+
+<!--
 					<section class="compact" data-markdown>
 						<textarea data-template>
 ## Noun Phrases
-
 
 - **Do not use pi with only two words**
     - Correct: `ilo kasi` = (tool plant) = tool of plants (for plants, or made of wood, etc)
     - Wrong: `ilo pi kasi` = (tool pi plant)
 						</textarea>
 					</section>
-
-					<section class="compact" data-markdown>
-						<textarea data-template>
-## Noun Phrases
-
-- **Do not use pi with only two words**
-    - Correct: `ilo kasi` = (tool plant) = tool of plants (for plants, or made of wood, etc)
-    - Wrong: `ilo pi kasi` = (tool pi plant)
-						</textarea>
-					</section>
+-->
 
 					<section class="center">
 						<h2>Noun Phrases</h2>
@@ -471,18 +843,106 @@
 						</textarea>
 					</section>
 
-					<section data-markdown>
-						<textarea data-template>
-## Some other particles
+					<section class="gloss-slide np-gloss-slide other-particles-gloss-slide">
+						<h2>Some other particles</h2>
+						<ul>
+							<li><strong>en</strong> (and): separates sentence subjects</li>
+						</ul>
 
-- en (and): separates sentence subjects
-    - `mi en sina` = you and I
-    - `soweli loje en jan suli` = (animal red) and (person big) = the red animal and the big person
+						<div class="gloss-example">
+							<div class="gloss-grid" style="--cols: 3;">
+								<span class="gloss-tp">mi</span>
+								<span class="gloss-tp">en</span>
+								<span class="gloss-tp">sina</span>
 
-- anu (or)
-						</textarea>
+								<span class="gloss-en">I</span>
+								<span class="gloss-en">and</span>
+								<span class="gloss-en">you</span>
+							</div>
+							<div class="gloss-final">you and I</div>
+						</div>
+
+						<div class="gloss-example">
+							<div class="gloss-grid" style="--cols: 5;">
+								<span class="gloss-tp">soweli</span>
+								<span class="gloss-tp">loje</span>
+								<span class="gloss-tp">en</span>
+								<span class="gloss-tp">jan</span>
+								<span class="gloss-tp">suli</span>
+
+								<span class="gloss-en">(animal</span>
+								<span class="gloss-en">red)</span>
+								<span class="gloss-en">and</span>
+								<span class="gloss-en">(person</span>
+								<span class="gloss-en">big)</span>
+							</div>
+							<div class="gloss-final">the red animal and the big person</div>
+						</div>
+
+						<ul>
+							<li><strong>anu</strong> (or)</li>
+						</ul>
 					</section>
 
+
+					<section class="gloss-slide np-gloss-slide" data-no-fragments>
+						<h2>Verbs</h2>
+						<ul>
+							<li>Use <code>li</code> to introduce a verb or what things are.</li>
+							<li>A li B =&gt; A does B action (B is a verb)</li>
+						</ul>
+
+						<div class="gloss-example">
+							<div class="gloss-grid" style="--cols: 3;">
+								<span class="gloss-tp">kasi</span>
+								<span class="gloss-tp">li</span>
+								<span class="gloss-tp">moku</span>
+
+								<span class="gloss-en">plants</span>
+								<span class="gloss-en">li</span>
+								<span class="gloss-en">eat</span>
+							</div>
+							<div class="gloss-final">plants eat</div>
+						</div>
+
+						<ul>
+							<li>A li B = A is B</li>
+						</ul>
+
+						<div class="gloss-example">
+							<div class="gloss-grid" style="--cols: 3;">
+								<span class="gloss-tp">kasi</span>
+								<span class="gloss-tp">li</span>
+								<span class="gloss-tp">moku</span>
+
+								<span class="gloss-en">plants</span>
+								<span class="gloss-en">li</span>
+								<span class="gloss-en">food</span>
+							</div>
+							<div class="gloss-final">plants are food</div>
+						</div>
+
+						<ul>
+							<li>Qualifiers are allowed: A li B C (C qualifies B)</li>
+						</ul>
+
+						<div class="gloss-example">
+							<div class="gloss-grid" style="--cols: 4;">
+								<span class="gloss-tp">kasi</span>
+								<span class="gloss-tp">li</span>
+								<span class="gloss-tp">moku</span>
+								<span class="gloss-tp">pona</span>
+
+								<span class="gloss-en">plant</span>
+								<span class="gloss-en">li</span>
+								<span class="gloss-en">(eat</span>
+								<span class="gloss-en">good)</span>
+							</div>
+							<div class="gloss-final">plants are good food (or plants eat well)</div>
+						</div>
+					</section>
+
+<!--
 					<section class="compact" data-markdown>
 						<textarea data-template>
 ## Verbs
@@ -495,7 +955,7 @@
         - `kasi li moku` = plants eat
     - Qualifiers are allowed: A li B C (C qualifies B)
         - `kasi li moku pona` = (plant li (eat good)) = plants are good food (or plants eat well)
-    - Type 3. Later
+    - Type 3. Not today
 						</textarea>
 					</section>
 
@@ -515,31 +975,96 @@
 						</textarea>
 					</section>
 
-					<section data-markdown>
-						<textarea data-template>
-## Direct Objects
+-->
 
-- Add `e + Noun Phrase` after `li + something` to indicate an object the action is done to.
-    - `jan li moku e kili suwi` =
-        (person li eat e (fruit sweet)) = a person eats a/the sweet fruit
-    - `mi lukin e tomo pi jan ni` = (I (li) see e (house ~of (person this))) = I see this person's house
+					<section class="gloss-slide np-gloss-slide">
+						<h2>Verbs</h2>
+						<ul>
+							<li><strong>Exception</strong>: Only <code>mi</code> (I) or only <code>sina</code> (You) omit <code>li</code>:</li>
+						</ul>
 
-- Examples and exercises (let's go to the sheet)
-						</textarea>
+						<div class="gloss-example">
+							<div class="gloss-grid" style="--cols: 2;">
+								<span class="gloss-tp">mi</span>
+								<span class="gloss-tp">sona</span>
+
+								<span class="gloss-en">I</span>
+								<span class="gloss-en">know</span>
+							</div>
+							<div class="gloss-final">I know</div>
+						</div>
+
+						<div class="gloss-example">
+							<div class="gloss-grid" style="--cols: 3;">
+								<span class="gloss-tp">sina</span>
+								<span class="gloss-tp">toki</span>
+								<span class="gloss-tp">mute</span>
+
+								<span class="gloss-en">you</span>
+								<span class="gloss-en">(speak</span>
+								<span class="gloss-en">many)</span>
+							</div>
+							<div class="gloss-final">you speak a lot</div>
+						</div>
+					</section>
+
+					<section class="gloss-slide direct-objects-gloss-slide">
+						<h2>Direct Objects</h2>
+						<ul>
+							<li>Add <code>e + Noun Phrase</code> after <code>li + something</code> to indicate an object the action is done to.</li>
+						</ul>
+
+						<div class="gloss-example">
+							<div class="gloss-grid" style="--cols: 6;">
+								<span class="gloss-tp">jan</span>
+								<span class="gloss-tp">li</span>
+								<span class="gloss-tp">moku</span>
+								<span class="gloss-tp">e</span>
+								<span class="gloss-tp">kili</span>
+								<span class="gloss-tp">suwi</span>
+
+								<span class="gloss-en">person</span>
+								<span class="gloss-en">li</span>
+								<span class="gloss-en">eat</span>
+								<span class="gloss-en">e</span>
+								<span class="gloss-en">(fruit</span>
+								<span class="gloss-en">sweet)</span>
+							</div>
+							<div class="gloss-final">a person eats a sweet fruit</div>
+						</div>
+
+						<div class="gloss-example">
+							<div class="gloss-grid" style="--cols: 7;">
+								<span class="gloss-tp">mi</span>
+								<span class="gloss-tp">lukin</span>
+								<span class="gloss-tp">e</span>
+								<span class="gloss-tp">tomo</span>
+								<span class="gloss-tp">pi</span>
+								<span class="gloss-tp">jan</span>
+								<span class="gloss-tp">ni</span>
+
+								<span class="gloss-en">I</span>
+								<span class="gloss-en">see</span>
+								<span class="gloss-en">e</span>
+								<span class="gloss-en">(house</span>
+								<span class="gloss-en">of</span>
+								<span class="gloss-en">(person</span>
+								<span class="gloss-en">this))</span>
+							</div>
+							<div class="gloss-final">I see this person's house</div>
+						</div>
 					</section>
 
 					<section data-markdown>
 						<textarea data-template>
-## Prepositions
+## How speaking feels like
 
-- lon (in / at), tawa (toward), kepeken (using), sama (as, like), tan (because, from, by).
+- I come to have a house animal. From its mouth, it gives balls of lines from the head.
 
-- Type 3 predicate A li Preposition B
-    - ona li lon tomo = (they li (at house)) = they "at the house"
-    - mi tawa nena ni = (I (li) (toward (mountain this))) = I "toward this mountain"
-    - sina tan ma mi a = (you (li) (from (land I !!) )) = you "from my land!"
+- At a close time, the tool of time changed. So bad! I sleep little.
 						</textarea>
 					</section>
+
 				</section>
 
 				<section>
@@ -559,12 +1084,55 @@
 						<textarea data-template>
 ## Learning resources
 
-- Communities on discord, reddit, telegram, etc. and chatting/talking to people there!
+- Communities on [discord](https://discord.com/invite/mapona), [reddit](https://www.reddit.com/r/tokipona/), [telegram](https://t.me/kulupupitokipona), etc. and chatting/talking to people there!
 - [Official pu dictionary](https://jan-ne.github.io/tp/dictionary)
 - [A modern dictionary: nimi.li](https://nimi.li/)
 						</textarea>
 					</section>
 				</section>
+
+                <section>
+					<section data-markdown>
+						<textarea data-template>
+## EXTRA: Word Structure
+
+- Syllables are CV with possibly an n at the end.
+- Beginning of a word? One can remove the initial C
+- Examples:
+    - si-te-len,
+    - a-la-sa
+    - an-pa
+    - ke-pe-ken
+						</textarea>
+					</section>
+
+					<section data-markdown>
+						<textarea data-template>
+## EXTRA: Word Structure
+
+- Proper names get adjusted to Toki Pona's phonetics. They use capitalization, and are preceded by what they are.
+    - damaru -> jan **Ta**malu
+    - España -> ma **E**panja
+    - Minecraft -> musi **Man**ka
+						</textarea>
+					</section>
+
+					<section data-markdown>
+						<textarea data-template>
+## Prepositions
+
+- lon (in / at), tawa (toward), kepeken (using), sama (as, like), tan (because, from, by).
+
+- Type 3 predicate A li Preposition B
+    - ona li lon tomo = (they li (at house)) = they "at the house"
+    - mi tawa nena ni = (I (li) (toward (mountain this))) = I "toward this mountain"
+    - sina tan ma mi a = (you (li) (from (land I !!) )) = you "from my land!"
+						</textarea>
+					</section>
+
+
+                </section>
+
 			</div>
 		</div>
 
@@ -573,6 +1141,72 @@
 		<script src="plugin/markdown/markdown.js"></script>
 		<script src="plugin/highlight/highlight.js"></script>
 		<script>
+				const conlangCommunityData = [
+					{ name: 'Esperanto', d: 8839, r: 35000, f: 25500, t: 1220, p: 1567 },
+					{ name: 'Toki Pona', d: 19281, r: 31000, f: 7400, t: 499, p: 45 },
+					{ name: 'Interslavic', d: 8935, r: 3200, f: 22500, t: 220, p: 67 },
+					{ name: "Na'vi (Avatar)", d: 18376, r: 825, f: 0, t: 0, p: 28 },
+					{ name: 'Langs in Lord of the Rings', d: 3983, r: 10000, f: 1900, t: 0, p: 18 },
+					{ name: 'Viossa', d: 6037, r: 2900, f: 0, t: 0, p: 0 },
+					{ name: 'Lojban', d: 1860, r: 4400, f: 1900, t: 424, p: 10 },
+					{ name: 'High Valyrian or Dothraki (GoT)', d: 1944, r: 5600, f: 1000, t: 0, p: 40 },
+					{ name: 'Klingon (Star Trek)', d: 1769, r: 2500, f: 3300, t: 0, p: 70 }
+				];
+
+				const conlangCommunitySeries = [
+					{ key: 'd', label: 'Discord', color: '#6dd3ce' },
+					{ key: 'r', label: 'Reddit', color: '#ffd166' },
+					{ key: 'f', label: 'Facebook', color: '#ef476f' },
+					{ key: 't', label: 'Telegram', color: '#a78bfa' },
+					{ key: 'p', label: 'In-person', color: '#8bd450' }
+				];
+
+				function buildConlangChart() {
+					const chart = document.getElementById( 'conlang-chart' );
+					if( !chart || chart.dataset.ready === 'true' ) return;
+
+					const withTotals = conlangCommunityData.map( item => ( {
+						...item,
+						total: conlangCommunitySeries.reduce( ( sum, series ) => sum + item[ series.key ], 0 )
+					} ) );
+					const maxTotal = Math.max( ...withTotals.map( item => item.total ) );
+					const formatter = new Intl.NumberFormat( 'en-US' );
+
+					withTotals.forEach( item => {
+						const row = document.createElement( 'div' );
+						row.className = 'conlang-row';
+
+						const name = document.createElement( 'div' );
+						name.className = 'conlang-name';
+						name.textContent = item.name;
+						row.appendChild( name );
+
+						const bar = document.createElement( 'div' );
+						bar.className = 'conlang-bar';
+						bar.title = `${item.name}: ${formatter.format( item.total )}`;
+
+						conlangCommunitySeries.forEach( series => {
+							if( !item[ series.key ] ) return;
+							const segment = document.createElement( 'span' );
+							segment.className = 'conlang-segment';
+							segment.style.width = `${item[ series.key ] / maxTotal * 100}%`;
+							segment.style.background = series.color;
+							segment.title = `${series.label}: ${formatter.format( item[ series.key ] )}`;
+							bar.appendChild( segment );
+						} );
+
+						const total = document.createElement( 'div' );
+						total.className = 'conlang-total';
+						total.textContent = formatter.format( item.total );
+
+						row.appendChild( bar );
+						row.appendChild( total );
+						chart.appendChild( row );
+					} );
+
+					chart.dataset.ready = 'true';
+				}
+
 				function enablePauseLikeFragments() {
 					const allSections = document.querySelectorAll( '.reveal .slides section' );
 
@@ -666,12 +1300,14 @@
 				}
 
 				setupYouTubeEmbeds();
+				buildConlangChart();
 
 				Reveal.initialize( {
 					hash: true,
 					slideNumber: true,
 					plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
 				} ).then( () => {
+					buildConlangChart();
 					enablePauseLikeFragments();
 					Reveal.syncFragments();
 					bindLeftRightToAlwaysSkipFragments();
