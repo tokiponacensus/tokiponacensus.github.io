@@ -169,8 +169,8 @@
 			}
 
 			.reveal section.other-particles-gloss-slide .gloss-example {
-				grid-template-columns: 31rem minmax(9rem, 1fr);
-				column-gap: 1.2rem;
+				grid-template-columns: 28rem minmax(14rem, 1fr);
+				column-gap: 1rem;
 			}
 
 			.reveal section.other-particles-gloss-slide .gloss-grid {
@@ -178,8 +178,24 @@
 			}
 
 			.reveal section.other-particles-gloss-slide .gloss-final {
-				max-width: 16rem;
+				max-width: none;
 				line-height: 1.2;
+			}
+
+			.reveal section.pi-gloss-slide .gloss-example {
+				grid-template-columns: 31rem minmax(12rem, 1fr);
+			}
+
+			.reveal section.pi-gloss-slide .gloss-grid {
+				column-gap: 0.65rem;
+			}
+
+			.reveal section.prepositions-gloss-slide .gloss-example {
+				grid-template-columns: 35rem minmax(10rem, 1fr);
+			}
+
+			.reveal section.prepositions-gloss-slide .gloss-grid {
+				column-gap: 0.55rem;
 			}
 
 			.reveal .gloss-example {
@@ -609,9 +625,7 @@
 						<img class="img-full" src="figs/mi_suli.jpg" alt="mi suli meaning example">
 					</section>
 
-					<section class="center">
-						<img class="img-full" src="figs/mi_moli.jpeg" alt="mi moli meaning example">
-					</section>
+					<section data-background-image="figs/mi_moli.png" data-background-size="contain" data-background-repeat="no-repeat" data-background-position="center"></section>
 
 					<section data-markdown>
 						<textarea data-template>
@@ -727,7 +741,7 @@
 					</section>
 
 
-					<section class="gloss-slide np-gloss-slide">
+					<section class="gloss-slide np-gloss-slide pi-gloss-slide">
 						<h2>Noun Phrases</h2>
 						<ul>
 							<li><strong>The particle <code>pi</code> alters parentheses</strong>:</li>
@@ -739,9 +753,9 @@
 								<span class="gloss-tp">utala</span>
 								<span class="gloss-tp">suli</span>
 
-								<span class="gloss-en">((person</span>
+								<span class="gloss-en">(person</span>
 								<span class="gloss-en">fight)</span>
-								<span class="gloss-en">big)</span>
+								<span class="gloss-en">big</span>
 							</div>
 							<div class="gloss-final">a big fighter</div>
 						</div>
@@ -753,10 +767,10 @@
 								<span class="gloss-tp">utala</span>
 								<span class="gloss-tp">suli</span>
 
-								<span class="gloss-en">(person</span>
+								<span class="gloss-en">person</span>
 								<span class="gloss-en"></span>
 								<span class="gloss-en">(fight</span>
-								<span class="gloss-en">big))</span>
+								<span class="gloss-en">big)</span>
 							</div>
 							<div class="gloss-final">a person of war, soldier</div>
 						</div>
@@ -769,11 +783,11 @@
 								<span class="gloss-tp">suli</span>
 								<span class="gloss-tp">ike</span>
 
-								<span class="gloss-en">(person</span>
+								<span class="gloss-en">person</span>
 								<span class="gloss-en"></span>
 								<span class="gloss-en">((fight</span>
 								<span class="gloss-en">big)</span>
-								<span class="gloss-en">bad))</span>
+								<span class="gloss-en">bad)</span>
 							</div>
 							<div class="gloss-final">a person of a bad war</div>
 						</div>
@@ -786,11 +800,11 @@
 								<span class="gloss-tp">utala</span>
 								<span class="gloss-tp">suli</span>
 
-								<span class="gloss-en">((person</span>
+								<span class="gloss-en">(person</span>
 								<span class="gloss-en">bad)</span>
 								<span class="gloss-en"></span>
 								<span class="gloss-en">(fight</span>
-								<span class="gloss-en">big))</span>
+								<span class="gloss-en">big)</span>
 							</div>
 							<div class="gloss-final">a bad person of war</div>
 						</div>
@@ -882,6 +896,21 @@
 						<ul>
 							<li><strong>anu</strong> (or)</li>
 						</ul>
+
+						<div class="gloss-example">
+							<div class="gloss-grid" style="--cols: 4;">
+								<span class="gloss-tp">telo</span>
+								<span class="gloss-tp">kasi</span>
+								<span class="gloss-tp">anu</span>
+								<span class="gloss-tp">telo taso</span>
+
+								<span class="gloss-en">(water</span>
+								<span class="gloss-en">plant)</span>
+								<span class="gloss-en">or</span>
+								<span class="gloss-en">(water only)</span>
+							</div>
+							<div class="gloss-final">tea or water</div>
+						</div>
 					</section>
 
 
@@ -889,7 +918,7 @@
 						<h2>Verbs</h2>
 						<ul>
 							<li>Use <code>li</code> to introduce a verb or what things are.</li>
-							<li>A li B =&gt; A does B action (B is a verb)</li>
+							<li>A li B = A does B action (B is a verb)</li>
 						</ul>
 
 						<div class="gloss-example">
@@ -1117,17 +1146,59 @@
 						</textarea>
 					</section>
 
-					<section data-markdown>
-						<textarea data-template>
-## Prepositions
+					<section class="gloss-slide np-gloss-slide prepositions-gloss-slide" data-no-fragments>
+						<h2>Prepositions</h2>
+						<ul>
+							<li><strong>lon</strong> (in / at), <strong>tawa</strong> (toward), <strong>kepeken</strong> (using), <strong>sama</strong> (as, like), <strong>tan</strong> (because, from, by).</li>
+							<li>Another use of <code>li</code>: A li Preposition B</li>
+						</ul>
 
-- lon (in / at), tawa (toward), kepeken (using), sama (as, like), tan (because, from, by).
+						<div class="gloss-example">
+							<div class="gloss-grid" style="--cols: 4;">
+								<span class="gloss-tp">ona</span>
+								<span class="gloss-tp">li</span>
+								<span class="gloss-tp">lon</span>
+								<span class="gloss-tp">tomo</span>
 
-- Type 3 predicate A li Preposition B
-    - ona li lon tomo = (they li (at house)) = they "at the house"
-    - mi tawa nena ni = (I (li) (toward (mountain this))) = I "toward this mountain"
-    - sina tan ma mi a = (you (li) (from (land I !!) )) = you "from my land!"
-						</textarea>
+								<span class="gloss-en">they</span>
+								<span class="gloss-en">li</span>
+								<span class="gloss-en">(at</span>
+								<span class="gloss-en">house)</span>
+							</div>
+							<div class="gloss-final">they "at the house"</div>
+						</div>
+
+						<div class="gloss-example">
+							<div class="gloss-grid" style="--cols: 4;">
+								<span class="gloss-tp">mi</span>
+								<span class="gloss-tp">tawa</span>
+								<span class="gloss-tp">nena</span>
+								<span class="gloss-tp">ni</span>
+
+								<span class="gloss-en">I</span>
+								<span class="gloss-en">(toward</span>
+								<span class="gloss-en">(mountain</span>
+								<span class="gloss-en">this))</span>
+							</div>
+							<div class="gloss-final">I "toward this mountain"</div>
+						</div>
+
+						<div class="gloss-example">
+							<div class="gloss-grid" style="--cols: 5;">
+								<span class="gloss-tp">sina</span>
+								<span class="gloss-tp">tan</span>
+								<span class="gloss-tp">ma</span>
+								<span class="gloss-tp">mi</span>
+								<span class="gloss-tp">a</span>
+
+								<span class="gloss-en">you</span>
+								<span class="gloss-en">(from</span>
+								<span class="gloss-en">(land</span>
+								<span class="gloss-en">I</span>
+								<span class="gloss-en">!!))</span>
+							</div>
+							<div class="gloss-final">you "from my land!"</div>
+						</div>
 					</section>
 
 
