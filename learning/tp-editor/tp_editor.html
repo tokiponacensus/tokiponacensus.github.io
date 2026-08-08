@@ -107,6 +107,7 @@
   .sug-tp{font-weight:600}
   #meas{position:absolute;left:-9999px;top:-9999px;visibility:hidden;white-space:nowrap;font-weight:600}
   body.no-glyphs .sp{display:none}
+  body.no-english .en{display:none}
 
   /* ---- Mobile ergonomics (desktop behavior unchanged) ---- */
   .tp,.en,.glyph,.fallback,.sug-item,button{touch-action:manipulation}
@@ -188,6 +189,7 @@
       <button id="erase" type="button">🗑️ Erase all</button>
       <button id="toggleDict" type="button">📖 Show Dictionary</button>
       <button id="toggleGlyphs" type="button">🗿 Show hieroglyphs</button>
+      <button id="toggleEnglish" type="button">🇬🇧 Hide English</button>
       <button id="toggleAdvanced" type="button">⚙️ Show advanced</button>
     </div>
     <p id="options" style="margin:6px 0 12px; color:var(--muted); display:none">
@@ -232,6 +234,7 @@ document.addEventListener('pointerdown', (e)=>{ lastPointerType = e.pointerType 
 // Some mobile browsers won't send PointerEvents for all interactions; keep a touch hint too.
 document.addEventListener('touchstart', ()=>{ lastPointerType = 'touch'; }, { capture:true, passive:true });
 const TOUCH_CAPABLE = (('ontouchstart' in window) || (navigator.maxTouchPoints > 0));
+let lastViewportWidth = window.innerWidth;
 function isTouchLikeEvent(e){
   const pt = (e && e.pointerType) || lastPointerType || (TOUCH_CAPABLE ? 'touch' : 'mouse');
   return pt && pt !== 'mouse';
@@ -882,6 +885,7 @@ const DEFAULT_FIRST_VISIT_STATE = {
   history: { undoStack: [], redoStack: [] },
   ui: {
     noGlyphs: true,
+    noEnglish: false,
     optionsVisible: false,
     dictVisible: false,
     checks: {
@@ -914,6 +918,12 @@ function syncGlyphToggleLabel(){
   if (!btn) return;
   const isHidden = document.body.classList.contains('no-glyphs');
   btn.textContent = isHidden ? '🗿 Show hieroglyphs' : '🗿 Hide hieroglyphs';
+}
+function syncEnglishToggleLabel(){
+  const btn = document.getElementById('toggleEnglish');
+  if (!btn) return;
+  const isHidden = document.body.classList.contains('no-english');
+  btn.textContent = isHidden ? '🇬🇧 Show English' : '🇬🇧 Hide English';
 }
 function syncDictToggleLabel(){
   const btn = document.getElementById('toggleDict');
@@ -1160,6 +1170,7 @@ function saveState(){
       },
       ui: {
         noGlyphs: document.body.classList.contains('no-glyphs'),
+        noEnglish: document.body.classList.contains('no-english'),
         optionsVisible: !(document.getElementById('options').style.display === 'none' || getComputedStyle(document.getElementById('options')).display === 'none'),
         dictVisible: document.body.classList.contains('split-mode'),
         checks: {
@@ -1180,6 +1191,7 @@ function saveState(){
         lineMeta,
         ui: {
           noGlyphs: document.body.classList.contains('no-glyphs'),
+          noEnglish: document.body.classList.contains('no-english'),
           optionsVisible: !(document.getElementById('options').style.display === 'none' || getComputedStyle(document.getElementById('options')).display === 'none'),
           dictVisible: document.body.classList.contains('split-mode'),
           checks: {
@@ -1238,7 +1250,7 @@ function loadState(){
     undoStack = sanitizeStack(hist.undoStack);
     redoStack = sanitizeStack(hist.redoStack);
 
-    // Apply UI state (checkboxes + visibility + glyph toggle)
+    // Apply UI state (checkboxes + visibility toggles)
     const ui = parsed.ui || {};
     const checks = ui.checks || {};
     const setCheck = (id, val)=>{ const el=document.getElementById(id); if (el) el.checked = !!val; };
@@ -1249,9 +1261,11 @@ function loadState(){
     const opts = document.getElementById('options');
     if (opts) opts.style.display = ui.optionsVisible ? '' : 'none';
     if (ui.noGlyphs) document.body.classList.add('no-glyphs'); else document.body.classList.remove('no-glyphs');
+    if (ui.noEnglish) document.body.classList.add('no-english'); else document.body.classList.remove('no-english');
     if (ui.dictVisible) document.body.classList.add('split-mode'); else document.body.classList.remove('split-mode');
     syncAdvancedToggleLabel();
     syncGlyphToggleLabel();
+    syncEnglishToggleLabel();
     syncDictToggleLabel();
     if (ui.dictVisible) buildDictionaryOnce();
 
@@ -2312,6 +2326,14 @@ document.getElementById('toggleGlyphs').addEventListener('click', (e)=>{
   scheduleSaveState();
 });
 
+// English gloss visibility toggle
+document.getElementById('toggleEnglish').addEventListener('click', (e)=>{
+  e.preventDefault();
+  document.body.classList.toggle('no-english');
+  syncEnglishToggleLabel();
+  scheduleSaveState();
+});
+
 // Dictionary pane toggle
 document.getElementById('toggleDict').addEventListener('click', (e)=>{
   e.preventDefault();
@@ -2783,14 +2805,21 @@ loadState();
 suppressSave = false;
 syncAdvancedToggleLabel();
 syncGlyphToggleLabel();
+syncEnglishToggleLabel();
 syncDictToggleLabel();
 initGrammarEngine();
 computeGrammar();
 render();
-setTimeout(()=> focusCell(0,0,true), 0);
+if (!TOUCH_CAPABLE) setTimeout(()=> focusCell(0,0,true), 0);
 
 /* ---------- Reflow on resize ---------- */
 window.addEventListener("resize", ()=>{
+  const nextWidth = window.innerWidth;
+  const widthChanged = Math.abs(nextWidth - lastViewportWidth) > 2;
+  lastViewportWidth = nextWidth;
+  // On mobile, opening the soft keyboard often triggers a height-only resize.
+  // Re-rendering then destroys the focused contenteditable and collapses the keyboard.
+  if (TOUCH_CAPABLE && currentFocus && !widthChanged) return;
   setFixedWidth();
   reflowRespectingExplicit();
   render();

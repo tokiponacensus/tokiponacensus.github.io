@@ -22,7 +22,7 @@ related: false
 Credit to Nicolas Hurtubise for the grammar checker that the editor uses. Check out [the original](https://telo-misikeke.gitlab.io/).
 
 
-Credit to [lipu tenpo](https://liputenpo.org/) 
+Credit to [lipu tenpo](https://liputenpo.org/), and to [/u/Zoran_Ankervliner](https://www.reddit.com/r/tokipona/comments/ztsxcd/mi_moli/)
 
 ### Resources
 
