@@ -6,7 +6,16 @@ permalink: /couse-materials/
 toc: true
 toc_label: "Learning Material"
 related: false
+header:
+    teaser: /assets/images/slides_preview.png
 ---
+
+
+ <figure>
+  <img src="/assets/images/slides_preview.png">  
+</figure> 
+
+
 
 ## Toki Pona learning material
 

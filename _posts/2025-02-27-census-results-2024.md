@@ -1,11 +1,13 @@
 ---
 layout: single
-title:  "Results of the 2024 Toki Pona census"
+title:  "Results of the August 2024 Toki Pona census"
 description: "Results of the third Toki Pona census, 2 years after the second one."
 permalink: /results2024/
 toc: true
 toc_label: "Results"
 related: false
+header:
+  teaser: /assets/images/census-2024.png
 
 ---
 
@@ -21,6 +23,8 @@ related: false
  <figure>
   <img src="/assets/images/sitelen_pona.png">  
 </figure> 
+
+[The 2026 census is open! Fill it! Even if it's only for the first few questions](https://forms.gle/398cRvnSGAADqU6B8)
 
 Go [here]({% post_url 2025-05-01-resources_mentioned_in_census %}) for a list of pointers to resources mentioned in the census.
 

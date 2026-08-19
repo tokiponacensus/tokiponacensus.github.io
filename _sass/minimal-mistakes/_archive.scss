@@ -91,7 +91,20 @@
   overflow: hidden;
 
   img {
+    display: block;
     width: 100%;
+  }
+}
+
+.archive__item-teaser-link {
+  display: block;
+  width: 100%;
+  max-width: 36rem;
+  margin: 0.5em 0 1em;
+
+  &:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
   }
 }
 

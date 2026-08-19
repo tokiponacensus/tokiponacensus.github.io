@@ -1,11 +1,13 @@
 ---
 layout: single
-title:  "Results of the 2021 Toki Pona census"
+title:  "Results of the April 2021 Toki Pona census"
 description: "These are the results of the first attempt to get an idea of what the shape of the Toki Pona community is. "
 permalink: /results/
 toc: true
 toc_label: "Results"
 related: false
+header:
+  teaser: /assets/images/nasin-kulupu.png
 ---
 
 {% include graphs.html %}
@@ -18,6 +20,8 @@ related: false
 <small>
 Go [here]({% post_url 2025-05-01-resources_mentioned_in_census %}) for a list of pointers to resources mentioned in the census.
 </small>
+
+[The 2026 census is open! Fill it! Even if it's only for the first few questions](https://forms.gle/398cRvnSGAADqU6B8)
 
 How is the Toki Pona community? Who is interested in Toki Pona? Up to now we could only guess but we were really as much in the dark as the character above. Fret not! You are about to see. 
 
@@ -240,4 +244,3 @@ We asked people to add anything else they wanted and we received quite a few ans
 This is it! We hope you enjoyed it. If you have any feedback, feel free to drop us <a href="mailto:tokiponacensus@gmail.com">an email</a>.
 
 **Btw, I created [a Discord server](https://discord.gg/zTT77cra6Z) for playing and contributing to a game inspired by Toki Pona designed to grow the Toki Pona community. [This is a post about it]({% post_url 2025-05-31-musi-supa %}).**
-

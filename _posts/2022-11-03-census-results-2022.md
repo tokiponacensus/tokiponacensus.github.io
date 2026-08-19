@@ -1,11 +1,13 @@
 ---
 layout: single
-title:  "Results of the 2022 Toki Pona census"
+title:  "Results of theAugust 2022 Toki Pona census"
 description: "Results of the second Toki Pona census, 1.5 years after the first one."
 permalink: /results2022/
 toc: true
 toc_label: "Results"
 related: false
+header:
+  teaser: /assets/images/census-2022.png
 
 ---
 
@@ -19,6 +21,8 @@ related: false
 <small>
 Go [here]({% post_url 2025-05-01-resources_mentioned_in_census %}) for a list of pointers to resources mentioned in the census.
 </small>
+
+[The 2026 census is open! Fill it! Even if it's only for the first few questions](https://forms.gle/398cRvnSGAADqU6B8)
 
 How much has the Toki Pona community changed since April 2021? Is it still growing exponentially? Are Ku suli words known or used? Find about this and much more in the results to the second Toki Pona census, version 2022. 
 

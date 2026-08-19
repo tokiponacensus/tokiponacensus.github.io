@@ -4,13 +4,13 @@ layout: archive
 
 {{ content }}
 
+<p>Hi! I'm jan Tamalu. These are a few Toki Pona things I've made, including the Toki Pona census, where many other people have also contributed.</p>
+
+<p>toki a! mi jan Tamalu. ijo mi pi mute lili pi toki pona li lon ni, sama lipu pi jan ale pi toki pona (jan ante mute li pali tawa lipu ni pi jan ale).</p>
+
 <h3 class="archive__subtitle">{{ site.data.ui-text[site.locale].recent_posts | default: "Recent Posts" }}</h3>
 
-{% if paginator %}
-  {% assign posts = paginator.posts %}
-{% else %}
-  {% assign posts = site.posts %}
-{% endif %}
+{% assign posts = site.posts %}
 
 {% assign entries_layout = page.entries_layout | default: 'list' %}
 <div class="entries-{{ entries_layout }}">
@@ -18,5 +18,3 @@ layout: archive
     {% include archive-single.html type=entries_layout %}
   {% endfor %}
 </div>
-
-{% include paginator.html %}
