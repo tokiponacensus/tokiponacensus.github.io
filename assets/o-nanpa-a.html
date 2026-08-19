@@ -615,13 +615,14 @@ function LukinExamplesTable(){return(0,p.jsxs)(`section`,{className:`lukin-examp
 (0,p.jsx)(`div`,{className:`lukin-examples-table`,children:(0,p.jsx)(`table`,{children:(0,p.jsx)(`tbody`,{children:lukinExamples.map((e,t)=>(0,p.jsxs)(`tr`,{className:e.start?`example-set-start`:void 0,children:[
 (0,p.jsxs)(`th`,{scope:`row`,children:[e.value,e.note&&(0,p.jsx)(`small`,{children:e.note})]}),
 (0,p.jsx)(`td`,{children:(0,p.jsx)(`code`,{className:`example-code-stack`,children:e.lines.map((e,t)=>(0,p.jsx)(`span`,{children:e},`${e}-${t}`))})})]},`${e.value}-${t}`))})})})]})}
-function fe(){let[e,t]=(0,f.useState)(`home`),[n,r]=(0,f.useState)(`wan`),[i,a]=(0,f.useState)([]),[o,s]=(0,f.useState)(0),[c,l]=(0,f.useState)(0),[u,d]=(0,f.useState)(``),[m,v]=(0,f.useState)(0),[x,S]=(0,f.useState)(null),[C,w]=(0,f.useState)(1),[te,ne]=(0,f.useState)(null),[re,ie]=(0,f.useState)(_[0].seconds*1e3),[ae,oe]=(0,f.useState)(null),[se,fe]=(0,f.useState)({pi:0,wan:0}),[pe,O]=(0,f.useState)(`right`),[k,me]=(0,f.useState)(``),[he,ge]=(0,f.useState)(!1),[_e,ve]=(0,f.useState)([...h]),ye=(0,f.useRef)(null),be=(0,f.useRef)(!1),xe=i[o],Se=_[C-1],Ce=se[n],we=Math.min(5,Ce+1);
+function fe(){let[e,t]=(0,f.useState)(`home`),[n,r]=(0,f.useState)(`wan`),[i,a]=(0,f.useState)([]),[o,s]=(0,f.useState)(0),[c,l]=(0,f.useState)(0),[u,d]=(0,f.useState)(``),[m,v]=(0,f.useState)(0),[x,S]=(0,f.useState)(null),[C,w]=(0,f.useState)(1),[te,ne]=(0,f.useState)(null),[re,ie]=(0,f.useState)(_[0].seconds*1e3),[ae,oe]=(0,f.useState)(null),[se,fe]=(0,f.useState)({pi:0,wan:0}),[pe,O]=(0,f.useState)(`right`),[k,me]=(0,f.useState)(``),[homeShareNotice,setHomeShareNotice]=(0,f.useState)(``),[bestTimes,setBestTimes]=(0,f.useState)({pi:{},wan:{}}),[he,ge]=(0,f.useState)(!1),[_e,ve]=(0,f.useState)([...h]),ye=(0,f.useRef)(null),be=(0,f.useRef)(!1),xe=i[o],Se=_[C-1],Ce=se[n],we=Math.min(5,Ce+1);
 let Te=Math.max(0,Math.min(100,re/(levelSeconds(Se,he)*1e3)*100)),Ee=i.slice(0,c);
-(0,f.useEffect)(()=>{if(e!==`playing`||ae===null)return;let n=()=>{let e=Math.max(0,ae-Date.now());ie(e),e===0&&!be.current&&(be.current=!0,S(null),ne(`timeout`),t(`done`))};n();let r=window.setInterval(n,50);return()=>window.clearInterval(r)},[e,ae]),(0,f.useEffect)(()=>{e===`playing`&&ye.current?.focus()},[e,o]),(0,f.useEffect)(()=>{let e=window.matchMedia(`(max-width: 760px), (pointer: coarse)`),t=()=>ge(e.matches);return t(),e.addEventListener(`change`,t),()=>e.removeEventListener(`change`,t)},[]),(0,f.useEffect)(()=>{if(e!==`done`||he)return;let n=n=>{(n.code===`Space`||n.key===` `)&&!n.repeat&&(n.preventDefault(),Oe(te===`cleared`&&C<5?C+1:C))},r=window.setTimeout(()=>window.addEventListener(`keydown`,n),2e3);return()=>{window.clearTimeout(r),window.removeEventListener(`keydown`,n)}},[e,he,te,C]),(0,f.useEffect)(()=>{if(e!==`home`||he)return;let n=n=>{(n.code===`Space`||n.key===` `)&&!n.repeat&&(n.preventDefault(),Oe(we))};return window.addEventListener(`keydown`,n),()=>window.removeEventListener(`keydown`,n)},[e,he,we]),(0,f.useEffect)(()=>{let e=Number(window.localStorage.getItem(`o-nanpa-highest-cleared-pi`)??`0`),t=Number(window.localStorage.getItem(`o-nanpa-highest-cleared-wan`)??`0`),n=window.localStorage.getItem(`o-nanpa-handedness`),r=window.setTimeout(()=>{fe({pi:Number.isInteger(e)?Math.max(0,Math.min(5,e)):0,wan:Number.isInteger(t)?Math.max(0,Math.min(5,t)):0}),(n===`left`||n===`right`)&&O(n)},0);return()=>window.clearTimeout(r)},[]);
+(0,f.useEffect)(()=>{if(e!==`playing`||ae===null)return;let n=()=>{let e=Math.max(0,ae-Date.now());ie(e),e===0&&!be.current&&(be.current=!0,S(null),ne(`timeout`),t(`done`))};n();let r=window.setInterval(n,50);return()=>window.clearInterval(r)},[e,ae]),(0,f.useEffect)(()=>{e===`playing`&&ye.current?.focus()},[e,o]),(0,f.useEffect)(()=>{let e=window.matchMedia(`(max-width: 760px), (pointer: coarse)`),t=()=>ge(e.matches);return t(),e.addEventListener(`change`,t),()=>e.removeEventListener(`change`,t)},[]),(0,f.useEffect)(()=>{if(e!==`done`||he)return;let n=n=>{(n.code===`Space`||n.key===` `)&&!n.repeat&&(n.preventDefault(),Oe(te===`cleared`&&C<5?C+1:C))},r=window.setTimeout(()=>window.addEventListener(`keydown`,n),2e3);return()=>{window.clearTimeout(r),window.removeEventListener(`keydown`,n)}},[e,he,te,C]),(0,f.useEffect)(()=>{if(e!==`home`||he)return;let n=n=>{(n.code===`Space`||n.key===` `)&&!n.repeat&&(n.preventDefault(),Oe(we))};return window.addEventListener(`keydown`,n),()=>window.removeEventListener(`keydown`,n)},[e,he,we]),(0,f.useEffect)(()=>{let e=Number(window.localStorage.getItem(`o-nanpa-highest-cleared-pi`)??`0`),t=Number(window.localStorage.getItem(`o-nanpa-highest-cleared-wan`)??`0`),n=window.localStorage.getItem(`o-nanpa-handedness`),i={pi:{},wan:{}};for(let e of[`pi`,`wan`])for(let t=1;t<=5;t++){let n=Number(window.localStorage.getItem(`o-nanpa-best-time-${e}-${t}`));Number.isFinite(n)&&n>=0&&(i[e][t]=n)}let r=window.setTimeout(()=>{fe({pi:Number.isInteger(e)?Math.max(0,Math.min(5,e)):0,wan:Number.isInteger(t)?Math.max(0,Math.min(5,t)):0}),setBestTimes(i),(n===`left`||n===`right`)&&O(n)},0);return()=>window.clearTimeout(r)},[]);
 function De(e){O(e),window.localStorage.setItem(`o-nanpa-handedness`,e)}
 function Oe(e){let r=_[e-1];!r||e>we||(be.current=!1,w(e),a(T(n,e)),s(0),l(0),d(``),v(0),S(null),ne(null),me(``),ve(y([...b(n)])),ie(levelSeconds(r,he)*1e3),oe(D(levelSeconds(r,he))),t(`playing`),window.scrollTo({top:0,behavior:`smooth`}))}
-function ke(e){if(e.preventDefault(),!(!xe||!u.trim()||x===`correct`)){if(v(e=>e+1),!ce(u,xe,n)){S(`wrong`),window.setTimeout(()=>S(null),650);return}if(S(`correct`),l(o+1),o===i.length-1){be.current=!0,oe(null),ne(`cleared`),fe(e=>{let t=Math.max(e[n],C);return window.localStorage.setItem(`o-nanpa-highest-cleared-${n}`,String(t)),{...e,[n]:t}}),window.setTimeout(()=>t(`done`),220);return}s(e=>e+1),d(``),S(null),ve(y([...b(n)]))}}async function Ae(){let e=Ee.length?Ee.map(e=>`${E(e.value)} = ${e.toki}`):[`none`],t=[`Can you beat this Toki Pona numbers speed game?`,`tokiponacensus.github.io/o-nanpa-a/`,`o nanpa a! nasin nanpa lukin`,`Level ${[`1️⃣`,`2️⃣`,`3️⃣`,`4️⃣`,`5️⃣`][C-1]} ${Math.max(0,Math.ceil(re/1e3))}s left`,``,...e].join(`
-`);try{if(navigator.clipboard?.writeText)await navigator.clipboard.writeText(t);else{let e=document.createElement(`textarea`);e.value=t,e.setAttribute(`readonly`,``),e.style.position=`fixed`,e.style.opacity=`0`,document.body.appendChild(e),e.select(),e.setSelectionRange(0,e.value.length);let n=document.execCommand(`copy`);if(e.remove(),!n)throw Error(`Clipboard copy failed`)}me(`copied!`)}catch{me(`could not copy`)}}
+function ke(e){if(e.preventDefault(),!(!xe||!u.trim()||x===`correct`)){if(v(e=>e+1),!ce(u,xe,n)){S(`wrong`),window.setTimeout(()=>S(null),650);return}if(S(`correct`),l(o+1),o===i.length-1){be.current=!0,oe(null),ne(`cleared`),fe(e=>{let t=Math.max(e[n],C);return window.localStorage.setItem(`o-nanpa-highest-cleared-${n}`,String(t)),{...e,[n]:t}}),setBestTimes(e=>{let t=Math.max(Number(e[n]?.[C])||0,re),r={...e,[n]:{...e[n],[C]:t}};return window.localStorage.setItem(`o-nanpa-best-time-${n}-${C}`,String(t)),r}),window.setTimeout(()=>t(`done`),220);return}s(e=>e+1),d(``),S(null),ve(y([...b(n)]))}}async function Ae(){let e=Ee.length?Ee.map(e=>`${E(e.value)} = ${e.toki}`):[`none`],t=[`Can you beat this Toki Pona numbers speed game?`,`https://tokiponacensus.github.io/o-nanpa-a/`,`o nanpa a! nasin nanpa lukin`,`Level ${[`1️⃣`,`2️⃣`,`3️⃣`,`4️⃣`,`5️⃣`][C-1]} ${Math.max(0,Math.ceil(re/1e3))}s left`,``,...e].join(`
+`);try{if(navigator.clipboard?.writeText)await navigator.clipboard.writeText(t);else{let e=document.createElement(`textarea`);e.value=t,e.setAttribute(`readonly`,``),e.style.position=`fixed`,e.style.opacity=`0`,document.body.appendChild(e),e.select(),e.setSelectionRange(0,e.value.length);let n=document.execCommand(`copy`);if(e.remove(),!n)throw Error(`Clipboard copy failed`)}me(`copied!`)}catch{me(`could not copy`)}}async function homeShare(){let e=Ce,t=Number(bestTimes[n]?.[e])||0,r=e>0?`${[`1️⃣`,`2️⃣`,`3️⃣`,`4️⃣`,`5️⃣`][e-1]} | ${Math.max(0,Math.ceil(t/1e3))}s left
+`:``;r+=`https://tokiponacensus.github.io/o-nanpa-a/`;try{if(navigator.clipboard?.writeText)await navigator.clipboard.writeText(r);else{let e=document.createElement(`textarea`);e.value=r,e.setAttribute(`readonly`,``),e.style.position=`fixed`,e.style.opacity=`0`,document.body.appendChild(e),e.select(),e.setSelectionRange(0,e.value.length);let t=document.execCommand(`copy`);if(e.remove(),!t)throw Error(`Clipboard copy failed`)}setHomeShareNotice(`Best results copied!`),window.setTimeout(()=>setHomeShareNotice(``),1800)}catch{setHomeShareNotice(`Could not copy`),window.setTimeout(()=>setHomeShareNotice(``),1800)}}
 function je(e){d(e),x===`wrong`&&S(null),he||window.requestAnimationFrame(()=>ye.current?.focus())}
 function Me(e){je(t=>e===`-`?t.startsWith(`-`)?t.slice(1):`-${t}`:e===`.`&&t.includes(`.`)?t:`${t}${e}`)}
 function Ne(e){je(t=>{let r=t.trimEnd();return r?r===`weka`||r.endsWith(` pi`)||r.endsWith(` weka`)||r.endsWith(` sike`)?`${r} ${e}`:n===`pi`?`${r}, ${e}`:`${r} ${e}`:e})}
@@ -654,7 +655,7 @@ function Fe(e){je(t=>{if(e)return t.slice(0,-1);let r=t.trimEnd();if(!r)return``
 (0,p.jsxs)(`div`,{className:`keypad-controls`,children:[(0,p.jsxs)(`button`,{className:`enter-key`,type:`submit`,children:[(0,p.jsx)(`span`,{children:`enter`}),
 (0,p.jsx)(`b`,{children:`↵`})]}),
 (0,p.jsxs)(`button`,{className:`erase-key`,type:`button`,onClick:()=>Fe(!1),"aria-label":`Erase last press`,children:[(0,p.jsx)(`span`,{children:`erase`}),
-(0,p.jsx)(`b`,{children:`⌫`})]})]})]})]})]})]})}if(e===`done`){let e=te===`cleared`;return(0,p.jsx)(`main`,{className:`result-shell`,children:(0,p.jsxs)(`section`,{className:`result-card`,children:[(0,p.jsx)(`div`,{className:`result-burst ${e?`burst-cleared`:`burst-failed`}`,"aria-hidden":`true`,children:e?`✓`:`×`}),
+(0,p.jsx)(`b`,{children:`⌫`})]})]})]})]})]})]})}if(e===`done`){let e=te===`cleared`;return(0,p.jsx)(`main`,{className:`result-shell`,children:(0,p.jsxs)(`section`,{className:`result-card ${e?`result-cleared`:`result-failed`}`,children:[(0,p.jsx)(`div`,{className:`result-burst ${e?`burst-cleared`:`burst-failed`}`,"aria-hidden":`true`,children:e?`✓`:`×`}),
 (0,p.jsxs)(`p`,{className:`eyebrow`,children:[`level `,C,` · `,e?`survived`:`time ran out`]}),
 (0,p.jsx)(`h1`,{children:e?`pona mute!`:`tenpo li pini`}),
 (0,p.jsx)(ue,{mode:n}),
@@ -673,7 +674,7 @@ function Fe(e){je(t=>{if(e)return t.slice(0,-1);let r=t.trimEnd();if(!r)return``
 (0,p.jsx)(`button`,{className:`secondary-button`,type:`button`,onClick:()=>t(`home`),children:`levels & settings`})]}),
 (0,p.jsxs)(`section`,{className:`completed-list number-mode-${n}`,children:[(0,p.jsx)(`h2`,{children:`completed numbers`}),Ee.length?(0,p.jsx)(`ol`,{children:Ee.map(e=>(0,p.jsxs)(`li`,{children:[E(e.value),` = `,e.toki]},e.id))}):(0,p.jsx)(`p`,{children:`none yet`})]})]})})}return(0,p.jsxs)(`main`,{className:`home-shell`,children:[(0,p.jsx)(`section`,{className:`hero survival-hero`,children:(0,p.jsxs)(`div`,{className:`hero-copy survival-home`,children:[(0,p.jsxs)(`div`,{className:`compact-brand`,children:[(0,p.jsxs)(`h1`,{children:[`o `,
 (0,p.jsx)(`em`,{children:`nanpa`}),` a!`]}),
-(0,p.jsx)(`span`,{children:`Game by jan Tamalu`})]}),
+(0,p.jsxs)(`div`,{className:`brand-actions`,children:[(0,p.jsx)(`span`,{children:`Game by jan Tamalu`}),(0,p.jsxs)(`button`,{className:`home-share-button ${homeShareNotice===`Best results copied!`?`copied`:``}`,type:`button`,onClick:homeShare,"aria-label":`Copy personal best to clipboard`,children:[(0,p.jsx)(`img`,{src:`/assets/sitelen%20pona/share.svg`,alt:``,"aria-hidden":`true`}),(0,p.jsx)(`span`,{className:`visually-hidden`,children:`Copy best results`})]})]})]}),
 he&&(0,p.jsx)(`div`,{className:`hand-setting`,children:(0,p.jsxs)(`div`,{className:`hand-toggle`,role:`group`,"aria-label":`Choose keypad handedness`,children:[(0,p.jsx)(`button`,{type:`button`,className:pe===`left`?`selected`:``,onClick:()=>De(`left`),"aria-pressed":pe===`left`,children:`left handed`}),
 (0,p.jsx)(`button`,{type:`button`,className:pe===`right`?`selected`:``,onClick:()=>De(`right`),"aria-pressed":pe===`right`,children:`right handed`})]})}),
 (0,p.jsxs)(`div`,{className:`level-select`,children:[(0,p.jsx)(`div`,{className:`level-heading`,children:(0,p.jsx)(`p`,{className:`level-intro`,children:`Write the fastest Toki Pona numbers fast. Can you beat the five levels? Rules below.`})}),
@@ -682,6 +683,7 @@ he&&(0,p.jsx)(`div`,{className:`hand-setting`,children:(0,p.jsxs)(`div`,{classNa
 (0,p.jsx)(`small`,{children:le(levelSeconds(e,he)*1e3)}),
 (0,p.jsx)(`b`,{children:e.label}),
 (0,p.jsx)(`em`,{className:`level-status`,children:t?`locked`:n?`cleared ✓`:``})]},e.number)})})]})]})}),
+homeShareNotice&&(0,p.jsx)(`div`,{className:`copy-toast ${homeShareNotice===`Best results copied!`?`success`:`error`}`,role:`status`,"aria-live":`polite`,children:homeShareNotice}),
 (0,p.jsxs)(`section`,{className:`how-it-works`,id:`rules`,children:[(0,p.jsxs)(`div`,{className:`system-card wan-system`,children:[(0,p.jsxs)(`div`,{className:`system-title`,children:[(0,p.jsx)(`div`,{children:(0,p.jsx)(`h3`,{children:`nasin nanpa lukin`})}),
 (0,p.jsxs)(`p`,{children:[`Every digit has its own single word. `,(0,p.jsx)(`img`,{className:`choice-reason-icon inline-reason-icon`,src:`/assets/sitelen%20pona/pen.svg`,alt:`pen`}),` means the number of segments in sitelen pona.`]})]}),
 (0,p.jsx)(de,{})]}),
@@ -718,9 +720,19 @@ button:focus-visible,input:focus-visible,a:focus-visible,summary:focus-visible{o
 .hero-copy{z-index:1;max-width:760px;position:relative}
 .survival-hero{grid-template-columns:1fr;min-height:auto;padding:32px max(6vw,24px) 18px}
 .survival-home{width:min(1120px,100%);max-width:none;margin:0 auto}
-.compact-brand{justify-content:space-between;align-items:baseline;gap:18px;margin-bottom:20px;display:flex}
+.compact-brand{justify-content:space-between;align-items:center;gap:18px;margin-bottom:20px;display:flex}
 .compact-brand h1{font-size:clamp(3rem,7vw,5.2rem);line-height:.9}
-.compact-brand>span{color:var(--muted);font-size:.72rem;font-weight:800}
+.brand-actions{align-items:center;gap:14px;display:flex}
+.brand-actions>span{color:var(--muted);font-size:.72rem;font-weight:800}
+.home-share-button{border:1px solid var(--ink);background:var(--card);cursor:pointer;width:48px;height:48px;box-shadow:3px 3px 0 var(--ink);border-radius:2px;place-items:center;padding:0;transition:transform .12s,box-shadow .12s,background .12s;display:grid}
+.home-share-button:hover{box-shadow:1px 1px 0 var(--ink);transform:translate(2px,2px)}
+.home-share-button:active{box-shadow:none;transform:translate(3px,3px)}
+.home-share-button.copied{background:var(--yellow)}
+.home-share-button img{width:21px;height:21px;display:block}
+.copy-toast{z-index:1000;pointer-events:none;color:#fff;background:var(--ink);border:1px solid var(--ink);box-shadow:4px 4px 0 #0003;border-radius:2px;max-width:calc(100vw - 32px);padding:13px 18px;font-size:.88rem;font-weight:800;position:fixed;top:max(24px,env(safe-area-inset-top));left:50%;transform:translateX(-50%);animation:copy-toast 1.8s ease both}
+.copy-toast.error{background:var(--coral-dark)}
+@keyframes copy-toast{0%{opacity:0;transform:translate(-50%,10px)}12%,82%{opacity:1;transform:translate(-50%,0)}100%{opacity:0;transform:translate(-50%,-4px)}}
+.visually-hidden{clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;width:1px;height:1px;overflow:hidden;position:absolute}
 .single-mode-title{border-block:1px solid var(--ink);background:#18715b1a;justify-content:space-between;align-items:center;gap:20px;margin:0 0 18px;padding:13px 16px;font:400 1.45rem/1.1 Georgia,serif;display:flex}
 .single-mode-title span{color:var(--green);white-space:nowrap;font:800 .68rem/1 Inter,ui-sans-serif,system-ui,sans-serif;text-transform:uppercase;letter-spacing:.08em}
 .compact-label{color:var(--muted);letter-spacing:.13em;text-transform:uppercase;margin-bottom:8px;font-size:.62rem;font-weight:800;display:block}
@@ -958,10 +970,14 @@ code{color:var(--green-dark);background:#18715b1a;border-radius:3px;padding:.08e
 }
 @media (width<=620px){.hero{padding-inline:20px;gap:65px;padding-bottom:64px}
 .hero.survival-hero{padding:16px 12px 14px}
+.survival-home{width:100%;min-width:0}
 .hero h1{font-size:clamp(5rem,26vw,7rem)}
 .compact-brand{margin-bottom:14px}
 .survival-hero .compact-brand h1{font-size:2.8rem}
-.compact-brand>span{font-size:.62rem}
+.brand-actions{gap:9px}
+.brand-actions>span{display:none}
+.home-share-button{width:40px;height:40px;box-shadow:2px 2px 0 var(--ink)}
+.home-share-button img{width:18px;height:18px}
 .single-mode-title{padding:11px 12px;font-size:1.15rem}
 .single-mode-title span{font-size:.56rem}
 .hero-lede{margin-top:32px;font-size:1.08rem}
@@ -992,7 +1008,7 @@ code{color:var(--green-dark);background:#18715b1a;border-radius:3px;padding:.08e
 .lukin-examples-table th,.lukin-examples-table td{padding:11px 10px}
 .lukin-examples-table th{width:38%;font-size:.9rem}
 .lukin-examples-table td{overflow-wrap:anywhere;font-size:.78rem}
-.hand-setting{margin-top:12px}
+.hand-setting{width:100%;margin-top:12px}
 .hand-toggle{width:100%}
 .hand-toggle button{min-height:42px;font-size:.68rem}
 .level-select{margin-top:20px}
@@ -1028,6 +1044,11 @@ code{color:var(--green-dark);background:#18715b1a;border-radius:3px;padding:.08e
 .result-stats{grid-template-columns:1fr 1fr 1fr}
 .result-stats div{padding-inline:6px}
 .result-actions{grid-template-columns:1fr}
+.result-failed{flex-direction:column;display:flex}
+.result-failed>.result-actions{order:1}
+.result-failed>.failed-answer{order:2;margin:20px 0 28px}
+.result-failed>.result-share{order:3;margin:0 0 28px}
+.result-failed>.completed-list{order:4}
 .mobile-failure-tip{color:var(--muted);text-align:left;margin:14px 0 0;font-size:.8rem;line-height:1.45;display:block}
 }
 @media (prefers-reduced-motion:reduce){*,:before,:after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}
