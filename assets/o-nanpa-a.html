@@ -665,7 +665,7 @@ function Fe(e){je(t=>{if(e)return t.slice(0,-1);let r=t.trimEnd();if(!r)return``
 (0,p.jsxs)(`div`,{children:[(0,p.jsx)(`span`,{children:`time left`}),
 (0,p.jsx)(`strong`,{children:le(re)})]})]}),
 (0,p.jsxs)(`div`,{className:`result-share`,children:[(0,p.jsxs)(`button`,{className:`share-button`,type:`button`,onClick:Ae,"aria-label":`Copy result to clipboard`,children:[`share result `,
-(0,p.jsx)(`span`,{children:`⧉`})]}),
+(0,p.jsx)(`span`,{children:`⧉`})]}),!e&&(0,p.jsx)(`p`,{className:`mobile-failure-tip`,children:`A fast way to type is to think of what you want to write`}),
 (0,p.jsx)(`p`,{className:`share-status`,"aria-live":`polite`,children:k})]}),!e&&xe&&(0,p.jsxs)(`div`,{className:`failed-answer number-mode-${n}`,children:[(0,p.jsx)(`span`,{children:`the answer was`}),
 (0,p.jsxs)(`strong`,{children:[E(xe.value),` = `,xe.toki]})]}),
 (0,p.jsxs)(`div`,{className:`result-actions`,children:[(0,p.jsxs)(`button`,{className:`primary-button`,type:`button`,onClick:()=>Oe(e&&C<5?C+1:C),"aria-keyshortcuts":he?void 0:`Space`,children:[e&&C<5?`play level ${C+1}`:`try again`,he?``:` (space bar)`,` `,
@@ -930,6 +930,7 @@ code{color:var(--green-dark);background:#18715b1a;border-radius:3px;padding:.08e
 .share-button{background:var(--green);color:#fff;justify-content:space-between;display:flex}
 .result-share{margin:-15px 0 28px}
 .result-share .share-button{width:100%;box-shadow:4px 4px 0 var(--ink);font-size:1rem}
+.mobile-failure-tip{display:none}
 .share-status{min-height:20px;color:var(--green);text-align:center;margin:10px 0 0;font-size:.72rem;font-weight:800}
 .failed-answer{border:1px solid var(--line);background:var(--card);margin:-10px 0 32px;padding:18px}
 .failed-answer span{color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;font-size:.65rem;font-weight:800;display:block}
@@ -1000,9 +1001,10 @@ code{color:var(--green-dark);background:#18715b1a;border-radius:3px;padding:.08e
 .level-heading>small{font-size:.55rem}
 .level-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}
 .level-grid button{min-height:82px;box-shadow:1px 1px 0 var(--ink);align-items:center;padding:6px 3px}
-.level-grid button>span,.level-grid button>b{display:none}
+.level-grid button>span{display:none}
 .level-grid button>strong{margin:2px 0 5px;font-size:2rem}
 .level-grid button>small{font-size:.55rem}
+.level-grid button>b{text-align:center;overflow-wrap:anywhere;margin-top:auto;font-size:.48rem;line-height:1.15;display:block}
 .level-grid button>.level-status{margin-top:3px;font-size:.47rem}
 .game-topbar{grid-template-columns:1fr 1fr;height:46px}
 .game-topbar .mode-badge{display:none}
@@ -1026,6 +1028,7 @@ code{color:var(--green-dark);background:#18715b1a;border-radius:3px;padding:.08e
 .result-stats{grid-template-columns:1fr 1fr 1fr}
 .result-stats div{padding-inline:6px}
 .result-actions{grid-template-columns:1fr}
+.mobile-failure-tip{color:var(--muted);text-align:left;margin:14px 0 0;font-size:.8rem;line-height:1.45;display:block}
 }
 @media (prefers-reduced-motion:reduce){*,:before,:after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}
 }
