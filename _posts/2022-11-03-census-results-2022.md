@@ -1,6 +1,6 @@
 ---
 layout: single
-title:  "Results of theAugust 2022 Toki Pona census"
+title:  "Results of the August 2022 Toki Pona census"
 description: "Results of the second Toki Pona census, 1.5 years after the first one."
 permalink: /results2022/
 toc: true
