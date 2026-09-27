@@ -559,7 +559,7 @@ function t(){i!==null&&(i(),i=null),r||setTimeout(n,20)}
 function n(){if(!r&&!navigation.transition){var e=navigation.currentEntry;e&&e.url!=null&&navigation.navigate(e.url,{state:e.getState(),info:`react-transition`,history:`replace`})}}if(typeof navigation==`object`){var r=!1,i=null;return navigation.addEventListener(`navigate`,e),navigation.addEventListener(`navigatesuccess`,t),navigation.addEventListener(`navigateerror`,t),setTimeout(n,100),function(){r=!0,navigation.removeEventListener(`navigate`,e),navigation.removeEventListener(`navigatesuccess`,t),navigation.removeEventListener(`navigateerror`,t),i!==null&&(i(),i=null)}}}
 function Fp(e){this._internalRoot=e}Ip.prototype.render=Fp.prototype.render=function(e){var t=this._internalRoot;if(t===null)throw Error(s(409));var n=t.current;np(n,pu(),e,t,null,null)},Ip.prototype.unmount=Fp.prototype.unmount=function(){var e=this._internalRoot;if(e!==null){this._internalRoot=null;var t=e.containerInfo;np(e.current,2,null,e,null,null),bu(),t[_t]=null}};
 function Ip(e){this._internalRoot=e}Ip.prototype.unstable_scheduleHydration=function(e){if(e){var t=ft();e={blockedOn:null,target:e,priority:t};for(var n=0;n<xp.length&&t!==0&&t<xp[n].priority;n++);xp.splice(n,0,e),n===0&&Ep(e)}};var Lp=r.version;if(Lp!==`19.2.6`)throw Error(s(527,Lp,`19.2.6`));D.findDOMNode=function(e){var t=e._reactInternals;if(t===void 0)throw typeof e.render==`function`?Error(s(188)):(e=Object.keys(e).join(`,`),Error(s(268,e)));return e=p(t),e=e===null?null:m(e),e=e===null?null:e.stateNode,e};var Rp={bundleType:0,version:`19.2.6`,rendererPackageName:`react-dom`,currentDispatcherRef:E,reconcilerVersion:`19.2.6`};if(typeof __REACT_DEVTOOLS_GLOBAL_HOOK__<`u`){var zp=__REACT_DEVTOOLS_GLOBAL_HOOK__;if(!zp.isDisabled&&zp.supportsFiber)try{Ue=zp.inject(Rp),We=zp}catch{}}e.createRoot=function(e,t){if(!c(e))throw Error(s(299));var n=!1,r=``,i=Zs,a=Qs,o=$s;return t!=null&&(!0===t.unstable_strictMode&&(n=!0),t.identifierPrefix!==void 0&&(r=t.identifierPrefix),t.onUncaughtError!==void 0&&(i=t.onUncaughtError),t.onCaughtError!==void 0&&(a=t.onCaughtError),t.onRecoverableError!==void 0&&(o=t.onRecoverableError)),t=ep(e,1,!1,null,null,n,r,null,i,a,o,Pp),e[_t]=t.current,Sd(e),new Fp(t)}})),c=e(((e,t)=>{function n(){if(!(typeof __REACT_DEVTOOLS_GLOBAL_HOOK__>`u`||typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.checkDCE!=`function`))try{__REACT_DEVTOOLS_GLOBAL_HOOK__.checkDCE(n)}catch(e){console.error(e)}}n(),t.exports=s()})),l=e((e=>{var t=Symbol.for(`react.transitional.element`);
-function n(e,n,r){var i=null;if(r!==void 0&&(i=``+r),n.key!==void 0&&(i=``+n.key),`key`in n)for(var a in r={},n)a!==`key`&&(r[a]=n[a]);else r=n;return n=r.ref,{$$typeof:t,type:e,key:i,ref:n===void 0?null:n,props:r}}e.jsx=n,e.jsxs=n})),u=e(((e,t)=>{t.exports=l()})),d=c(),f=n(),p=u(),m=[`ala`,`wan`,`tu`,`poki`,`lipu`,`luka`,`pan`,`sona`,`mama`,`pipi`],h=[`ala`,`wan`,`tu`,`tu wan`,`tu tu`,`luka`,`luka wan`,`luka tu`,`luka tu wan`,`luka tu tu`],
+function n(e,n,r){var i=null;if(r!==void 0&&(i=``+r),n.key!==void 0&&(i=``+n.key),`key`in n)for(var a in r={},n)a!==`key`&&(r[a]=n[a]);else r=n;return n=r.ref,{$$typeof:t,type:e,key:i,ref:n===void 0?null:n,props:r}}e.jsx=n,e.jsxs=n})),u=e(((e,t)=>{t.exports=l()})),d=c(),f=n(),p=u(),reactDom=o(),m=[`ala`,`wan`,`tu`,`poki`,`lipu`,`luka`,`pan`,`sona`,`mama`,`pipi`],h=[`ala`,`wan`,`tu`,`tu wan`,`tu tu`,`luka`,`luka wan`,`luka tu`,`luka tu wan`,`luka tu tu`],
 g=[`0`,`1`,`2`,`3`,`4`,`5`,`6`,`7`,`8`,`9`],_=[{number:1,seconds:180,label:`plenty of time`},{number:2,seconds:120,label:`steady`},{number:3,seconds:90,label:`quick`},{number:4,seconds:60,label:`fast`},{number:5,seconds:40,label:`hell`}];
 function levelSeconds(e,t){return e.number===5&&!t?30:e.seconds}
 function v(e,t){return Math.floor(Math.random()*(t-e+1))+e}
@@ -683,12 +683,13 @@ he&&(0,p.jsx)(`div`,{className:`hand-setting`,children:(0,p.jsxs)(`div`,{classNa
 (0,p.jsx)(`small`,{children:le(levelSeconds(e,he)*1e3)}),
 (0,p.jsx)(`b`,{children:e.label}),
 (0,p.jsx)(`em`,{className:`level-status`,children:t?`locked`:n?`cleared ✓`:``})]},e.number)})})]})]})}),
-homeShareNotice&&(0,p.jsx)(`div`,{className:`copy-toast ${homeShareNotice===`Best results copied!`?`success`:`error`}`,role:`status`,"aria-live":`polite`,children:homeShareNotice}),
+homeShareNotice&&(0,reactDom.createPortal)((0,p.jsx)(`div`,{className:`copy-toast ${homeShareNotice===`Best results copied!`?`success`:`error`}`,role:`status`,"aria-live":`polite`,children:homeShareNotice}),document.getElementById(`toast-root`)),
 (0,p.jsxs)(`section`,{className:`how-it-works`,id:`rules`,children:[(0,p.jsxs)(`div`,{className:`system-card wan-system`,children:[(0,p.jsxs)(`div`,{className:`system-title`,children:[(0,p.jsx)(`div`,{children:(0,p.jsx)(`h3`,{children:`nasin nanpa lukin`})}),
 (0,p.jsxs)(`p`,{children:[`Every digit has its own single word. `,(0,p.jsx)(`img`,{className:`choice-reason-icon inline-reason-icon`,src:`/assets/sitelen%20pona/pen.svg`,alt:`pen`}),` means the number of segments in sitelen pona.`]})]}),
 (0,p.jsx)(de,{})]}),
 (0,p.jsxs)(`div`,{className:`section-heading`,children:[(0,p.jsxs)(`div`,{className:`section-title-copy`,children:[(0,p.jsx)(`h2`,{children:`Spell one digit at a time.`}),
-(0,p.jsx)(`p`,{className:`section-subtitle`,children:`The visual number system that reads numbers as they are written.`})]}),
+(0,p.jsx)(`p`,{className:`section-subtitle`,children:`The visual number system that reads numbers as they are written.`}),
+(0,p.jsxs)(`p`,{className:`section-subtitle mutation-credit`,children:[`A mutation of `,(0,p.jsx)(`a`,{href:`https://damaru2.github.io/fun/my-number-system/`,children:`nasin nanpa Pi`})]})]}),
 (0,p.jsxs)(`p`,{children:[`Read digits from left to right. Put `,
 (0,p.jsx)(`code`,{children:`sike`}),` where the decimal point goes and `,
 (0,p.jsx)(`code`,{children:`weka`}),` first for a negative number. `,
@@ -729,7 +730,7 @@ button:focus-visible,input:focus-visible,a:focus-visible,summary:focus-visible{o
 .home-share-button:active{box-shadow:none;transform:translate(3px,3px)}
 .home-share-button.copied{background:var(--yellow)}
 .home-share-button img{width:21px;height:21px;display:block}
-.copy-toast{z-index:1000;pointer-events:none;color:#fff;background:var(--ink);border:1px solid var(--ink);box-shadow:4px 4px 0 #0003;border-radius:2px;max-width:calc(100vw - 32px);padding:13px 18px;font-size:.88rem;font-weight:800;position:fixed;top:max(24px,env(safe-area-inset-top));left:50%;transform:translateX(-50%);animation:copy-toast 1.8s ease both}
+.copy-toast{z-index:1000;pointer-events:none;color:#fff;background:var(--ink);border:1px solid var(--ink);box-shadow:4px 4px 0 #0003;border-radius:2px;max-width:calc(100vw - 32px);padding:13px 18px;font-size:.88rem;font-weight:800;text-align:center;white-space:nowrap;position:fixed;top:calc(16px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);animation:copy-toast 1.8s ease both}
 .copy-toast.error{background:var(--coral-dark)}
 @keyframes copy-toast{0%{opacity:0;transform:translate(-50%,10px)}12%,82%{opacity:1;transform:translate(-50%,0)}100%{opacity:0;transform:translate(-50%,-4px)}}
 .visually-hidden{clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;width:1px;height:1px;overflow:hidden;position:absolute}
@@ -801,6 +802,8 @@ button:focus-visible,input:focus-visible,a:focus-visible,summary:focus-visible{o
 .section-heading h2{letter-spacing:-.045em;margin:0;font:400 clamp(2.3rem,4.2vw,4rem)/1.02 Georgia,serif}
 .section-heading>p{color:var(--muted);margin:7px 0 0;line-height:1.72}
 .section-subtitle{max-width:580px;color:var(--muted);margin:13px 0 0;font-size:.92rem;line-height:1.5}
+.section-subtitle.mutation-credit{margin-top:4px}
+.mutation-credit a{color:var(--green);font-weight:700}
 .system-card+.section-heading{margin-top:88px}
 code{color:var(--green-dark);background:#18715b1a;border-radius:3px;padding:.08em .28em;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
 .system-card{border:1px solid var(--ink);background:var(--card);box-shadow:7px 7px 0 var(--ink);margin-top:26px}
@@ -1057,6 +1060,7 @@ code{color:var(--green-dark);background:#18715b1a;border-radius:3px;padding:.08e
 </style>
   </head>
   <body>
+    <div id="toast-root"></div>
     <div id="root"></div>
   </body>
 </html>
