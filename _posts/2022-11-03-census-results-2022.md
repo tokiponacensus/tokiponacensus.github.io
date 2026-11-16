@@ -6,6 +6,7 @@ permalink: /results2022/
 toc: true
 toc_label: "Results"
 related: false
+show_first_image_in_list: true
 header:
   teaser: /assets/images/census-2022.png
 
@@ -19,10 +20,8 @@ header:
   <figcaption><small>Art: David Revoy, <a href="https://www.davidrevoy.com" target="_blank">www.davidrevoy.com</a></small></figcaption>
 </figure> 
 <small>
-Go [here]({% post_url 2025-05-01-resources_mentioned_in_census %}) for a list of pointers to resources mentioned in the census.
+Go [here]({% post_url 2026-11-15-resources_mentioned_in_census %}) for a list of pointers to resources mentioned in the census.
 </small>
-
-[The 2026 census is open! Fill it! Even if it's only for the first few questions](https://forms.gle/398cRvnSGAADqU6B8)
 
 How much has the Toki Pona community changed since April 2021? Is it still growing exponentially? Are Ku suli words known or used? Find about this and much more in the results to the second Toki Pona census, version 2022. 
 

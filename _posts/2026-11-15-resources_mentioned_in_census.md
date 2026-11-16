@@ -8,12 +8,14 @@ toc_label: "Resources"
 related: false
 ---
 
+Most things can be found in the [Toki Pona website](https://tokipona.net/resources/)
+
 # ijo mute pi toki pona 
 ---
 
 <!-- + [This doc](https://docs.google.com/document/d/1Dzs-imNeZ8TMgdHUiiungJ4Yf97CJk9ylhQPXjWLsJU) contains lots of pointers to Toki Pona resources. -->
 
-+ [Pu and Ku](https://tokipona.org/)
++ [Pu, Ku and Su](https://tokipona.org/)
 
 + **Btw, I created [a Discord server](https://discord.gg/zTT77cra6Z) for playing and contributing to a game inspired by Toki Pona designed to grow the Toki Pona community. [This is a post about it]({% post_url 2025-05-31-musi-supa %}).**
 
@@ -26,6 +28,8 @@ related: false
 # kama sona
 ---
 
++ [Wasona](https://wasona.com/)
+
 + [12 days of Toki Pona by jan Misali](https://www.youtube.com/watch?v=4L-dvvng4Zc&list=PLjOmpMyMxd8T9lZjF36c4mn4YgwZ4ToT6)
 
 + [jan Lentan’s course](https://lipu-sona.pona.la/).
@@ -33,6 +37,10 @@ related: false
 + [toki pona in 18 minutes](https://www.youtube.com/watch?v=5phj5Ae80h8).
 
 + Learn Toki Pona! By mun Kekan San. [videos](https://www.youtube.com/watch?v=J93GWOMbgdg), and [written lessons](https://mun.la/sona/).
+
++ [Beginner Texts in Toki Pona](https://raacz.neocities.org/toki-pona/beginner-material/) by jan Lakuse.
+
++ [lipu Linku](https://linku.la/), a dictionary with vocabulary and usage information.
 
 + [lipu sona tan jan Tesa](https://lipu-sona.kittycat.homes/en).
 
@@ -55,13 +63,19 @@ related: false
 # kulupu
 ---
 
-+ [ma pona pi toki pona](https://discord.gg/Byqn5z9) on Discord.
++ [ma pona pi toki pona](https://discord.gg/Byqn5z9) and [kama sona](https://discord.gg/ChC6qtVsSE) on Discord.
 
 + kulupu Wesi: [/r/tokipona](https://www.reddit.com/r/tokipona/), [/r/mi_lon](https://www.reddit.com/r/mi_lon/)
+
++ [toki.social](https://toki.social/) on Mastodon.
 
 + [kulupu Pepu](https://www.facebook.com/groups/sitelen/)
 
 + kulupu Telekan: toki pona - jan pi wile pona taso, [kulupu pi toki pona](https://t.me/kulupupitokipona), [sitelen pona taso](https://t.me/sitelenponataso)
+
++ [MA Toki Pona VR group](https://vrchat.com/home/group/grp_bfab3698-e131-4a25-b780-b7a2a1ba7e23)
+
++ [Toki Pona feed in Bluesky](https://bsky.app/profile/did:plc:ikyfyphgbzu45uvrb73a3mio/feed/jan-toki)
 
 
 ---
@@ -105,6 +119,8 @@ related: false
     + [kijetesantakalu o](https://kijetesantakalu-o.tumblr.com/)
 
 + [lipu musi](https://sona.pona.la/wiki/Literature)
+
+    + [Fingtam Books](https://www.fincxjejo.com/toki-pona-stories)
 
     + [akesi seli lili](https://drive.google.com/file/d/1PiEP4NiP7SWHWSxIVazSyTXbzgfxgp7b/view)
 

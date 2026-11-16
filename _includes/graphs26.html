@@ -1,0 +1,1755 @@
+<style>
+.census-chart { min-height: 500px; width: 100%; }
+.census-heatmap-chart { margin: 1.5rem 0 2rem; width: 100%; }
+.census-boxplot-chart { margin: 1.5rem 0 2rem; width: 100%; }
+.census-clustered-title {
+  font-weight: 600;
+  margin-bottom: 0.45rem;
+  text-align: center;
+  white-space: pre-line;
+}
+.census-clustered-legend {
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 0.8rem;
+  gap: 0.5rem 1rem;
+  justify-content: center;
+  margin-bottom: 0.35rem;
+}
+.census-clustered-legend span {
+  align-items: center;
+  display: inline-flex;
+  gap: 0.3rem;
+}
+.census-clustered-legend i {
+  display: inline-block;
+  height: 0.75rem;
+  width: 1.25rem;
+}
+.census-clustered-legend i.visited { background: #1f4e8c; }
+.census-clustered-legend i.not-visited { background: #8eb1dc; }
+.census-clustered-plot { min-height: 540px; width: 100%; }
+.census-boxplot-title {
+  font-weight: 600;
+  margin-bottom: 0.45rem;
+  text-align: center;
+}
+.census-boxplot-legend {
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 0.8rem;
+  gap: 0.5rem 1rem;
+  justify-content: center;
+  margin-bottom: 0.35rem;
+}
+.census-boxplot-legend span {
+  align-items: center;
+  display: inline-flex;
+  gap: 0.3rem;
+}
+.census-boxplot-legend i {
+  display: inline-block;
+  height: 0.75rem;
+  width: 1.25rem;
+}
+.census-boxplot-legend i.visited { background: #1f4e8c; }
+.census-boxplot-legend i.not-visited { background: #8eb1dc; }
+.census-boxplot-svg {
+  display: block;
+  height: auto;
+  overflow: visible;
+  width: 100%;
+}
+.census-heatmap-title {
+  font-weight: 600;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.census-heatmap-title span { font-weight: 400; }
+.census-heatmap-panels {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.census-heatmap-panel { min-width: 0; }
+.census-heatmap-panel:last-child {
+  grid-column: 1 / -1;
+  justify-self: center;
+  width: calc(50% - 0.5rem);
+}
+.census-heatmap-panel h4 {
+  font-size: 0.8rem;
+  margin: 0 0 0.4rem;
+  text-align: center;
+}
+.census-heatmap-table {
+  border-collapse: separate;
+  border-spacing: 2px;
+  display: table;
+  font-size: 0.7rem;
+  overflow: visible;
+  table-layout: fixed;
+  width: 100%;
+}
+.census-heatmap-table th {
+  font-weight: 400;
+  padding: 0.2rem 0.05rem;
+  text-align: center;
+}
+.census-heatmap-table thead th:first-child,
+.census-heatmap-table tbody th {
+  width: 18%;
+}
+.census-heatmap-table thead th:not(:first-child),
+.census-heatmap-table tbody th {
+  white-space: nowrap;
+}
+.census-heat-cell {
+  height: 2rem;
+  padding: 0.15rem 0.05rem;
+  text-align: center;
+}
+.census-heat-cell.heat-dark { color: #fff; }
+.census-heat-cell.heat-zero { background: rgba(51, 102, 204, 0.035); }
+.census-heatmap-x-label {
+  font-size: 0.7rem;
+  margin-top: 0.25rem;
+  text-align: center;
+}
+@media (max-width: 720px) {
+  .census-heatmap-panels { grid-template-columns: 1fr; }
+  .census-heatmap-panel,
+  .census-heatmap-panel:last-child {
+    grid-column: auto;
+    margin-bottom: 0.75rem;
+    width: 100%;
+  }
+  .census-heatmap-table { font-size: 0.8rem; }
+}
+div.scroll {
+  padding: 4px;
+  background-color: cornsilk;
+  height: 40vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  text-align: justify;
+}
+div.scroll-tall {
+  padding: 4px;
+  background-color: cornsilk;
+  height: 60vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  text-align: justify;
+}
+</style>
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+google.charts.load('current', {'packages': ['corechart']});
+google.charts.setOnLoadCallback(drawCensusCharts);
+function drawCensusCharts() {
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["English", 1086], ["Toki Pona", 294], ["Chinese", 39]]);
+      
+      var formatPercent = new google.visualization.NumberFormat({pattern: '#,##0.0%'});
+      var formatShort = new google.visualization.NumberFormat({pattern: 'short'});
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1, {
+        calc: function(dt, row) {
+          var amount = formatShort.formatValue(dt.getValue(row, 1));
+          var percent = 1419 ? formatPercent.formatValue(dt.getValue(row, 1) / 1419) : '0%';
+          return amount + ' (' + percent + ')';
+        },
+        type: 'string', role: 'annotation'
+      }]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-01"));
+      
+      chart.draw(view, {"title": "toki seme?\n(1419 responses)", "height": 500, "legend": "none", "annotations": {"alwaysOutside": true}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 1400}, "ticks": [0, 200, 400, 600, 800, 1000, 1200, 1400]}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["1st section", 1419], ["2nd section", 1278], ["3rd section", 1217], ["4th section", 1214]]);
+      
+      var formatPercent = new google.visualization.NumberFormat({pattern: '#,##0.0%'});
+      var formatShort = new google.visualization.NumberFormat({pattern: 'short'});
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1, {
+        calc: function(dt, row) {
+          var amount = formatShort.formatValue(dt.getValue(row, 1));
+          var percent = 1419 ? formatPercent.formatValue(dt.getValue(row, 1) / 1419) : '0%';
+          return amount + ' (' + percent + ')';
+        },
+        type: 'string', role: 'annotation'
+      }]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-02"));
+      
+      var chartContainer = document.getElementById("chart-26-02");
+      google.visualization.events.addListener(chart, 'ready', function() {
+        var chartSvg = chartContainer.querySelector('svg');
+        if (!chartSvg) return;
+
+        var previousLine = chartSvg.querySelector('.census-reference-line');
+        if (previousLine) previousLine.remove();
+
+        var layout = chart.getChartLayoutInterface();
+        var chartArea = layout.getChartAreaBoundingBox();
+        var referenceX = layout.getXLocation(1419);
+        if (!Number.isFinite(referenceX)) return;
+
+        var chartBackground = null;
+        var rectangles = chartSvg.querySelectorAll('rect');
+        for (var i = 0; i < rectangles.length; i++) {
+          var rectangle = rectangles[i];
+          if (rectangle.closest('defs')) continue;
+          var sameChartArea =
+            Math.abs(parseFloat(rectangle.getAttribute('x')) - chartArea.left) < 1 &&
+            Math.abs(parseFloat(rectangle.getAttribute('y')) - chartArea.top) < 1 &&
+            Math.abs(parseFloat(rectangle.getAttribute('width')) - chartArea.width) < 1 &&
+            Math.abs(parseFloat(rectangle.getAttribute('height')) - chartArea.height) < 1;
+          if (sameChartArea) {
+            chartBackground = rectangle;
+            break;
+          }
+        }
+        if (!chartBackground) return;
+
+        var referenceLine = document.createElementNS(
+          'http://www.w3.org/2000/svg', 'line'
+        );
+        referenceLine.setAttribute('class', 'census-reference-line');
+        referenceLine.setAttribute('aria-hidden', 'true');
+        referenceLine.setAttribute('x1', referenceX);
+        referenceLine.setAttribute('x2', referenceX);
+        referenceLine.setAttribute('y1', chartArea.top);
+        referenceLine.setAttribute('y2', chartArea.top + chartArea.height);
+        referenceLine.setAttribute('stroke', '#dc3912');
+        referenceLine.setAttribute('stroke-width', '3');
+        referenceLine.setAttribute('pointer-events', 'none');
+        referenceLine.setAttribute('vector-effect', 'non-scaling-stroke');
+        chartBackground.parentNode.insertBefore(
+          referenceLine, chartBackground.nextSibling
+        );
+      });
+      chart.draw(view, {"title": "How much was each section filled?\n(1419 responses)", "height": 500, "legend": "none", "annotations": {"alwaysOutside": true}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 1800}, "ticks": [0, 200, 400, 600, 800, 1000, 1200, 1400, 1600, 1800]}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["nanpa wan", 294], ["nanpa tu", 274], ["nanpa tu wan", 255], ["nanpa ali", 255]]);
+      
+      var formatPercent = new google.visualization.NumberFormat({pattern: '#,##0.0%'});
+      var formatShort = new google.visualization.NumberFormat({pattern: 'short'});
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1, {
+        calc: function(dt, row) {
+          var amount = formatShort.formatValue(dt.getValue(row, 1));
+          var percent = 294 ? formatPercent.formatValue(dt.getValue(row, 1) / 294) : '0%';
+          return amount + ' (' + percent + ')';
+        },
+        type: 'string', role: 'annotation'
+      }]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-02-tp"));
+      
+      var chartContainer = document.getElementById("chart-26-02-tp");
+      google.visualization.events.addListener(chart, 'ready', function() {
+        var chartSvg = chartContainer.querySelector('svg');
+        if (!chartSvg) return;
+
+        var previousLine = chartSvg.querySelector('.census-reference-line');
+        if (previousLine) previousLine.remove();
+
+        var layout = chart.getChartLayoutInterface();
+        var chartArea = layout.getChartAreaBoundingBox();
+        var referenceX = layout.getXLocation(294);
+        if (!Number.isFinite(referenceX)) return;
+
+        var chartBackground = null;
+        var rectangles = chartSvg.querySelectorAll('rect');
+        for (var i = 0; i < rectangles.length; i++) {
+          var rectangle = rectangles[i];
+          if (rectangle.closest('defs')) continue;
+          var sameChartArea =
+            Math.abs(parseFloat(rectangle.getAttribute('x')) - chartArea.left) < 1 &&
+            Math.abs(parseFloat(rectangle.getAttribute('y')) - chartArea.top) < 1 &&
+            Math.abs(parseFloat(rectangle.getAttribute('width')) - chartArea.width) < 1 &&
+            Math.abs(parseFloat(rectangle.getAttribute('height')) - chartArea.height) < 1;
+          if (sameChartArea) {
+            chartBackground = rectangle;
+            break;
+          }
+        }
+        if (!chartBackground) return;
+
+        var referenceLine = document.createElementNS(
+          'http://www.w3.org/2000/svg', 'line'
+        );
+        referenceLine.setAttribute('class', 'census-reference-line');
+        referenceLine.setAttribute('aria-hidden', 'true');
+        referenceLine.setAttribute('x1', referenceX);
+        referenceLine.setAttribute('x2', referenceX);
+        referenceLine.setAttribute('y1', chartArea.top);
+        referenceLine.setAttribute('y2', chartArea.top + chartArea.height);
+        referenceLine.setAttribute('stroke', '#dc3912');
+        referenceLine.setAttribute('stroke-width', '3');
+        referenceLine.setAttribute('pointer-events', 'none');
+        referenceLine.setAttribute('vector-effect', 'non-scaling-stroke');
+        chartBackground.parentNode.insertBefore(
+          referenceLine, chartBackground.nextSibling
+        );
+      });
+      chart.draw(view, {"title": "jan li pana e mute seme?\n(294 responses)", "height": 500, "legend": "none", "annotations": {"alwaysOutside": true}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 400}, "ticks": [0, 50, 100, 150, 200, 250, 300, 350, 400]}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["Yes", 1202], ["No", 216]]);
+      var view = data;
+      var chart = new google.visualization.PieChart(document.getElementById("chart-26-03"));
+      
+      chart.draw(view, {"title": "Would you say you know Toki Pona?\n(1418 responses)", "height": 500, "legend": {"position": "top", "maxLines": 3}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["sona", 291], ["sona ala", 3]]);
+      var view = data;
+      var chart = new google.visualization.PieChart(document.getElementById("chart-26-03-tp"));
+      
+      chart.draw(view, {"title": "sina sona toki pona anu seme?\n(294 responses)", "height": 500, "legend": {"position": "top", "maxLines": 3}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Combination');
+      data.addColumn('number', 'Responses');
+      data.addRows([["None", 890], ["2024 only", 277], ["2024 and 2022", 90], ["2024, 2022 and 2021", 64], ["2024 and 2021", 2], ["2022 only", 15], ["2021 only", 5], ["2022 and 2021", 6]]);
+      var chart = new google.visualization.PieChart(document.getElementById("chart-26-04"));
+      chart.draw(data, {"title": "What previous Toki Pona censuses did you answer to?\n(1349 responses)", "height": 600, "legend": {"position": "top", "maxLines": 4}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Combination');
+      data.addColumn('number', 'Responses');
+      data.addRows([["ala", 127], ["2024 taso", 80], ["2024 en 2022", 38], ["2024 en 2022 en 2021", 28], ["2024 en 2021", 1], ["2022 taso", 2], ["2021 taso", 2], ["2022 en 2021", 3]]);
+      var chart = new google.visualization.PieChart(document.getElementById("chart-26-04-tp"));
+      chart.draw(data, {"title": "sina pana e sona sina tawa lipu ni lon sike seme?\n(281 responses)", "height": 600, "legend": {"position": "top", "maxLines": 4}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["Yes", 867], ["No", 552]]);
+      var view = data;
+      var chart = new google.visualization.PieChart(document.getElementById("chart-26-05"));
+      
+      chart.draw(view, {"title": "Have you visited the \"ma pona pi toki pona\" Discord in the last 3 months?\n(1419 responses)", "height": 500, "legend": {"position": "top", "maxLines": 3}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["lukin", 181], ["lukin ala", 113]]);
+      var view = data;
+      var chart = new google.visualization.PieChart(document.getElementById("chart-26-05-tp"));
+      
+      chart.draw(view, {"title": "sina lukin ala lukin e lipu \"ma pona pi toki pona\" pi ilo Siko lon insa pi tenpo suno 90 pini?\n(294 responses)", "height": 500, "legend": {"position": "top", "maxLines": 3}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["None (I haven't started learning)", 25], ["Beginner (I've just started learning)", 155], ["Learner (I am learning and can converse a little)", 374], ["Intermediate (I can converse but still getting better)", 524], ["Advanced (I can converse well)", 258], ["Fluent (I can communicate anything well)", 80]]);
+      
+      var formatPercent = new google.visualization.NumberFormat({pattern: '#,##0.0%'});
+      var formatShort = new google.visualization.NumberFormat({pattern: 'short'});
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1, {
+        calc: function(dt, row) {
+          var amount = formatShort.formatValue(dt.getValue(row, 1));
+          var percent = 1416 ? formatPercent.formatValue(dt.getValue(row, 1) / 1416) : '0%';
+          return amount + ' (' + percent + ')';
+        },
+        type: 'string', role: 'annotation'
+      }]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-06"));
+      
+      chart.draw(view, {"title": "What level of ability in Toki Pona do you have?\n(1416 responses)", "height": 500, "legend": "none", "annotations": {"alwaysOutside": true}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 700}, "ticks": [0, 100, 200, 300, 400, 500, 600, 700]}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["ala a (mi open e kama sona lon tenpo poka)", 0], ["mi sin (mi kama sona lon tenpo ni)", 2], ["mi wawa lili (mi ken toki lili tawa jan)", 33], ["mi wawa insa (mi ken toki, taso mi awen kama pona)", 108], ["mi wawa suli (mi ken toki pona wawa)", 113], ["mi wawa ale (mi ken toki pona wawa e ale wile)", 38]]);
+      
+      var formatPercent = new google.visualization.NumberFormat({pattern: '#,##0.0%'});
+      var formatShort = new google.visualization.NumberFormat({pattern: 'short'});
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1, {
+        calc: function(dt, row) {
+          var amount = formatShort.formatValue(dt.getValue(row, 1));
+          var percent = 294 ? formatPercent.formatValue(dt.getValue(row, 1) / 294) : '0%';
+          return amount + ' (' + percent + ')';
+        },
+        type: 'string', role: 'annotation'
+      }]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-06-tp"));
+      
+      chart.draw(view, {"title": "toki pona sina li wawa seme?\n(294 responses)", "height": 500, "legend": "none", "annotations": {"alwaysOutside": true}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 140}, "ticks": [0, 20, 40, 60, 80, 100, 120, 140]}});
+    })();
+    
+
+    (function() {
+      var data = google.visualization.arrayToDataTable([["Time", "Intermediate+", {"type": "string", "role": "tooltip"}, "< intermediate", {"type": "string", "role": "tooltip"}], ["1-7 days", -41, "Intermediate+: 41", 73, "< intermediate: 73"], ["8-30 days", -132, "Intermediate+: 132", 171, "< intermediate: 171"], ["31-90 days", -203, "Intermediate+: 203", 115, "< intermediate: 115"], ["91-180 days", -146, "Intermediate+: 146", 56, "< intermediate: 56"], ["181-365 days", -143, "Intermediate+: 143", 33, "< intermediate: 33"], ["years in (1, 2]", -90, "Intermediate+: 90", 24, "< intermediate: 24"], ["> 2 years", -35, "Intermediate+: 35", 14, "< intermediate: 14"]]);
+      var chart = new google.visualization.BarChart(
+        document.getElementById("chart-26-09")
+      );
+      chart.draw(data, {"title": "How many days did you employ to get to an Intermediate+ level for writing/reading? (Days studied so far if not Intermediate+)\n(1276 responses)", "height": 600, "isStacked": true, "legend": {"position": "top", "maxLines": 2}, "bar": {"groupWidth": "70%"}, "colors": ["#3366cc", "#dc3912"], "hAxis": {"ticks": [{"v": -250, "f": "250"}, {"v": -200, "f": "200"}, {"v": -150, "f": "150"}, {"v": -100, "f": "100"}, {"v": -50, "f": "50"}, {"v": 0, "f": "0"}, {"v": 50, "f": "50"}, {"v": 100, "f": "100"}, {"v": 150, "f": "150"}, {"v": 200, "f": "200"}, {"v": 250, "f": "250"}], "viewWindow": {"min": -250, "max": 250}}});
+    })();
+    
+
+    (function() {
+      var data = google.visualization.arrayToDataTable([["Time", "wawa insa+", {"type": "string", "role": "tooltip"}, "< wawa insa", {"type": "string", "role": "tooltip"}], ["1-7 days", -15, "wawa insa+: 15", 2, "< wawa insa: 2"], ["8-30 days", -30, "wawa insa+: 30", 5, "< wawa insa: 5"], ["31-90 days", -50, "wawa insa+: 50", 6, "< wawa insa: 6"], ["91-180 days", -40, "wawa insa+: 40", 2, "< wawa insa: 2"], ["181-365 days", -35, "wawa insa+: 35", 4, "< wawa insa: 4"], ["years in (1, 2]", -19, "wawa insa+: 19", 1, "< wawa insa: 1"], ["> 2 years", -13, "wawa insa+: 13", 1, "< wawa insa: 1"]]);
+      var chart = new google.visualization.BarChart(
+        document.getElementById("chart-26-09-tp")
+      );
+      chart.draw(data, {"title": "sina kama \"wawa insa\" lon tp kepeken tenpo suno pi mute seme (sina ni ala la o pana e mute suno pi kama sona).\n(223 responses)", "height": 600, "isStacked": true, "legend": {"position": "top", "maxLines": 2}, "bar": {"groupWidth": "70%"}, "colors": ["#3366cc", "#dc3912"], "hAxis": {"ticks": [{"v": -50, "f": "50"}, {"v": -40, "f": "40"}, {"v": -30, "f": "30"}, {"v": -20, "f": "20"}, {"v": -10, "f": "10"}, {"v": 0, "f": "0"}, {"v": 10, "f": "10"}, {"v": 20, "f": "20"}, {"v": 30, "f": "30"}, {"v": 40, "f": "40"}, {"v": 50, "f": "50"}], "viewWindow": {"min": -50, "max": 50}}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["not at all", 72], ["a few times a year", 279], ["a few times a month", 383], ["a few times per week", 418], ["every day", 235]]);
+      
+      var formatPercent = new google.visualization.NumberFormat({pattern: '#,##0.0%'});
+      var formatShort = new google.visualization.NumberFormat({pattern: 'short'});
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1, {
+        calc: function(dt, row) {
+          var amount = formatShort.formatValue(dt.getValue(row, 1));
+          var percent = 1387 ? formatPercent.formatValue(dt.getValue(row, 1) / 1387) : '0%';
+          return amount + ' (' + percent + ')';
+        },
+        type: 'string', role: 'annotation'
+      }]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-10"));
+      
+      chart.draw(view, {"title": "How often do you use (read/listen/write/speak) Toki Pona?\n(1387 responses)", "height": 500, "legend": "none", "annotations": {"alwaysOutside": true}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 600}, "ticks": [0, 100, 200, 300, 400, 500, 600]}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["ala a", 1], ["sike suno la mi toki pona lili", 43], ["tenpo mun la mi toki pona lili", 62], ["tenpo esun la mi toki pona lili", 110], ["suno ale la mi toki pona mute", 69]]);
+      
+      var formatPercent = new google.visualization.NumberFormat({pattern: '#,##0.0%'});
+      var formatShort = new google.visualization.NumberFormat({pattern: 'short'});
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1, {
+        calc: function(dt, row) {
+          var amount = formatShort.formatValue(dt.getValue(row, 1));
+          var percent = 285 ? formatPercent.formatValue(dt.getValue(row, 1) / 285) : '0%';
+          return amount + ' (' + percent + ')';
+        },
+        type: 'string', role: 'annotation'
+      }]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-10-tp"));
+      
+      chart.draw(view, {"title": "tenpo pi mute seme la sina toki pona? (ni li ken toki li ken sitelen li ken lukin)\n(285 responses)", "height": 500, "legend": "none", "annotations": {"alwaysOutside": true}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 140}, "ticks": [0, 20, 40, 60, 80, 100, 120, 140]}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["I know the Toki Pona grammar", 1208], ["I can read written Toki Pona", 1185], ["I can produce written Toki Pona", 1120], ["I know all Toki Pona words from pu", 1092], ["I can speak spoken Toki Pona", 833], ["I can converse with other people", 711], ["I understand spoken Toki Pona", 696]]);
+      
+      var formatPercent = new google.visualization.NumberFormat({pattern: '#,##0.0%'});
+      var formatShort = new google.visualization.NumberFormat({pattern: 'short'});
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1, {
+        calc: function(dt, row) {
+          var amount = formatShort.formatValue(dt.getValue(row, 1));
+          var percent = 1322 ? formatPercent.formatValue(dt.getValue(row, 1) / 1322) : '0%';
+          return amount + ' (' + percent + ')';
+        },
+        type: 'string', role: 'annotation'
+      }]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-11"));
+      
+      chart.draw(view, {"title": "Which of these are true for you? (MA)\n(1322 responses)", "height": 500, "legend": "none", "annotations": {"alwaysOutside": true}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 1600}, "ticks": [0, 200, 400, 600, 800, 1000, 1200, 1400, 1600], "minValue": 0}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["mi sona e ni: nimi seme o lon poka pi nimi seme ante", 262], ["mi ken lukin e toki pona sitelen", 280], ["mi ken sitelen e toki pona", 275], ["mi sona e nimi ale pi lipu pu", 280], ["mi ken toki uta pona", 234], ["mi ken toki pona tawa jan ante", 243], ["mi ken sona e toki pona uta", 233]]);
+      
+      var formatPercent = new google.visualization.NumberFormat({pattern: '#,##0.0%'});
+      var formatShort = new google.visualization.NumberFormat({pattern: 'short'});
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1, {
+        calc: function(dt, row) {
+          var amount = formatShort.formatValue(dt.getValue(row, 1));
+          var percent = 290 ? formatPercent.formatValue(dt.getValue(row, 1) / 290) : '0%';
+          return amount + ' (' + percent + ')';
+        },
+        type: 'string', role: 'annotation'
+      }]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-11-tp"));
+      
+      chart.draw(view, {"title": "seme li lon tawa sina? (o toki e ale lon)  (MA)\n(290 responses)", "height": 500, "legend": "none", "annotations": {"alwaysOutside": true}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 350}, "ticks": [0, 50, 100, 150, 200, 250, 300, 350], "minValue": 0}});
+    })();
+    
+
+    (function() {
+      var data = google.visualization.arrayToDataTable([["Answer", "know", "learning", "interested", "not interested", {"role": "annotation"}], ["toki pona luka (pu)", 40, 41, 338, 915, ""], ["Luka Pona", 16, 88, 557, 660, ""], ["Chuff's toki luka", 7, 2, 185, 1097, ""], ["your own", 21, 13, 76, 1155, ""]]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-12"));
+      chart.draw(data, {"title": "Do you know, want to know or are learning any of the sign languages/systems of or based on Toki Pona?\n(1345 responses)", "height": 500, "isStacked": true, "legend": {"position": "top", "maxLines": 3}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 1600}, "ticks": [0, 200, 400, 600, 800, 1000, 1200, 1400, 1600]}});
+    })();
+    
+
+    (function() {
+      var data = google.visualization.arrayToDataTable([["Answer", "mi sona", "mi kama sona", "wile kama sona", "wile ala kama sona", {"role": "annotation"}], ["toki pona luka (pu)", 14, 3, 29, 238, ""], ["Luka Pona (Toki Pona ala)", 6, 41, 131, 106, ""], ["toki luka pi jan Chuff", 2, 1, 13, 260, ""], ["nasin luka ante sina", 3, 3, 9, 261, ""]]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-12-tp"));
+      chart.draw(data, {"title": "sina wawa seme lon toki luka pi toki pona?\n(285 responses)", "height": 500, "isStacked": true, "legend": {"position": "top", "maxLines": 3}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 350}, "ticks": [0, 50, 100, 150, 200, 250, 300, 350]}});
+    })();
+    
+
+    (function() {
+      var data = google.visualization.arrayToDataTable([["Answer", "know", "learning", "interested", "not interested", {"role": "annotation"}], ["toki pona luka (pu)", 40, 41, 338, 915, ""], ["Luka Pona", 16, 88, 557, 660, ""], ["Chuff's toki luka", 7, 2, 185, 1097, ""], ["your own", 21, 13, 76, 1155, ""]]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-12-log"));
+      chart.draw(data, {"title": "Do you know, want to know or are learning any of the sign languages/systems of or based on Toki Pona?\n(1345 responses). Log scale", "height": 500, "isStacked": true, "legend": {"position": "top", "maxLines": 3}, "hAxis": {"logScale": true}});
+    })();
+    
+
+    (function() {
+      var data = google.visualization.arrayToDataTable([["Answer", "mi sona", "mi kama sona", "wile kama sona", "wile ala kama sona", {"role": "annotation"}], ["toki pona luka (pu)", 14, 3, 29, 238, ""], ["Luka Pona (Toki Pona ala)", 6, 41, 131, 106, ""], ["toki luka pi jan Chuff", 2, 1, 13, 260, ""], ["nasin luka ante sina", 3, 3, 9, 261, ""]]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-12-tp-log"));
+      chart.draw(data, {"title": "sina wawa seme lon toki luka pi toki pona?\n(285 responses). Log scale", "height": 500, "isStacked": true, "legend": {"position": "top", "maxLines": 3}, "hAxis": {"logScale": true}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["To have fun learning it and using it", 1134], ["To learn many languages / be multilingual", 767], ["To speak without others understanding me", 454], ["To gain philosophical insights", 397], ["Other, stated below", 322], ["Didn't start learning", 21], ["Other reasons", 4]]);
+      
+      var formatPercent = new google.visualization.NumberFormat({pattern: '#,##0.0%'});
+      var formatShort = new google.visualization.NumberFormat({pattern: 'short'});
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1, {
+        calc: function(dt, row) {
+          var amount = formatShort.formatValue(dt.getValue(row, 1));
+          var percent = 1402 ? formatPercent.formatValue(dt.getValue(row, 1) / 1402) : '0%';
+          return amount + ' (' + percent + ')';
+        },
+        type: 'string', role: 'annotation'
+      }]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-13"));
+      
+      chart.draw(view, {"title": "Why did you start learning Toki Pona? (MA)\n(1402 responses)", "height": 500, "legend": "none", "annotations": {"alwaysOutside": true}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 1400}, "ticks": [0, 200, 400, 600, 800, 1000, 1200, 1400]}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["mi wile pilin pona lon kama sona lon tenpo kepeken", 161], ["mi wile sona e toki mute", 191], ["mi wile len e toki mi", 87], ["mi wile sona e nasin sona insa", 97], ["ante (ona li lon anpa)", 104], ["mi open ala e kama sona", 5], ["tan ante", 1]]);
+      
+      var formatPercent = new google.visualization.NumberFormat({pattern: '#,##0.0%'});
+      var formatShort = new google.visualization.NumberFormat({pattern: 'short'});
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1, {
+        calc: function(dt, row) {
+          var amount = formatShort.formatValue(dt.getValue(row, 1));
+          var percent = 284 ? formatPercent.formatValue(dt.getValue(row, 1) / 284) : '0%';
+          return amount + ' (' + percent + ')';
+        },
+        type: 'string', role: 'annotation'
+      }]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-13-tp"));
+      
+      chart.draw(view, {"title": "sina open e kama sona sina pi toki pona tan seme? (o toki e ale lon) (MA)\n(284 responses)", "height": 500, "legend": "none", "annotations": {"alwaysOutside": true}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 250}, "ticks": [0, 50, 100, 150, 200, 250]}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["I saw it online", 1205], ["A friend told me about it", 223], ["Other, stated below", 134], ["Someone else told me about it", 86], ["Offline media", 43]]);
+      
+      var formatPercent = new google.visualization.NumberFormat({pattern: '#,##0.0%'});
+      var formatShort = new google.visualization.NumberFormat({pattern: 'short'});
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1, {
+        calc: function(dt, row) {
+          var amount = formatShort.formatValue(dt.getValue(row, 1));
+          var percent = 1402 ? formatPercent.formatValue(dt.getValue(row, 1) / 1402) : '0%';
+          return amount + ' (' + percent + ')';
+        },
+        type: 'string', role: 'annotation'
+      }]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-14"));
+      
+      chart.draw(view, {"title": "How did you first hear about Toki Pona? (MA)\n(1402 responses)", "height": 500, "legend": "none", "annotations": {"alwaysOutside": true}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 1600}, "ticks": [0, 200, 400, 600, 800, 1000, 1200, 1400, 1600]}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["mi lukin e ona lon ilo", 247], ["jan poka li pana e sona", 44], ["ante (ona li lon anpa)", 37], ["jan pi poka ala li pana e sona", 50], ["mi lukin e ona lon weka ilo", 11]]);
+      
+      var formatPercent = new google.visualization.NumberFormat({pattern: '#,##0.0%'});
+      var formatShort = new google.visualization.NumberFormat({pattern: 'short'});
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1, {
+        calc: function(dt, row) {
+          var amount = formatShort.formatValue(dt.getValue(row, 1));
+          var percent = 288 ? formatPercent.formatValue(dt.getValue(row, 1) / 288) : '0%';
+          return amount + ' (' + percent + ')';
+        },
+        type: 'string', role: 'annotation'
+      }]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-14-tp"));
+      
+      chart.draw(view, {"title": "seme la sina kama sona e ni: toki pona li lon (MA)\n(288 responses)", "height": 500, "legend": "none", "annotations": {"alwaysOutside": true}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 300}, "ticks": [0, 50, 100, 150, 200, 250, 300]}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["2000", 0], ["2001", 0], ["2002", 1], ["2003", 3], ["2004", 2], ["2005", 2], ["2006", 3], ["2007", 1], ["2008", 0], ["2009", 0], ["2010", 4], ["2011", 1], ["2012", 3], ["2013", 5], ["2014", 8], ["2015", 7], ["2016", 11], ["2017", 10], ["2018", 28], ["2019", 39], ["2020", 77], ["2021", 115], ["2022", 157], ["2023", 166], ["2024", 220], ["2025", 248], ["2026", 264]]);
+      var view = data;
+      var chart = new google.visualization.ColumnChart(document.getElementById("chart-26-15"));
+      
+      chart.draw(view, {"title": "When did you first start learning Toki Pona?\n(1375 responses)", "height": 600, "legend": "none", "vAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 300}, "ticks": [0, 50, 100, 150, 200, 250, 300]}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["2000", 0], ["2001", 0], ["2002", 0], ["2003", 1], ["2004", 0], ["2005", 1], ["2006", 1], ["2007", 1], ["2008", 0], ["2009", 0], ["2010", 2], ["2011", 0], ["2012", 1], ["2013", 0], ["2014", 2], ["2015", 1], ["2016", 4], ["2017", 3], ["2018", 10], ["2019", 13], ["2020", 21], ["2021", 32], ["2022", 51], ["2023", 37], ["2024", 47], ["2025", 41], ["2026", 17]]);
+      var view = data;
+      var chart = new google.visualization.ColumnChart(document.getElementById("chart-26-15-tp"));
+      
+      chart.draw(view, {"title": "sina open e kama sona sina pi toki pona lon sike seme? \n(286 responses)", "height": 600, "legend": "none", "vAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 60}, "ticks": [0, 10, 20, 30, 40, 50, 60]}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["2000", 0], ["2001", 0], ["2002", 1], ["2003", 3], ["2004", 2], ["2005", 2], ["2006", 3], ["2007", 1], ["2008", 0], ["2009", 0], ["2010", 4], ["2011", 1], ["2012", 3], ["2013", 5], ["2014", 8], ["2015", 7], ["2016", 11], ["2017", 10], ["2018", 28], ["2019", 39], ["2020", 77], ["2021", 115], ["2022", 157], ["2023", 166], ["2024", 220], ["2025", 248], ["2026", 264]]);
+      var view = data;
+      var chart = new google.visualization.ColumnChart(document.getElementById("chart-26-15-log"));
+      
+      chart.draw(view, {"title": "When did you first start learning Toki Pona?\n(1375 responses). Log scale", "height": 600, "legend": "none", "vAxis": {"logScale": true}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["2000", 0], ["2001", 0], ["2002", 0], ["2003", 1], ["2004", 0], ["2005", 1], ["2006", 1], ["2007", 1], ["2008", 0], ["2009", 0], ["2010", 2], ["2011", 0], ["2012", 1], ["2013", 0], ["2014", 2], ["2015", 1], ["2016", 4], ["2017", 3], ["2018", 10], ["2019", 13], ["2020", 21], ["2021", 32], ["2022", 51], ["2023", 37], ["2024", 47], ["2025", 41], ["2026", 17]]);
+      var view = data;
+      var chart = new google.visualization.ColumnChart(document.getElementById("chart-26-15-tp-log"));
+      
+      chart.draw(view, {"title": "sina open e kama sona sina pi toki pona lon sike seme? \n(286 responses). Log scale", "height": 600, "legend": "none", "vAxis": {"logScale": true}});
+    })();
+    
+
+    (function() {
+      var data = google.visualization.arrayToDataTable([["Answer", "Responses", {"type": "string", "role": "tooltip"}, "Neither of the other two *u books", {"type": "string", "role": "tooltip"}, "pu and ku", {"type": "string", "role": "tooltip"}, "pu and su", {"type": "string", "role": "tooltip"}, "ku and su", {"type": "string", "role": "tooltip"}, "pu, ku and su", {"type": "string", "role": "tooltip"}], ["I don't own any", 604, "I don't own any: 604", 0, null, 0, null, 0, null, 0, null, 0, null], ["pu", 0, null, 157, "Neither of the other two *u books: 157", 155, "pu and ku: 155", 29, "pu and su: 29", 0, null, 157, "pu, ku and su: 157"], ["ku", 0, null, 45, "Neither of the other two *u books: 45", 155, "pu and ku: 155", 0, null, 18, "ku and su: 18", 157, "pu, ku and su: 157"], ["su", 0, null, 38, "Neither of the other two *u books: 38", 0, null, 29, "pu and su: 29", 18, "ku and su: 18", 157, "pu, ku and su: 157"], ["lipu tenpo", 166, "lipu tenpo: 166", 0, null, 0, null, 0, null, 0, null, 0, null], ["Other, stated below", 67, "Other, stated below: 67", 0, null, 0, null, 0, null, 0, null, 0, null], ["Fingtam Books", 57, "Fingtam Books: 57", 0, null, 0, null, 0, null, 0, null, 0, null]]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-16"));
+      chart.draw(data, {"title": "Do you own any printed Toki Pona text or ebook? (MA)\n(1265 responses)", "height": 500, "isStacked": true, "legend": "none", "colors": ["#3366cc", "#0099c6", "#dc3912", "#ff9900", "#109618", "#990099"], "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 700}, "ticks": [0, 100, 200, 300, 400, 500, 600, 700]}});
+    })();
+    
+
+    (function() {
+      var data = google.visualization.arrayToDataTable([["Answer", "Responses", {"type": "string", "role": "tooltip"}, "lipu suli ante tu ala", {"type": "string", "role": "tooltip"}, "pu en ku", {"type": "string", "role": "tooltip"}, "pu en su", {"type": "string", "role": "tooltip"}, "ku en su", {"type": "string", "role": "tooltip"}, "pu en ku en su", {"type": "string", "role": "tooltip"}], ["jo ala", 79, "jo ala: 79", 0, null, 0, null, 0, null, 0, null, 0, null], ["pu", 0, null, 33, "lipu suli ante tu ala: 33", 42, "pu en ku: 42", 11, "pu en su: 11", 0, null, 54, "pu en ku en su: 54"], ["ku", 0, null, 11, "lipu suli ante tu ala: 11", 42, "pu en ku: 42", 0, null, 6, "ku en su: 6", 54, "pu en ku en su: 54"], ["su", 0, null, 13, "lipu suli ante tu ala: 13", 0, null, 11, "pu en su: 11", 6, "ku en su: 6", 54, "pu en ku en su: 54"], ["lipu tenpo", 79, "lipu tenpo: 79", 0, null, 0, null, 0, null, 0, null, 0, null], ["ante (ona li lon anpa)", 15, "ante (ona li lon anpa): 15", 0, null, 0, null, 0, null, 0, null, 0, null], ["lipu pi kulupu Fingtam", 23, "lipu pi kulupu Fingtam: 23", 0, null, 0, null, 0, null, 0, null, 0, null]]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-16-tp"));
+      chart.draw(data, {"title": "sina jo ala jo e lipu lon pi toki pona (anu eBook)? (MA)\n(271 responses)", "height": 500, "isStacked": true, "legend": "none", "colors": ["#3366cc", "#0099c6", "#dc3912", "#ff9900", "#109618", "#990099"], "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 160}, "ticks": [0, 20, 40, 60, 80, 100, 120, 140, 160]}});
+    })();
+    
+
+    (function() {
+      var data = google.visualization.arrayToDataTable([["Answer", "know and use", "know but don't use", "don't know", {"role": "annotation"}], ["monsuta", 994, 164, 81, ""], ["kin", 955, 128, 150, ""], ["tonsi", 877, 265, 92, ""], ["kijetesantakalu", 855, 310, 73, ""], ["n", 820, 222, 186, ""], ["kipisi", 796, 260, 169, ""], ["leko", 786, 195, 245, ""], ["namako", 757, 274, 199, ""], ["misikeke", 728, 292, 211, ""], ["soko", 708, 245, 278, ""], ["lanpan", 570, 379, 279, ""], ["majuna", 549, 338, 342, ""], ["ku", 510, 514, 205, ""], ["meso", 503, 380, 344, ""], ["nimisin", 471, 515, 237, ""], ["epiku", 452, 660, 125, ""], ["oko", 436, 663, 136, ""], ["linluwi", 409, 404, 415, ""], ["jasima", 398, 418, 412, ""], ["su", 262, 591, 374, ""], ["kokosila", 233, 667, 324, ""], ["usawi", 75, 0, 0, ""], ["kiki", 55, 0, 0, ""], ["te", 54, 0, 0, ""], ["to", 52, 0, 0, ""], ["powe", 49, 0, 0, ""], ["isipin", 47, 0, 0, ""], ["apeja", 45, 0, 0, ""], ["soto", 41, 0, 0, ""], ["teje", 39, 0, 0, ""], ["san", 38, 0, 0, ""], ["nja", 33, 0, 0, ""], ["puwa", 33, 0, 0, ""], ["konwe", 32, 0, 0, ""], ["unu", 32, 0, 0, ""], ["omekapo", 31, 0, 0, ""], ["wuwojiti", 30, 0, 0, ""], ["owe", 28, 0, 0, ""], ["pika", 25, 0, 0, ""], ["taki", 25, 0, 0, ""], ["wa", 24, 0, 0, ""]]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-17"));
+      chart.draw(data, {"title": "Which of these words (and its non-pu meanings) do you know / use?\n(1245 responses)", "height": 1125, "isStacked": true, "legend": {"position": "top", "maxLines": 3}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 1400}, "ticks": [0, 200, 400, 600, 800, 1000, 1200, 1400]}});
+    })();
+    
+
+    (function() {
+      var data = google.visualization.arrayToDataTable([["Answer", "sona en kepeken", "sona en kepeken ala", "sona ala", {"role": "annotation"}], ["monsuta", 236, 35, 0, ""], ["kin", 260, 10, 1, ""], ["tonsi", 230, 39, 1, ""], ["kijetesantakalu", 223, 46, 1, ""], ["n", 226, 36, 8, ""], ["kipisi", 192, 74, 3, ""], ["leko", 208, 57, 6, ""], ["namako", 208, 60, 3, ""], ["misikeke", 183, 83, 5, ""], ["soko", 202, 58, 11, ""], ["lanpan", 145, 113, 13, ""], ["majuna", 159, 97, 14, ""], ["ku", 138, 122, 11, ""], ["meso", 123, 127, 20, ""], ["nimisin", 83, 173, 13, ""], ["epiku", 83, 184, 4, ""], ["oko", 94, 173, 4, ""], ["linluwi", 97, 148, 24, ""], ["jasima", 97, 145, 29, ""], ["su", 78, 160, 31, ""], ["kokosila", 52, 200, 19, ""], ["usawi", 20, 0, 0, ""], ["kiki", 19, 0, 0, ""], ["te", 14, 0, 0, ""], ["to", 13, 0, 0, ""], ["powe", 13, 0, 0, ""], ["isipin", 7, 0, 0, ""], ["apeja", 9, 0, 0, ""], ["soto", 8, 0, 0, ""], ["teje", 8, 0, 0, ""], ["san", 7, 0, 0, ""], ["nja", 9, 0, 0, ""], ["puwa", 11, 0, 0, ""], ["konwe", 3, 0, 0, ""], ["unu", 6, 0, 0, ""], ["omekapo", 8, 0, 0, ""], ["wuwojiti", 8, 0, 0, ""], ["owe", 13, 0, 0, ""], ["pika", 5, 0, 0, ""], ["taki", 7, 0, 0, ""], ["wa", 10, 0, 0, ""]]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-17-tp"));
+      chart.draw(data, {"title": "sina sona ala sona e nimi ni pi pu ala? sina kepeken, anu seme?\n(271 responses)", "height": 1125, "isStacked": true, "legend": {"position": "top", "maxLines": 3}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 300}, "ticks": [0, 50, 100, 150, 200, 250, 300]}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["No", 605], ["Yes, in person", 420], ["Yes, using text chat", 329], ["Yes, using voice chat", 128], ["Other, stated below", 75], ["Yes, I created a Toki Pona course", 32]]);
+      
+      var formatPercent = new google.visualization.NumberFormat({pattern: '#,##0.0%'});
+      var formatShort = new google.visualization.NumberFormat({pattern: 'short'});
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1, {
+        calc: function(dt, row) {
+          var amount = formatShort.formatValue(dt.getValue(row, 1));
+          var percent = 1259 ? formatPercent.formatValue(dt.getValue(row, 1) / 1259) : '0%';
+          return amount + ' (' + percent + ')';
+        },
+        type: 'string', role: 'annotation'
+      }]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-18"));
+      
+      chart.draw(view, {"title": "Have you taught Toki Pona to other people? (MA)\n(1259 responses)", "height": 500, "legend": "none", "annotations": {"alwaysOutside": true}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 800}, "ticks": [0, 100, 200, 300, 400, 500, 600, 700, 800]}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["mi pana ala", 71], ["mi pana lon sijelo", 122], ["mi pana lon ilo kepeken sitelen", 121], ["mi pana lon ilo kepeken uta", 52], ["ante (ona li lon anpa)", 18], ["pana. mi pali e lipu pi kama sona", 19]]);
+      
+      var formatPercent = new google.visualization.NumberFormat({pattern: '#,##0.0%'});
+      var formatShort = new google.visualization.NumberFormat({pattern: 'short'});
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1, {
+        calc: function(dt, row) {
+          var amount = formatShort.formatValue(dt.getValue(row, 1));
+          var percent = 268 ? formatPercent.formatValue(dt.getValue(row, 1) / 268) : '0%';
+          return amount + ' (' + percent + ')';
+        },
+        type: 'string', role: 'annotation'
+      }]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-18-tp"));
+      
+      chart.draw(view, {"title": "sina pana ala pana e sona pi toki pona tawa jan ante? (MA)\n(268 responses)", "height": 500, "legend": "none", "annotations": {"alwaysOutside": true}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 160}, "ticks": [0, 20, 40, 60, 80, 100, 120, 140, 160]}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["12 days of tp, jan Misali", 549], ["pu", 435], ["Discord mptp", 383], ["Learn Toki Pona! jan Kekan San", 309], ["Wasona", 278], ["Other, stated below", 266], ["Other online communities", 195], ["Using Anki", 159], ["Toki Pona in 18 minutes", 158], ["lipu-sona.pona.la", 143], ["o pilin e toki pona", 126], ["A friend taught me", 121], ["jan Pije's course", 99], ["Using Memrise", 97], ["I don't remember", 96], ["lipu tan soweli Tesa", 63], ["jan Lakuse's beginner materials", 25], ["76 lessons", 23], ["Learn tp in a fortnight", 14], ["jan Lope's course", 13], ["Quizlet", 2], ["Wikipedia", 2], ["lipu Linku / nimi.pona.la", 1]]);
+      
+      var formatPercent = new google.visualization.NumberFormat({pattern: '#,##0.0%'});
+      var formatShort = new google.visualization.NumberFormat({pattern: 'short'});
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1, {
+        calc: function(dt, row) {
+          var amount = formatShort.formatValue(dt.getValue(row, 1));
+          var percent = 1251 ? formatPercent.formatValue(dt.getValue(row, 1) / 1251) : '0%';
+          return amount + ' (' + percent + ')';
+        },
+        type: 'string', role: 'annotation'
+      }]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-19"));
+      
+      chart.draw(view, {"title": "How did you learn Toki Pona? (MA)\n(1251 responses)", "height": 1054, "legend": "none", "annotations": {"alwaysOutside": true}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 700}, "ticks": [0, 100, 200, 300, 400, 500, 600, 700]}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["12 days of tp, jan Misali", 113], ["pu", 93], ["mptp pi ilo Siko", 95], ["Learn Toki Pona! jan Kekan San", 69], ["lipu Wasona", 35], ["ante (ona li lon anpa)", 57], ["ma ilo ante", 42], ["ilo Anki", 28], ["Toki Pona in 18 Minutes", 23], ["lipu sona pona", 50], ["o pilin e toki pona", 43], ["jan poka li pana e sona", 28], ["lipu tan jan Pije", 29], ["ilo Memrise", 24], ["sona li weka", 12], ["lipu tan soweli Tesa", 15], ["lipu pi jan Lakuse", 6], ["76 lessons", 7], ["Learn tp in a fortnight", 4], ["lipu pi jan Lope", 3], ["ilo Quizlet", 0], ["lipu Wikipesija", 1], ["lipu Linku / nimi.pona.la", 0]]);
+      
+      var formatPercent = new google.visualization.NumberFormat({pattern: '#,##0.0%'});
+      var formatShort = new google.visualization.NumberFormat({pattern: 'short'});
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1, {
+        calc: function(dt, row) {
+          var amount = formatShort.formatValue(dt.getValue(row, 1));
+          var percent = 270 ? formatPercent.formatValue(dt.getValue(row, 1) / 270) : '0%';
+          return amount + ' (' + percent + ')';
+        },
+        type: 'string', role: 'annotation'
+      }]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-19-tp"));
+      
+      chart.draw(view, {"title": "sina kama sona e toki pona kepeken nasin seme? (MA)\n(270 responses)", "height": 1054, "legend": "none", "annotations": {"alwaysOutside": true}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 140}, "ticks": [0, 20, 40, 60, 80, 100, 120, 140]}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["Discord", 1027], ["Reddit", 536], ["Other, stated below", 99], ["VR Chat", 92], ["Telegram", 69], ["Mastodon", 59], ["Facebook", 45], ["Tencent QQ", 41], ["Twitter", 22], ["Bluesky", 18], ["Tumblr", 10], ["Kakaotalk", 7], ["Matrix", 4]]);
+      
+      var formatPercent = new google.visualization.NumberFormat({pattern: '#,##0.0%'});
+      var formatShort = new google.visualization.NumberFormat({pattern: 'short'});
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1, {
+        calc: function(dt, row) {
+          var amount = formatShort.formatValue(dt.getValue(row, 1));
+          var percent = 1195 ? formatPercent.formatValue(dt.getValue(row, 1) / 1195) : '0%';
+          return amount + ' (' + percent + ')';
+        },
+        type: 'string', role: 'annotation'
+      }]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-20"));
+      
+      chart.draw(view, {"title": "What Toki Pona communities are you in? (MA)\n(1195 responses)", "height": 674, "legend": "none", "annotations": {"alwaysOutside": true}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 1400}, "ticks": [0, 200, 400, 600, 800, 1000, 1200, 1400]}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["ma Siko", 242], ["ma Wesi", 123], ["ante (ona li lon anpa)", 40], ["musi Wijasa (VRchat)", 31], ["ma Telekan", 20], ["ma Masoton (Mastodon)", 19], ["ma Lipu Sinpin", 11], ["ma Tencent QQ", 5], ["lipu Tuwita", 5], ["ma Sewi Laso (Bluesky)", 7], ["ma Tanpa", 0], ["ilo Kakajoto", 3], ["ma Masi (Matrix)", 3]]);
+      
+      var formatPercent = new google.visualization.NumberFormat({pattern: '#,##0.0%'});
+      var formatShort = new google.visualization.NumberFormat({pattern: 'short'});
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1, {
+        calc: function(dt, row) {
+          var amount = formatShort.formatValue(dt.getValue(row, 1));
+          var percent = 261 ? formatPercent.formatValue(dt.getValue(row, 1) / 261) : '0%';
+          return amount + ' (' + percent + ')';
+        },
+        type: 'string', role: 'annotation'
+      }]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-20-tp"));
+      
+      chart.draw(view, {"title": "sina lon kulupu seme pi toki pona? (MA)\n(261 responses)", "height": 674, "legend": "none", "annotations": {"alwaysOutside": true}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 300}, "ticks": [0, 50, 100, 150, 200, 250, 300]}});
+    })();
+    
+
+    (function() {
+      var data = google.visualization.arrayToDataTable(
+        [["Answer", "Also in the other setting", {"type": "string", "role": "tooltip"}, "Only this setting (or unsplit)", {"type": "string", "role": "tooltip"}], ["No", 0, null, 892, "No: 892"], ["Yes, outside an organized event", 60, "Also at an organized event: 60", 189, "But not at an organized one: 189"], ["Yes, at an organized meetup or event", 60, "Also outside an organized one: 60", 65, "But not outside an organized one: 65"], ["Other, stated below", 0, null, 98, "Other, stated below: 98"]]
+      );
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-21"));
+      chart.draw(data, {"title": "Have you met with other Tokiponists in person? (MA)\n(1239 responses)", "height": 500, "isStacked": true, "legend": "none", "colors": ["#dc3912", "#3366cc"], "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 1000}, "ticks": [0, 200, 400, 600, 800, 1000]}});
+    })();
+    
+
+    (function() {
+      var data = google.visualization.arrayToDataTable(
+        [["Answer", "kulupu pi nasin ante kin", {"type": "string", "role": "tooltip"}, "nasin ni taso (anu kipisi ala)", {"type": "string", "role": "tooltip"}], ["kulupu ala", 0, null, 142, "kulupu ala: 142"], ["mi lon poka jan li lon kulupu suli ala", 32, "kulupu suli kin: 32", 37, "kulupu suli ala: 37"], ["mi tawa kulupu suli pi toki pona", 32, "kulupu lon nasin ante kin: 32", 32, "kulupu lon nasin ante ala: 32"], ["ante (ona li lon anpa)", 0, null, 18, "ante (ona li lon anpa): 18"]]
+      );
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-21-tp"));
+      chart.draw(data, {"title": "sina kulupu ala kulupu lon poka pi jan ante pi toki pona? (MA)\n(245 responses)", "height": 500, "isStacked": true, "legend": "none", "colors": ["#dc3912", "#3366cc"], "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 160}, "ticks": [0, 20, 40, 60, 80, 100, 120, 140, 160]}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["jan", 902], ["Other, stated below", 256], ["soweli", 106], ["ijo", 36], ["kulupu", 32], ["ilo", 29], ["waso", 28], ["kasi", 24], ["akesi", 19], ["pipi", 18], ["mun", 16]]);
+      
+      var formatPercent = new google.visualization.NumberFormat({pattern: '#,##0.0%'});
+      var formatShort = new google.visualization.NumberFormat({pattern: 'short'});
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1, {
+        calc: function(dt, row) {
+          var amount = formatShort.formatValue(dt.getValue(row, 1));
+          var percent = 1214 ? formatPercent.formatValue(dt.getValue(row, 1) / 1214) : '0%';
+          return amount + ' (' + percent + ')';
+        },
+        type: 'string', role: 'annotation'
+      }]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-22"));
+      
+      chart.draw(view, {"title": "Which nouns before your name do you use for yourself?\n(1214 responses)", "height": 598, "legend": "none", "annotations": {"alwaysOutside": true}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 1200}, "ticks": [0, 200, 400, 600, 800, 1000, 1200]}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["jan", 187], ["ante (ona li lon anpa)", 63], ["soweli", 25], ["ijo", 6], ["kulupu", 11], ["ilo", 10], ["waso", 7], ["kasi", 5], ["akesi", 7], ["pipi", 4], ["mun", 5]]);
+      
+      var formatPercent = new google.visualization.NumberFormat({pattern: '#,##0.0%'});
+      var formatShort = new google.visualization.NumberFormat({pattern: 'short'});
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1, {
+        calc: function(dt, row) {
+          var amount = formatShort.formatValue(dt.getValue(row, 1));
+          var percent = 260 ? formatPercent.formatValue(dt.getValue(row, 1) / 260) : '0%';
+          return amount + ' (' + percent + ')';
+        },
+        type: 'string', role: 'annotation'
+      }]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-22-tp"));
+      
+      chart.draw(view, {"title": "sina kepeken nimi lawa seme? (sama ni: jan Mosi, soweli Tuto)\n(260 responses)", "height": 598, "legend": "none", "annotations": {"alwaysOutside": true}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 250}, "ticks": [0, 50, 100, 150, 200, 250]}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["Songs", 909], ["Videos or streams", 689], ["Other websites", 668], ["Memes", 644], ["Zines", 457], ["Video games", 360], ["Comics", 349], ["Other Literature", 319], ["Podcasts", 239], ["I haven't consumed any Toki Pona media", 90], ["Other, stated below", 34]]);
+      
+      var formatPercent = new google.visualization.NumberFormat({pattern: '#,##0.0%'});
+      var formatShort = new google.visualization.NumberFormat({pattern: 'short'});
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1, {
+        calc: function(dt, row) {
+          var amount = formatShort.formatValue(dt.getValue(row, 1));
+          var percent = 1245 ? formatPercent.formatValue(dt.getValue(row, 1) / 1245) : '0%';
+          return amount + ' (' + percent + ')';
+        },
+        type: 'string', role: 'annotation'
+      }]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-23"));
+      
+      chart.draw(view, {"title": "What Toki Pona media have you consumed? (MA)\n(1245 responses)", "height": 598, "legend": "none", "annotations": {"alwaysOutside": true}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 1200}, "ticks": [0, 200, 400, 600, 800, 1000, 1200]}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["kalama musi", 199], ["sitelen tawa", 131], ["lipu ante", 141], ["lipu pi ijo musi", 100], ["lipu tenpo", 150], ["musi ilo", 72], ["lipu pi sitelen kule", 64], ["lipu ante pi sitelen nimi", 44], ["toki taso", 82], ["mi lukin ala e musi pi toki pona", 17], ["ante (ona li lon anpa)", 8]]);
+      
+      var formatPercent = new google.visualization.NumberFormat({pattern: '#,##0.0%'});
+      var formatShort = new google.visualization.NumberFormat({pattern: 'short'});
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1, {
+        calc: function(dt, row) {
+          var amount = formatShort.formatValue(dt.getValue(row, 1));
+          var percent = 260 ? formatPercent.formatValue(dt.getValue(row, 1) / 260) : '0%';
+          return amount + ' (' + percent + ')';
+        },
+        type: 'string', role: 'annotation'
+      }]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-23-tp"));
+      
+      chart.draw(view, {"title": "sina musi seme pi toki pona?  (MA)\n(260 responses)", "height": 598, "legend": "none", "annotations": {"alwaysOutside": true}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 250}, "ticks": [0, 50, 100, 150, 200, 250]}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["No", 402], ["Translations", 391], ["Songs (original or translated)", 275], ["Original literature", 261], ["Memes", 206], ["A writing system", 172], ["Other, stated below", 161], ["tp learning material", 129], ["Games", 90], ["A number system", 88], ["Videos, streams, or podcasts", 61]]);
+      
+      var formatPercent = new google.visualization.NumberFormat({pattern: '#,##0.0%'});
+      var formatShort = new google.visualization.NumberFormat({pattern: 'short'});
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1, {
+        calc: function(dt, row) {
+          var amount = formatShort.formatValue(dt.getValue(row, 1));
+          var percent = 1208 ? formatPercent.formatValue(dt.getValue(row, 1) / 1208) : '0%';
+          return amount + ' (' + percent + ')';
+        },
+        type: 'string', role: 'annotation'
+      }]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-24"));
+      
+      chart.draw(view, {"title": "Have you created anything in Toki Pona? (MA)\n(1208 responses)", "height": 598, "legend": "none", "annotations": {"alwaysOutside": true}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 500}, "ticks": [0, 100, 200, 300, 400, 500]}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["mi pali ala e ijo sin", 69], ["mi ante toki e ijo", 113], ["kalama musi (sin anu sin ala)", 60], ["mi sitelen e ijo sin", 74], ["sitelen musi", 32], ["nasin sitelen sin", 29], ["ante (ona li lon anpa)", 18], ["ijo pi kama sona pi toki pona", 34], ["musi ilo, musi supa...", 48], ["nasin nanpa sin", 15], ["sitelen tawa, anu toki taso", 26]]);
+      
+      var formatPercent = new google.visualization.NumberFormat({pattern: '#,##0.0%'});
+      var formatShort = new google.visualization.NumberFormat({pattern: 'short'});
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1, {
+        calc: function(dt, row) {
+          var amount = formatShort.formatValue(dt.getValue(row, 1));
+          var percent = 256 ? formatPercent.formatValue(dt.getValue(row, 1) / 256) : '0%';
+          return amount + ' (' + percent + ')';
+        },
+        type: 'string', role: 'annotation'
+      }]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-24-tp"));
+      
+      chart.draw(view, {"title": "sina pali e ijo sin kepeken toki pona, anu seme? (lon anpa la sina ken toki e ijo) (MA)\n(256 responses)", "height": 598, "legend": "none", "annotations": {"alwaysOutside": true}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 140}, "ticks": [0, 20, 40, 60, 80, 100, 120, 140]}});
+    })();
+    
+
+    (function() {
+      var data = google.visualization.arrayToDataTable([["Answer", "frequently use", "know and use", "know", "don't know", {"role": "annotation"}], ["Latin alphabet (ni)", 967, 232, 46, 13, ""], ["sitelen pona ↓", 504, 424, 184, 128, ""], ["Cyrillic alphabet ни", 8, 51, 263, 881, ""], ["sitelen sitelen", 16, 89, 209, 888, ""], ["sitelen Emoji ⬇️", 4, 26, 186, 985, ""], ["Kanji/Kana 此", 5, 27, 153, 1014, ""], ["Greek νι", 2, 24, 145, 1029, ""], ["Hangul 니", 7, 22, 119, 1053, ""], ["Arabic Abjad ني", 1, 16, 63, 1114, ""], ["Hanzi 这", 2, 16, 58, 1118, ""], ["Alefbet ivri ני", 2, 7, 54, 1131, ""]]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-25"));
+      chart.draw(data, {"title": "What writing systems do you use for Toki Pona?\n(1259 responses)", "height": 598, "isStacked": true, "legend": {"position": "top", "maxLines": 3}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 1400}, "ticks": [0, 200, 400, 600, 800, 1000, 1200, 1400]}});
+    })();
+    
+
+    (function() {
+      var data = google.visualization.arrayToDataTable([["Answer", "kepeken mute", "sona. kepeken.", "sona", "sona ala", {"role": "annotation"}], ["sitelen Lasina (ni)", 227, 42, 1, 2, ""], ["sitelen pona ↓", 129, 114, 20, 7, ""], ["sitelen Kililisa ни", 1, 13, 68, 187, ""], ["sitelen sitelen", 6, 30, 49, 182, ""], ["sitelen Emosi ⬇️", 1, 5, 44, 218, ""], ["sitelen Kansi/Kana 此", 0, 3, 44, 221, ""], ["sitelen Elena νι", 0, 5, 45, 219, ""], ["sitelen Anku 니", 1, 1, 34, 230, ""], ["sitelen Alapi ين", 0, 2, 16, 249, ""], ["sitelen Ansu 这", 0, 1, 16, 249, ""], ["sitelen Iwi ינ", 0, 0, 18, 249, ""]]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-25-tp"));
+      chart.draw(data, {"title": "sina kepeken nasin sitelen seme pi toki pona?\n(272 responses)", "height": 598, "isStacked": true, "legend": {"position": "top", "maxLines": 3}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 300}, "ticks": [0, 50, 100, 150, 200, 250, 300]}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["<20", 462], ["20-24", 304], ["25-29", 168], ["30-39", 140], ["40-49", 31], ["50-59", 28], ["60-69", 5], ["70-79", 4], ["80-89", 1], ["90-99", 0], ["100+", 1], ["I do not wish to disclose", 66]]);
+      
+      var formatPercent = new google.visualization.NumberFormat({pattern: '#,##0.0%'});
+      var formatShort = new google.visualization.NumberFormat({pattern: 'short'});
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1, {
+        calc: function(dt, row) {
+          var amount = formatShort.formatValue(dt.getValue(row, 1));
+          var percent = 1210 ? formatPercent.formatValue(dt.getValue(row, 1) / 1210) : '0%';
+          return amount + ' (' + percent + ')';
+        },
+        type: 'string', role: 'annotation'
+      }]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-26"));
+      
+      chart.draw(view, {"title": "How old are you?\n(1210 responses)", "height": 636, "legend": "none", "annotations": {"alwaysOutside": true}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 600}, "ticks": [0, 100, 200, 300, 400, 500, 600]}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["<20", 93], ["20-24", 89], ["25-29", 32], ["30-39", 23], ["40-49", 4], ["50-59", 5], ["60-69", 0], ["70-79", 0], ["80-89", 0], ["90-99", 0], ["100+", 1], ["mi wile ala toki e ona", 8]]);
+      
+      var formatPercent = new google.visualization.NumberFormat({pattern: '#,##0.0%'});
+      var formatShort = new google.visualization.NumberFormat({pattern: 'short'});
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1, {
+        calc: function(dt, row) {
+          var amount = formatShort.formatValue(dt.getValue(row, 1));
+          var percent = 255 ? formatPercent.formatValue(dt.getValue(row, 1) / 255) : '0%';
+          return amount + ' (' + percent + ')';
+        },
+        type: 'string', role: 'annotation'
+      }]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-26-tp"));
+      
+      chart.draw(view, {"title": "sike suno la tenpo sina li seme?\n(255 responses)", "height": 636, "legend": "none", "annotations": {"alwaysOutside": true}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 120}, "ticks": [0, 20, 40, 60, 80, 100, 120]}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["North America", 533], ["Europe", 420], ["Asia", 116], ["Oceania", 71], ["South America", 43], ["Do not wish to disclose", 16], ["Africa", 7], ["Other", 3]]);
+      
+      var formatPercent = new google.visualization.NumberFormat({pattern: '#,##0.0%'});
+      var formatShort = new google.visualization.NumberFormat({pattern: 'short'});
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1, {
+        calc: function(dt, row) {
+          var amount = formatShort.formatValue(dt.getValue(row, 1));
+          var percent = 1209 ? formatPercent.formatValue(dt.getValue(row, 1) / 1209) : '0%';
+          return amount + ' (' + percent + ')';
+        },
+        type: 'string', role: 'annotation'
+      }]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-27"));
+      
+      chart.draw(view, {"title": "What continent/region are you from? \n(1209 responses)", "height": 500, "legend": "none", "annotations": {"alwaysOutside": true}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 700}, "ticks": [0, 100, 200, 300, 400, 500, 600, 700]}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["ma Notamewika", 122], ["ma Elopa", 98], ["ma Asija", 14], ["ma lili Osejanija", 10], ["ma Sutamelika", 8], ["mi wile ala toki e ona", 2], ["ma Apika", 1], ["ma ante", 1]]);
+      
+      var formatPercent = new google.visualization.NumberFormat({pattern: '#,##0.0%'});
+      var formatShort = new google.visualization.NumberFormat({pattern: 'short'});
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1, {
+        calc: function(dt, row) {
+          var amount = formatShort.formatValue(dt.getValue(row, 1));
+          var percent = 256 ? formatPercent.formatValue(dt.getValue(row, 1) / 256) : '0%';
+          return amount + ' (' + percent + ')';
+        },
+        type: 'string', role: 'annotation'
+      }]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-27-tp"));
+      
+      chart.draw(view, {"title": "sike ma la, sina tan ma seme?\n(256 responses)", "height": 500, "legend": "none", "annotations": {"alwaysOutside": true}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 160}, "ticks": [0, 20, 40, 60, 80, 100, 120, 140, 160]}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["meli - woman/feminine", 355], ["mije - man/masculine", 611], ["tonsi - non-binary/trans/gnc", 432], ["ala - agender", 122], ["mi sona ala / mi alasa - I do not know / I am questioning", 100], ["Other, stated below", 84], ["I do not wish to disclose", 37]]);
+      
+      var formatPercent = new google.visualization.NumberFormat({pattern: '#,##0.0%'});
+      var formatShort = new google.visualization.NumberFormat({pattern: 'short'});
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1, {
+        calc: function(dt, row) {
+          var amount = formatShort.formatValue(dt.getValue(row, 1));
+          var percent = 1211 ? formatPercent.formatValue(dt.getValue(row, 1) / 1211) : '0%';
+          return amount + ' (' + percent + ')';
+        },
+        type: 'string', role: 'annotation'
+      }]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-28"));
+      
+      chart.draw(view, {"title": "What is your gender? (MA)\n(1211 responses)", "height": 500, "legend": "none", "annotations": {"alwaysOutside": true}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 800}, "ticks": [0, 100, 200, 300, 400, 500, 600, 700, 800]}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["meli", 87], ["mije", 115], ["tonsi", 98], ["ala", 33], ["mi sona ala / mi alasa", 30], ["ante (ona li lon anpa)", 20], ["mi wile ala toki e ona", 9]]);
+      
+      var formatPercent = new google.visualization.NumberFormat({pattern: '#,##0.0%'});
+      var formatShort = new google.visualization.NumberFormat({pattern: 'short'});
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1, {
+        calc: function(dt, row) {
+          var amount = formatShort.formatValue(dt.getValue(row, 1));
+          var percent = 256 ? formatPercent.formatValue(dt.getValue(row, 1) / 256) : '0%';
+          return amount + ' (' + percent + ')';
+        },
+        type: 'string', role: 'annotation'
+      }]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-28-tp"));
+      
+      chart.draw(view, {"title": "kule/kon sina li seme? (MA)\n(256 responses)", "height": 500, "legend": "none", "annotations": {"alwaysOutside": true}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 140}, "ticks": [0, 20, 40, 60, 80, 100, 120, 140]}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["Atheism", 589], ["Agnosticism", 360], ["Christianity", 166], ["Other, stated below", 126], ["I do not wish to disclose", 104], ["Paganism", 61], ["Buddhism", 43], ["Judaism", 34], ["Daoism", 24], ["Islam", 16], ["Wicca", 12], ["Hinduism", 10]]);
+      
+      var formatPercent = new google.visualization.NumberFormat({pattern: '#,##0.0%'});
+      var formatShort = new google.visualization.NumberFormat({pattern: 'short'});
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1, {
+        calc: function(dt, row) {
+          var amount = formatShort.formatValue(dt.getValue(row, 1));
+          var percent = 1194 ? formatPercent.formatValue(dt.getValue(row, 1) / 1194) : '0%';
+          return amount + ' (' + percent + ')';
+        },
+        type: 'string', role: 'annotation'
+      }]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-29"));
+      
+      chart.draw(view, {"title": "What is your religion/philosophy? (MA)\n(1194 responses)", "height": 636, "legend": "none", "annotations": {"alwaysOutside": true}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 800}, "ticks": [0, 100, 200, 300, 400, 500, 600, 700, 800]}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["mi toki e ni: sewi li lon ala", 120], ["mi ken ala sona", 106], ["jan Jesu lil sewi nanpa wan ✝️/☦️", 32], ["ante (ona li lon anpa)", 28], ["mi toki ala e ni", 11], ["nasin Pakan (Paganism)", 11], ["jan Puta li sewi ☸️ ", 6], ["nasin sewi Jejusin ✡️", 9], ["nasin Tajo ☯️", 4], ["sewi Ala li taso ☪️ 🕋", 3], ["nasin Wika", 5], ["nasin Sanatana Tama 🕉️", 3]]);
+      
+      var formatPercent = new google.visualization.NumberFormat({pattern: '#,##0.0%'});
+      var formatShort = new google.visualization.NumberFormat({pattern: 'short'});
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1, {
+        calc: function(dt, row) {
+          var amount = formatShort.formatValue(dt.getValue(row, 1));
+          var percent = 256 ? formatPercent.formatValue(dt.getValue(row, 1) / 256) : '0%';
+          return amount + ' (' + percent + ')';
+        },
+        type: 'string', role: 'annotation'
+      }]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-29-tp"));
+      
+      chart.draw(view, {"title": "nasin sewi seme li nasin sewi sina? (MA)\n(256 responses)", "height": 636, "legend": "none", "annotations": {"alwaysOutside": true}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 160}, "ticks": [0, 20, 40, 60, 80, 100, 120, 140, 160]}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["1", 94], ["2", 345], ["3", 374], ["4", 205], ["5", 92], ["6", 25], ["7", 19], ["8", 12], ["9", 5], ["10 or more", 7]]);
+      
+      var formatPercent = new google.visualization.NumberFormat({pattern: '#,##0.0%'});
+      var formatShort = new google.visualization.NumberFormat({pattern: 'short'});
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1, {
+        calc: function(dt, row) {
+          var amount = formatShort.formatValue(dt.getValue(row, 1));
+          var percent = 1178 ? formatPercent.formatValue(dt.getValue(row, 1) / 1178) : '0%';
+          return amount + ' (' + percent + ')';
+        },
+        type: 'string', role: 'annotation'
+      }]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-30"));
+      
+      chart.draw(view, {"title": "In how many languages can you converse with some degree of fluency? (including Toki Pona)\n(1178 responses)", "height": 560, "legend": "none", "annotations": {"alwaysOutside": true}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 500}, "ticks": [0, 100, 200, 300, 400, 500]}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["1", 2], ["2", 56], ["3", 69], ["4", 60], ["5", 30], ["6", 8], ["7", 9], ["8", 8], ["9", 3], ["10+", 3]]);
+      
+      var formatPercent = new google.visualization.NumberFormat({pattern: '#,##0.0%'});
+      var formatShort = new google.visualization.NumberFormat({pattern: 'short'});
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1, {
+        calc: function(dt, row) {
+          var amount = formatShort.formatValue(dt.getValue(row, 1));
+          var percent = 248 ? formatPercent.formatValue(dt.getValue(row, 1) / 248) : '0%';
+          return amount + ' (' + percent + ')';
+        },
+        type: 'string', role: 'annotation'
+      }]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-30-tp"));
+      
+      chart.draw(view, {"title": "sina ken toki kepeken toki pi mute seme? (o nanpa kin e toki pona)\n(248 responses)", "height": 560, "legend": "none", "annotations": {"alwaysOutside": true}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 90}, "ticks": [0, 10, 20, 30, 40, 50, 60, 70, 80, 90]}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["No", 822], ["Esperanto", 196], ["Other, stated below", 81], ["Lojban", 29], ["Kokanu", 20], ["tuki tiki", 16], ["Viossa", 15], ["Globasa", 14], ["Na'vi", 12], ["Ithkuil", 11], ["Klingon", 10], ["toki ma", 8], ["High Valyrian", 5], ["Ido", 5], ["Quenya", 5], ["Sindarin", 5], ["Elefen", 4], ["Interslavic", 4], ["Shidinn", 4], ["Vötgil", 4], ["Interlingua", 3], ["Volapük", 3], ["Dothraki", 2], ["Kay(f)bop(t)", 2], ["My own conlang", 2], ["Nao", 2], ["Simplingua", 2], ["uwulang", 2], ["Hilichurlian", 1], ["Laiqbun", 1], ["Viesa", 0]]);
+      
+      var formatPercent = new google.visualization.NumberFormat({pattern: '#,##0.0%'});
+      var formatShort = new google.visualization.NumberFormat({pattern: 'short'});
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1, {
+        calc: function(dt, row) {
+          var amount = formatShort.formatValue(dt.getValue(row, 1));
+          var percent = 1133 ? formatPercent.formatValue(dt.getValue(row, 1) / 1133) : '0%';
+          return amount + ' (' + percent + ')';
+        },
+        type: 'string', role: 'annotation'
+      }]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-31"));
+      
+      chart.draw(view, {"title": "Do you speak any other conlangs? (MA)\n(1133 responses)", "height": 1358, "legend": "none", "annotations": {"alwaysOutside": true}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 1000}, "ticks": [0, 200, 400, 600, 800, 1000]}});
+    })();
+    
+
+    (function() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Answer');
+      data.addColumn('number', 'Responses');
+      data.addRows([["toki sin ante ala", 146], ["toki Epelanto - Esperanto", 50], ["ante (ona li lon anpa)", 16], ["toki Losupan - Lojban", 8], ["toki Kokanu - Kokanu", 6], ["tuki tiki", 4], ["toki Wijosa - Viossa", 6], ["toki Kopasa - Globasa", 5], ["toki Nawi - Na'vi", 2], ["toki Iki - Ithkuil", 2], ["toki Kinkon - Klingon", 1], ["toki ma", 3], ["toki Iwalelian - High Valyrian", 0], ["toki Ito - Ido", 2], ["toki Kenja - Quenya", 1], ["toki Sintalin - Sindarin", 0], ["toki Elepen - Elefen", 1], ["toki Mesulojanki - Interslavic", 2], ["toki Sitin - Shidinn", 0], ["toki Poki - Vötgil", 1], ["toki Intelinkuwa - Interlingua", 1], ["toki Wolapuki - Volapük", 0], ["toki Totaki - Dothraki", 1], ["toki Kabo - Kay(f)bop(t)", 1], ["toki pali mi", 0], ["toki No - Nao", 0], ["toki Sinlinkuwa - Simplingua", 0], ["toki Uwa - uwulang", 0], ["toki Kilisulijan - Hilichurlian", 0], ["toki Lanpun - Laiqbun", 0], ["nasin sitelen Wijesa - Viesa", 0]]);
+      
+      var formatPercent = new google.visualization.NumberFormat({pattern: '#,##0.0%'});
+      var formatShort = new google.visualization.NumberFormat({pattern: 'short'});
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1, {
+        calc: function(dt, row) {
+          var amount = formatShort.formatValue(dt.getValue(row, 1));
+          var percent = 228 ? formatPercent.formatValue(dt.getValue(row, 1) / 228) : '0%';
+          return amount + ' (' + percent + ')';
+        },
+        type: 'string', role: 'annotation'
+      }]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-31-tp"));
+      
+      chart.draw(view, {"title": "sina toki e toki pali seme pi toki pona ala? (MA)\n(228 responses)", "height": 1358, "legend": "none", "annotations": {"alwaysOutside": true}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 180}, "ticks": [0, 20, 40, 60, 80, 100, 120, 140, 160, 180]}});
+    })();
+    
+
+    (function() {
+      var data = google.visualization.arrayToDataTable([["Answer", "native/fluent", "can converse", "learning / know a bit", {"role": "annotation"}], ["English", 1090, 95, 6, ""], ["Spanish", 82, 159, 350, ""], ["French", 73, 120, 237, ""], ["German", 88, 96, 233, ""], ["Japanese", 15, 73, 294, ""], ["Chinese", 59, 42, 142, ""], ["Russian", 44, 22, 145, ""], ["Latin", 6, 20, 177, ""], ["Italian", 21, 21, 125, ""], ["Dutch", 36, 14, 92, ""], ["Portuguese", 32, 9, 97, ""], ["Swedish", 26, 26, 86, ""], ["Polish", 34, 12, 75, ""], ["Norwegian", 19, 15, 84, ""], ["Arabic", 4, 6, 95, ""], ["Hebrew", 10, 7, 85, ""], ["Cantonese", 13, 10, 76, ""], ["Finnish", 11, 6, 73, ""], ["Czech", 17, 4, 67, ""], ["Ukrainian", 8, 3, 77, ""], ["Yiddish", 4, 6, 77, ""], ["Catalan", 11, 5, 69, ""], ["Indonesian", 7, 7, 70, ""], ["Tagalog", 13, 4, 67, ""], ["Welsh", 4, 1, 75, ""], ["Turkish", 9, 4, 66, ""], ["Irish", 2, 8, 68, ""], ["Hungarian", 9, 2, 66, ""], ["Hindi", 5, 3, 67, ""], ["Scots", 5, 3, 66, ""], ["Icelandic", 2, 3, 67, ""], ["Malay", 4, 4, 60, ""]]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-32"));
+      chart.draw(data, {"title": "What other languages do you know?\n(1201 responses)", "height": 1396, "isStacked": true, "legend": {"position": "top", "maxLines": 3}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 1400}, "ticks": [0, 200, 400, 600, 800, 1000, 1200, 1400]}});
+    })();
+    
+
+    (function() {
+      var data = google.visualization.arrayToDataTable([["Answer", "toki mama/mi toki pona mute", "mi ken toki", "mi kama sona / sona lili", {"role": "annotation"}], ["toki Inli - English - English", 219, 29, 3, ""], ["toki Epanja - Spanish - Español", 19, 31, 80, ""], ["toki Kanse - French - Français", 17, 26, 65, ""], ["toki Tosi - German - Deutsch", 21, 23, 46, ""], ["toki Nijon - Japanese - 日本語", 2, 19, 65, ""], ["toki Sonko - Chinese - 中文", 5, 15, 44, ""], ["toki Losi - Russian - русский", 13, 3, 34, ""], ["toki Lasina - Latin - Latina", 1, 8, 44, ""], ["toki Italija - Italian - italiano", 5, 5, 36, ""], ["toki Netelan - Dutch - Nederlandse", 9, 2, 29, ""], ["toki Potuke - Portuguese - Português", 6, 4, 28, ""], ["toki Wensa - Swedish - Svenska", 5, 6, 29, ""], ["toki Posuka - Polish - Polski", 10, 3, 25, ""], ["toki Nosiki - Norwegian - norsk", 2, 5, 28, ""], ["toki Alapi - Arabic - العربية", 0, 1, 28, ""], ["toki Iwisi - Hebrew - עברית", 1, 0, 27, ""], ["toki Konton - Cantonese - 廣東話", 3, 1, 27, ""], ["toki Sumi - Finnish - Suomi", 2, 1, 30, ""], ["toki Seki - Czech - čeština", 3, 0, 27, ""], ["toki Ukawina - Ukrainian - українська", 2, 2, 27, ""], ["toki Isi - Yiddish - יִידיש", 1, 1, 25, ""], ["toki Katalunja - Catalan - Català", 2, 1, 25, ""], ["toki Intonesija - Indonesian - Bahasa Indonesia", 0, 0, 27, ""], ["toki Takalo - Filipino - tagalog", 1, 0, 25, ""], ["toki Kinla - Welsh - Cymraeg", 0, 0, 26, ""], ["toki Tuki - Turkish - Türkçe", 2, 1, 24, ""], ["toki Alan - Irish - Gaelige", 0, 1, 25, ""], ["toki Mosijo - Hungarian - Magyar", 0, 0, 26, ""], ["toki Insi - Hindi - हिंदी", 0, 0, 26, ""], ["toki Sukosi - Scots - Scots", 0, 0, 26, ""], ["toki Isilan - Icelandic - Íslensku", 0, 1, 25, ""], ["toki Male - Malay - Bahasa Melayu", 0, 1, 25, ""]]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-32-tp"));
+      chart.draw(data, {"title": "sina ken toki kepeken toki seme?\n(251 responses)", "height": 1396, "isStacked": true, "legend": {"position": "top", "maxLines": 3}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 300}, "ticks": [0, 50, 100, 150, 200, 250, 300]}});
+    })();
+    
+
+    (function() {
+      var data = google.visualization.arrayToDataTable([["Answer", "native/fluent", "can converse", "learning / know a bit", {"role": "annotation"}], ["English", 1090, 95, 6, ""], ["Spanish", 82, 159, 350, ""], ["French", 73, 120, 237, ""], ["German", 88, 96, 233, ""], ["Japanese", 15, 73, 294, ""], ["Chinese", 59, 42, 142, ""], ["Russian", 44, 22, 145, ""], ["Latin", 6, 20, 177, ""], ["Italian", 21, 21, 125, ""], ["Dutch", 36, 14, 92, ""], ["Portuguese", 32, 9, 97, ""], ["Swedish", 26, 26, 86, ""], ["Polish", 34, 12, 75, ""], ["Norwegian", 19, 15, 84, ""], ["Arabic", 4, 6, 95, ""], ["Hebrew", 10, 7, 85, ""], ["Cantonese", 13, 10, 76, ""], ["Finnish", 11, 6, 73, ""], ["Czech", 17, 4, 67, ""], ["Ukrainian", 8, 3, 77, ""], ["Yiddish", 4, 6, 77, ""], ["Catalan", 11, 5, 69, ""], ["Indonesian", 7, 7, 70, ""], ["Tagalog", 13, 4, 67, ""], ["Welsh", 4, 1, 75, ""], ["Turkish", 9, 4, 66, ""], ["Irish", 2, 8, 68, ""], ["Hungarian", 9, 2, 66, ""], ["Hindi", 5, 3, 67, ""], ["Scots", 5, 3, 66, ""], ["Icelandic", 2, 3, 67, ""], ["Malay", 4, 4, 60, ""]]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-32-log"));
+      chart.draw(data, {"title": "What other languages do you know?\n(1201 responses). Log scale", "height": 1396, "isStacked": true, "legend": {"position": "top", "maxLines": 3}, "hAxis": {"logScale": true}});
+    })();
+    
+
+    (function() {
+      var data = google.visualization.arrayToDataTable([["Answer", "toki mama/mi toki pona mute", "mi ken toki", "mi kama sona / sona lili", {"role": "annotation"}], ["toki Inli - English - English", 219, 29, 3, ""], ["toki Epanja - Spanish - Español", 19, 31, 80, ""], ["toki Kanse - French - Français", 17, 26, 65, ""], ["toki Tosi - German - Deutsch", 21, 23, 46, ""], ["toki Nijon - Japanese - 日本語", 2, 19, 65, ""], ["toki Sonko - Chinese - 中文", 5, 15, 44, ""], ["toki Losi - Russian - русский", 13, 3, 34, ""], ["toki Lasina - Latin - Latina", 1, 8, 44, ""], ["toki Italija - Italian - italiano", 5, 5, 36, ""], ["toki Netelan - Dutch - Nederlandse", 9, 2, 29, ""], ["toki Potuke - Portuguese - Português", 6, 4, 28, ""], ["toki Wensa - Swedish - Svenska", 5, 6, 29, ""], ["toki Posuka - Polish - Polski", 10, 3, 25, ""], ["toki Nosiki - Norwegian - norsk", 2, 5, 28, ""], ["toki Alapi - Arabic - العربية", 0, 1, 28, ""], ["toki Iwisi - Hebrew - עברית", 1, 0, 27, ""], ["toki Konton - Cantonese - 廣東話", 3, 1, 27, ""], ["toki Sumi - Finnish - Suomi", 2, 1, 30, ""], ["toki Seki - Czech - čeština", 3, 0, 27, ""], ["toki Ukawina - Ukrainian - українська", 2, 2, 27, ""], ["toki Isi - Yiddish - יִידיש", 1, 1, 25, ""], ["toki Katalunja - Catalan - Català", 2, 1, 25, ""], ["toki Intonesija - Indonesian - Bahasa Indonesia", 0, 0, 27, ""], ["toki Takalo - Filipino - tagalog", 1, 0, 25, ""], ["toki Kinla - Welsh - Cymraeg", 0, 0, 26, ""], ["toki Tuki - Turkish - Türkçe", 2, 1, 24, ""], ["toki Alan - Irish - Gaelige", 0, 1, 25, ""], ["toki Mosijo - Hungarian - Magyar", 0, 0, 26, ""], ["toki Insi - Hindi - हिंदी", 0, 0, 26, ""], ["toki Sukosi - Scots - Scots", 0, 0, 26, ""], ["toki Isilan - Icelandic - Íslensku", 0, 1, 25, ""], ["toki Male - Malay - Bahasa Melayu", 0, 1, 25, ""]]);
+      var chart = new google.visualization.BarChart(document.getElementById("chart-26-32-tp-log"));
+      chart.draw(data, {"title": "sina ken toki kepeken toki seme?\n(251 responses). Log scale", "height": 1396, "isStacked": true, "legend": {"position": "top", "maxLines": 3}, "hAxis": {"logScale": true}});
+    })();
+    
+
+    (function() {
+      var container = document.getElementById("chart-26-people-clustered");
+      if (!container) return;
+      container.replaceChildren();
+
+      var titleElement = document.createElement("div");
+      titleElement.className = "census-clustered-title";
+      titleElement.textContent = "# of people respondents have spoken with, by level\n(1053 responses)";
+      container.appendChild(titleElement);
+
+      var legend = document.createElement("div");
+      legend.className = "census-clustered-legend";
+      [
+        ["visited", "recent ma pona visitor"],
+        ["not-visited", "not recent ma pona visitor"]
+      ].forEach(function(item) {
+        var entry = document.createElement("span");
+        var swatch = document.createElement("i");
+        swatch.className = item[0];
+        entry.appendChild(swatch);
+        entry.appendChild(document.createTextNode(item[1]));
+        legend.appendChild(entry);
+      });
+      container.appendChild(legend);
+
+      var plot = document.createElement("div");
+      plot.className = "census-clustered-plot";
+      container.appendChild(plot);
+
+      var data = google.visualization.arrayToDataTable([["Respondent level / contact level", "recent ma pona visitor", {"type": "string", "role": "tooltip"}, "not recent ma pona visitor", {"type": "string", "role": "tooltip"}, {"type": "string", "role": "annotation"}], ["Beg.-int. / A", 292, "Beginner-intermediate respondents / A: none - visited ma pona in the last 90 days: 292 people (11.0%)", 2364, "Beginner-intermediate respondents / A: none - did not visit ma pona in the last 90 days: 2,364 people (89.0%)", "2,656"], ["Beg.-int. / B", 2139, "Beginner-intermediate respondents / B: beginner-intermediate - visited ma pona in the last 90 days: 2,139 people (54.0%)", 1823, "Beginner-intermediate respondents / B: beginner-intermediate - did not visit ma pona in the last 90 days: 1,823 people (46.0%)", "3,962"], ["Beg.-int. / C", 1978, "Beginner-intermediate respondents / C: advanced-fluent - visited ma pona in the last 90 days: 1,978 people (82.7%)", 413, "Beginner-intermediate respondents / C: advanced-fluent - did not visit ma pona in the last 90 days: 413 people (17.3%)", "2,391"], ["", 0, "", 0, "", ""], ["Adv.-fl. / A", 1771, "Advanced-fluent respondents / A: none - visited ma pona in the last 90 days: 1,771 people (23.9%)", 5652, "Advanced-fluent respondents / A: none - did not visit ma pona in the last 90 days: 5,652 people (76.1%)", "7,423"], ["Adv.-fl. / B", 3764, "Advanced-fluent respondents / B: beginner-intermediate - visited ma pona in the last 90 days: 3,764 people (50.4%)", 3700, "Advanced-fluent respondents / B: beginner-intermediate - did not visit ma pona in the last 90 days: 3,700 people (49.6%)", "7,464"], ["Adv.-fl. / C", 2514, "Advanced-fluent respondents / C: advanced-fluent - visited ma pona in the last 90 days: 2,514 people (62.0%)", 1538, "Advanced-fluent respondents / C: advanced-fluent - did not visit ma pona in the last 90 days: 1,538 people (38.0%)", "4,052"]]);
+      var chart = new google.visualization.BarChart(plot);
+      chart.draw(data, {"height": 540, "isStacked": true, "legend": {"position": "none"}, "bar": {"groupWidth": "72%"}, "colors": ["#1f4e8c", "#8eb1dc"], "annotations": {"alwaysOutside": true, "textStyle": {"color": "#333333"}}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 9000}, "ticks": [0, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000]}});
+    })();
+    
+
+    (function() {
+      var container = document.getElementById("chart-26-people-clustered-tp");
+      if (!container) return;
+      container.replaceChildren();
+
+      var titleElement = document.createElement("div");
+      titleElement.className = "census-clustered-title";
+      titleElement.textContent = "jan li toki tawa jan pi toki pona pi mute seme? wawa ona li seme?\n(212 sona)";
+      container.appendChild(titleElement);
+
+      var legend = document.createElement("div");
+      legend.className = "census-clustered-legend";
+      [
+        ["visited", "ma pona la lukin"],
+        ["not-visited", "ma pona la lukin ala"]
+      ].forEach(function(item) {
+        var entry = document.createElement("span");
+        var swatch = document.createElement("i");
+        swatch.className = item[0];
+        entry.appendChild(swatch);
+        entry.appendChild(document.createTextNode(item[1]));
+        legend.appendChild(entry);
+      });
+      container.appendChild(legend);
+
+      var plot = document.createElement("div");
+      plot.className = "census-clustered-plot";
+      container.appendChild(plot);
+
+      var data = google.visualization.arrayToDataTable([["Respondent level / contact level", "ma pona la lukin", {"type": "string", "role": "tooltip"}, "ma pona la lukin ala", {"type": "string", "role": "tooltip"}, {"type": "string", "role": "annotation"}], ["sin - insa / A", 127, "sin - wawa insa / A: ala a - ma pona lon tenpo suno 90 pini: 127 jan (17.3%)", 609, "sin - wawa insa / A: ala a - ma pona ala lon tenpo suno 90 pini: 609 jan (82.7%)", "736"], ["sin - insa / B", 776, "sin - wawa insa / B: sin - wawa insa - ma pona lon tenpo suno 90 pini: 776 jan (53.1%)", 686, "sin - wawa insa / B: sin - wawa insa - ma pona ala lon tenpo suno 90 pini: 686 jan (46.9%)", "1,462"], ["sin - insa / C", 433, "sin - wawa insa / C: wawa suli - wawa ale - ma pona lon tenpo suno 90 pini: 433 jan (77.6%)", 125, "sin - wawa insa / C: wawa suli - wawa ale - ma pona ala lon tenpo suno 90 pini: 125 jan (22.4%)", "558"], ["", 0, "", 0, "", ""], ["suli - ale / A", 1669, "wawa suli - wawa ale / A: ala a - ma pona lon tenpo suno 90 pini: 1,669 jan (27.6%)", 4380, "wawa suli - wawa ale / A: ala a - ma pona ala lon tenpo suno 90 pini: 4,380 jan (72.4%)", "6,049"], ["suli - ale / B", 3069, "wawa suli - wawa ale / B: sin - wawa insa - ma pona lon tenpo suno 90 pini: 3,069 jan (51.1%)", 2933, "wawa suli - wawa ale / B: sin - wawa insa - ma pona ala lon tenpo suno 90 pini: 2,933 jan (48.9%)", "6,002"], ["suli - ale / C", 1719, "wawa suli - wawa ale / C: wawa suli - wawa ale - ma pona lon tenpo suno 90 pini: 1,719 jan (62.4%)", 1034, "wawa suli - wawa ale / C: wawa suli - wawa ale - ma pona ala lon tenpo suno 90 pini: 1,034 jan (37.6%)", "2,753"]]);
+      var chart = new google.visualization.BarChart(plot);
+      chart.draw(data, {"height": 540, "isStacked": true, "legend": {"position": "none"}, "bar": {"groupWidth": "72%"}, "colors": ["#1f4e8c", "#8eb1dc"], "annotations": {"alwaysOutside": true, "textStyle": {"color": "#333333"}}, "hAxis": {"viewWindowMode": "explicit", "viewWindow": {"min": 0, "max": 8000}, "ticks": [0, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000]}});
+    })();
+    
+
+    (function() {
+      var container = document.getElementById("chart-26-people-boxplot");
+      if (!container) return;
+      var rows = [{"label": "Beg.-int. / A / ma", "group": 1, "contact": 0, "visited": true, "n": 809, "minimum": 0, "q1": 0.0, "median": 0.0, "q3": 0.0, "maximum": 30, "lowerWhisker": 0, "upperWhisker": 0, "outliers": [{"value": 1, "count": 48}, {"value": 2, "count": 16}, {"value": 3, "count": 5}, {"value": 4, "count": 2}, {"value": 5, "count": 10}, {"value": 7, "count": 2}, {"value": 8, "count": 1}, {"value": 10, "count": 5}, {"value": 17, "count": 1}, {"value": 20, "count": 1}, {"value": 30, "count": 1}]}, {"label": "Beg.-int. / A / not", "group": 1, "contact": 0, "visited": false, "n": 809, "minimum": 0, "q1": 0.0, "median": 1.0, "q3": 2.0, "maximum": 220, "lowerWhisker": 0, "upperWhisker": 5, "outliers": [{"value": 6, "count": 6}, {"value": 7, "count": 3}, {"value": 8, "count": 3}, {"value": 9, "count": 2}, {"value": 10, "count": 19}, {"value": 12, "count": 1}, {"value": 13, "count": 2}, {"value": 15, "count": 3}, {"value": 19, "count": 1}, {"value": 20, "count": 5}, {"value": 24, "count": 1}, {"value": 25, "count": 2}, {"value": 27, "count": 2}, {"value": 30, "count": 2}, {"value": 40, "count": 1}, {"value": 48, "count": 1}, {"value": 50, "count": 1}, {"value": 55, "count": 1}, {"value": 80, "count": 2}, {"value": 100, "count": 1}, {"value": 130, "count": 1}, {"value": 220, "count": 1}]}, {"label": "Beg.-int. / B / ma", "group": 1, "contact": 1, "visited": true, "n": 809, "minimum": 0, "q1": 0.0, "median": 0.0, "q3": 1.0, "maximum": 150, "lowerWhisker": 0, "upperWhisker": 2, "outliers": [{"value": 3, "count": 25}, {"value": 4, "count": 12}, {"value": 5, "count": 23}, {"value": 6, "count": 2}, {"value": 7, "count": 6}, {"value": 8, "count": 3}, {"value": 9, "count": 4}, {"value": 10, "count": 15}, {"value": 15, "count": 7}, {"value": 17, "count": 1}, {"value": 18, "count": 3}, {"value": 20, "count": 10}, {"value": 24, "count": 1}, {"value": 25, "count": 1}, {"value": 28, "count": 1}, {"value": 30, "count": 3}, {"value": 35, "count": 1}, {"value": 40, "count": 1}, {"value": 45, "count": 3}, {"value": 49, "count": 1}, {"value": 50, "count": 1}, {"value": 64, "count": 1}, {"value": 70, "count": 1}, {"value": 85, "count": 1}, {"value": 100, "count": 1}, {"value": 110, "count": 1}, {"value": 150, "count": 1}]}, {"label": "Beg.-int. / B / not", "group": 1, "contact": 1, "visited": false, "n": 809, "minimum": 0, "q1": 0.0, "median": 1.0, "q3": 2.0, "maximum": 380, "lowerWhisker": 0, "upperWhisker": 5, "outliers": [{"value": 6, "count": 6}, {"value": 7, "count": 5}, {"value": 8, "count": 3}, {"value": 9, "count": 4}, {"value": 10, "count": 17}, {"value": 12, "count": 2}, {"value": 13, "count": 1}, {"value": 14, "count": 1}, {"value": 15, "count": 5}, {"value": 20, "count": 3}, {"value": 25, "count": 1}, {"value": 45, "count": 1}, {"value": 50, "count": 2}, {"value": 380, "count": 1}]}, {"label": "Beg.-int. / C / ma", "group": 1, "contact": 2, "visited": true, "n": 809, "minimum": 0, "q1": 0.0, "median": 0.0, "q3": 1.0, "maximum": 100, "lowerWhisker": 0, "upperWhisker": 2, "outliers": [{"value": 3, "count": 25}, {"value": 4, "count": 18}, {"value": 5, "count": 31}, {"value": 6, "count": 4}, {"value": 7, "count": 4}, {"value": 8, "count": 8}, {"value": 9, "count": 3}, {"value": 10, "count": 23}, {"value": 12, "count": 4}, {"value": 15, "count": 10}, {"value": 18, "count": 1}, {"value": 20, "count": 5}, {"value": 25, "count": 5}, {"value": 28, "count": 1}, {"value": 30, "count": 1}, {"value": 35, "count": 1}, {"value": 47, "count": 1}, {"value": 48, "count": 1}, {"value": 50, "count": 1}, {"value": 100, "count": 4}]}, {"label": "Beg.-int. / C / not", "group": 1, "contact": 2, "visited": false, "n": 809, "minimum": 0, "q1": 0.0, "median": 0.0, "q3": 0.0, "maximum": 100, "lowerWhisker": 0, "upperWhisker": 0, "outliers": [{"value": 1, "count": 63}, {"value": 2, "count": 24}, {"value": 3, "count": 16}, {"value": 4, "count": 5}, {"value": 5, "count": 12}, {"value": 6, "count": 1}, {"value": 7, "count": 1}, {"value": 8, "count": 2}, {"value": 10, "count": 3}, {"value": 15, "count": 1}, {"value": 100, "count": 1}]}, {"label": "Adv.-fl. / A / ma", "group": 2, "contact": 0, "visited": true, "n": 244, "minimum": 0, "q1": 0.0, "median": 0.0, "q3": 2.0, "maximum": 500, "lowerWhisker": 0, "upperWhisker": 5, "outliers": [{"value": 6, "count": 1}, {"value": 9, "count": 1}, {"value": 10, "count": 12}, {"value": 15, "count": 1}, {"value": 18, "count": 1}, {"value": 20, "count": 4}, {"value": 25, "count": 1}, {"value": 30, "count": 3}, {"value": 40, "count": 4}, {"value": 50, "count": 6}, {"value": 58, "count": 1}, {"value": 100, "count": 1}, {"value": 200, "count": 1}, {"value": 500, "count": 1}]}, {"label": "Adv.-fl. / A / not", "group": 2, "contact": 0, "visited": false, "n": 244, "minimum": 0, "q1": 0.0, "median": 2.0, "q3": 8.25, "maximum": 500, "lowerWhisker": 0, "upperWhisker": 20, "outliers": [{"value": 24, "count": 1}, {"value": 25, "count": 3}, {"value": 28, "count": 1}, {"value": 30, "count": 3}, {"value": 38, "count": 1}, {"value": 40, "count": 1}, {"value": 48, "count": 1}, {"value": 50, "count": 4}, {"value": 60, "count": 1}, {"value": 70, "count": 1}, {"value": 80, "count": 1}, {"value": 90, "count": 1}, {"value": 100, "count": 1}, {"value": 150, "count": 2}, {"value": 190, "count": 1}, {"value": 250, "count": 2}, {"value": 310, "count": 1}, {"value": 380, "count": 1}, {"value": 400, "count": 2}, {"value": 480, "count": 1}, {"value": 500, "count": 2}]}, {"label": "Adv.-fl. / B / ma", "group": 2, "contact": 1, "visited": true, "n": 244, "minimum": 0, "q1": 0.0, "median": 2.0, "q3": 15.0, "maximum": 500, "lowerWhisker": 0, "upperWhisker": 35, "outliers": [{"value": 40, "count": 1}, {"value": 48, "count": 1}, {"value": 50, "count": 7}, {"value": 60, "count": 1}, {"value": 70, "count": 1}, {"value": 75, "count": 2}, {"value": 80, "count": 2}, {"value": 90, "count": 1}, {"value": 100, "count": 3}, {"value": 144, "count": 1}, {"value": 150, "count": 1}, {"value": 400, "count": 1}, {"value": 500, "count": 1}]}, {"label": "Adv.-fl. / B / not", "group": 2, "contact": 1, "visited": false, "n": 244, "minimum": 0, "q1": 0.0, "median": 2.5, "q3": 10.25, "maximum": 200, "lowerWhisker": 0, "upperWhisker": 25, "outliers": [{"value": 30, "count": 5}, {"value": 35, "count": 1}, {"value": 40, "count": 3}, {"value": 45, "count": 2}, {"value": 47, "count": 1}, {"value": 50, "count": 3}, {"value": 60, "count": 1}, {"value": 70, "count": 1}, {"value": 80, "count": 4}, {"value": 89, "count": 1}, {"value": 100, "count": 2}, {"value": 110, "count": 2}, {"value": 120, "count": 1}, {"value": 140, "count": 1}, {"value": 150, "count": 1}, {"value": 175, "count": 1}, {"value": 180, "count": 1}, {"value": 200, "count": 2}]}, {"label": "Adv.-fl. / C / ma", "group": 2, "contact": 2, "visited": true, "n": 244, "minimum": 0, "q1": 0.0, "median": 3.0, "q3": 12.25, "maximum": 150, "lowerWhisker": 0, "upperWhisker": 30, "outliers": [{"value": 33, "count": 1}, {"value": 35, "count": 2}, {"value": 40, "count": 4}, {"value": 45, "count": 1}, {"value": 46, "count": 1}, {"value": 50, "count": 4}, {"value": 54, "count": 2}, {"value": 70, "count": 1}, {"value": 100, "count": 2}, {"value": 150, "count": 2}]}, {"label": "Adv.-fl. / C / not", "group": 2, "contact": 2, "visited": false, "n": 244, "minimum": 0, "q1": 0.0, "median": 0.5, "q3": 7.0, "maximum": 100, "lowerWhisker": 0, "upperWhisker": 16, "outliers": [{"value": 18, "count": 1}, {"value": 20, "count": 7}, {"value": 22, "count": 1}, {"value": 23, "count": 1}, {"value": 25, "count": 5}, {"value": 30, "count": 4}, {"value": 40, "count": 1}, {"value": 48, "count": 1}, {"value": 50, "count": 5}, {"value": 80, "count": 1}, {"value": 100, "count": 1}]}];
+      var maximum = 500;
+      var title = "Per-respondent distributions of reported people";
+      var responseText = "1053 responses";
+      var axisTitle = "People reported per respondent (log scale)";
+      var visitedLabel = "Visited ma pona";
+      var notVisitedLabel = "Did not visit ma pona";
+      var svgNamespace = "http://www.w3.org/2000/svg";
+
+      function svgElement(name, attributes, text) {
+        var element = document.createElementNS(svgNamespace, name);
+        Object.keys(attributes || {}).forEach(function(key) {
+          element.setAttribute(key, attributes[key]);
+        });
+        if (text !== undefined) element.textContent = text;
+        return element;
+      }
+
+      function formatNumber(value) {
+        if (Math.abs(value - Math.round(value)) < 0.001) {
+          return Math.round(value).toLocaleString("en");
+        }
+        return value.toFixed(1);
+      }
+
+      function draw() {
+        container.replaceChildren();
+        var titleElement = document.createElement("div");
+        titleElement.className = "census-boxplot-title";
+        titleElement.textContent = title + " (" + responseText + ")";
+        container.appendChild(titleElement);
+
+        var legend = document.createElement("div");
+        legend.className = "census-boxplot-legend";
+        legend.innerHTML =
+          '<span><i class="visited"></i>' + visitedLabel + '</span>' +
+          '<span><i class="not-visited"></i>' + notVisitedLabel + '</span>';
+        container.appendChild(legend);
+
+        var width = Math.max(300, container.clientWidth || 700);
+        var narrow = width < 500;
+        var left = narrow ? 94 : 145;
+        var right = 24;
+        var top = 18;
+        var bottom = 48;
+        var rowStep = narrow ? 25 : 27;
+        var pairGap = 7;
+        var groupGap = 22;
+        var positions = [];
+        var y = top;
+        rows.forEach(function(row, index) {
+          if (index > 0) {
+            var previous = rows[index - 1];
+            if (row.group !== previous.group) y += groupGap;
+            else if (row.contact !== previous.contact) y += pairGap;
+          }
+          positions.push(y);
+          y += rowStep;
+        });
+        var height = y + bottom;
+        var plotWidth = Math.max(120, width - left - right);
+        var candidates = [0, 1, 2, 5, 10, 25, 50, 100, 250, 500, 1000, 2500, 5000, 10000];
+        var axisMaximum = candidates.find(function(value) { return value >= maximum; }) || maximum;
+        axisMaximum = Math.max(1, axisMaximum);
+        function scale(value) {
+          return left + Math.log1p(value) / Math.log1p(axisMaximum) * plotWidth;
+        }
+
+        var svg = svgElement("svg", {
+          "class": "census-boxplot-svg",
+          "viewBox": "0 0 " + width + " " + height,
+          "role": "img",
+          "aria-label": title + ". " + axisTitle
+        });
+        var tickCandidates = narrow
+          ? [0, 1, 10, 100, 1000, axisMaximum]
+          : candidates;
+        var ticks = Array.from(new Set(tickCandidates))
+          .filter(function(value) { return value <= axisMaximum; })
+          .sort(function(a, b) { return a - b; });
+        ticks.forEach(function(value) {
+          var x = scale(value);
+          svg.appendChild(svgElement("line", {
+            x1: x, x2: x, y1: top - 8, y2: height - bottom + 4,
+            stroke: "#d9d9d9", "stroke-width": 1
+          }));
+          svg.appendChild(svgElement("text", {
+            x: x, y: height - bottom + 21,
+            "text-anchor": value === 0 ? "start" : (value === axisMaximum ? "end" : "middle"),
+            "font-size": 11, fill: "#333333"
+          }, value.toLocaleString("en")));
+        });
+
+        rows.forEach(function(row, index) {
+          var rowY = positions[index];
+          var color = row.visited ? "#1f4e8c" : "#8eb1dc";
+          var group = svgElement("g", {});
+          var summary = row.label + ": n=" + row.n +
+            ", Q1=" + formatNumber(row.q1) +
+            ", median=" + formatNumber(row.median) +
+            ", Q3=" + formatNumber(row.q3) +
+            ", whiskers=" + formatNumber(row.lowerWhisker) +
+            "-" + formatNumber(row.upperWhisker) +
+            ", maximum=" + formatNumber(row.maximum);
+          group.appendChild(svgElement("title", {}, summary));
+          group.appendChild(svgElement("text", {
+            x: left - 8, y: rowY + 4, "text-anchor": "end",
+            "font-size": 11, fill: "#333333"
+          }, row.label));
+
+          var low = scale(row.lowerWhisker);
+          var high = scale(row.upperWhisker);
+          var q1 = scale(row.q1);
+          var q3 = scale(row.q3);
+          var median = scale(row.median);
+          group.appendChild(svgElement("line", {
+            x1: low, x2: high, y1: rowY, y2: rowY,
+            stroke: color, "stroke-width": 2
+          }));
+          group.appendChild(svgElement("line", {
+            x1: low, x2: low, y1: rowY - 5, y2: rowY + 5,
+            stroke: color, "stroke-width": 2
+          }));
+          group.appendChild(svgElement("line", {
+            x1: high, x2: high, y1: rowY - 5, y2: rowY + 5,
+            stroke: color, "stroke-width": 2
+          }));
+          group.appendChild(svgElement("rect", {
+            x: q1, y: rowY - 7, width: Math.max(2, q3 - q1), height: 14,
+            fill: color, "fill-opacity": 0.72
+          }));
+          group.appendChild(svgElement("line", {
+            x1: median, x2: median, y1: rowY - 8, y2: rowY + 8,
+            stroke: "#222222", "stroke-width": 2
+          }));
+          row.outliers.forEach(function(outlier) {
+            var circle = svgElement("circle", {
+              cx: scale(outlier.value), cy: rowY,
+              r: Math.min(5, 2 + Math.log2(outlier.count + 1)),
+              fill: color, stroke: "#ffffff", "stroke-width": 1
+            });
+            circle.appendChild(svgElement(
+              "title", {},
+              formatNumber(outlier.value) + " people: " + outlier.count + " responses"
+            ));
+            group.appendChild(circle);
+          });
+          svg.appendChild(group);
+        });
+
+        svg.appendChild(svgElement("text", {
+          x: left + plotWidth / 2, y: height - 7,
+          "text-anchor": "middle", "font-size": 12, fill: "#333333"
+        }, axisTitle));
+        container.appendChild(svg);
+      }
+
+      draw();
+      var resizeTimer;
+      window.addEventListener("resize", function() {
+        window.clearTimeout(resizeTimer);
+        resizeTimer = window.setTimeout(draw, 120);
+      });
+    })();
+    
+
+    (function() {
+      var container = document.getElementById("chart-26-people-boxplot-tp");
+      if (!container) return;
+      var rows = [{"label": "sin-insa / A / ma", "group": 1, "contact": 0, "visited": true, "n": 101, "minimum": 0, "q1": 0.0, "median": 0.0, "q3": 1.0, "maximum": 17, "lowerWhisker": 0, "upperWhisker": 2, "outliers": [{"value": 3, "count": 1}, {"value": 4, "count": 1}, {"value": 5, "count": 5}, {"value": 7, "count": 1}, {"value": 8, "count": 1}, {"value": 10, "count": 4}, {"value": 17, "count": 1}]}, {"label": "sin-insa / A / ala", "group": 1, "contact": 0, "visited": false, "n": 101, "minimum": 0, "q1": 1.0, "median": 2.0, "q3": 5.0, "maximum": 220, "lowerWhisker": 0, "upperWhisker": 10, "outliers": [{"value": 13, "count": 1}, {"value": 15, "count": 2}, {"value": 20, "count": 1}, {"value": 25, "count": 2}, {"value": 40, "count": 1}, {"value": 220, "count": 1}]}, {"label": "sin-insa / B / ma", "group": 1, "contact": 1, "visited": true, "n": 101, "minimum": 0, "q1": 0.0, "median": 2.0, "q3": 8.0, "maximum": 110, "lowerWhisker": 0, "upperWhisker": 20, "outliers": [{"value": 30, "count": 1}, {"value": 40, "count": 1}, {"value": 45, "count": 3}, {"value": 64, "count": 1}, {"value": 70, "count": 1}, {"value": 110, "count": 1}]}, {"label": "sin-insa / B / ala", "group": 1, "contact": 1, "visited": false, "n": 101, "minimum": 0, "q1": 0.0, "median": 1.0, "q3": 5.0, "maximum": 380, "lowerWhisker": 0, "upperWhisker": 12, "outliers": [{"value": 15, "count": 2}, {"value": 20, "count": 2}, {"value": 380, "count": 1}]}, {"label": "sin-insa / C / ma", "group": 1, "contact": 2, "visited": true, "n": 101, "minimum": 0, "q1": 0.0, "median": 2.0, "q3": 5.0, "maximum": 35, "lowerWhisker": 0, "upperWhisker": 12, "outliers": [{"value": 15, "count": 4}, {"value": 18, "count": 1}, {"value": 20, "count": 1}, {"value": 25, "count": 1}, {"value": 28, "count": 1}, {"value": 35, "count": 1}]}, {"label": "sin-insa / C / ala", "group": 1, "contact": 2, "visited": false, "n": 101, "minimum": 0, "q1": 0.0, "median": 0.0, "q3": 1.0, "maximum": 15, "lowerWhisker": 0, "upperWhisker": 2, "outliers": [{"value": 3, "count": 8}, {"value": 4, "count": 1}, {"value": 5, "count": 5}, {"value": 7, "count": 1}, {"value": 8, "count": 1}, {"value": 10, "count": 2}, {"value": 15, "count": 1}]}, {"label": "suli-ale / A / ma", "group": 2, "contact": 0, "visited": true, "n": 111, "minimum": 0, "q1": 0.0, "median": 1.0, "q3": 10.0, "maximum": 500, "lowerWhisker": 0, "upperWhisker": 25, "outliers": [{"value": 30, "count": 2}, {"value": 40, "count": 4}, {"value": 50, "count": 6}, {"value": 58, "count": 1}, {"value": 100, "count": 1}, {"value": 200, "count": 1}, {"value": 500, "count": 1}]}, {"label": "suli-ale / A / ala", "group": 2, "contact": 0, "visited": false, "n": 111, "minimum": 0, "q1": 1.0, "median": 5.0, "q3": 19.0, "maximum": 500, "lowerWhisker": 0, "upperWhisker": 40, "outliers": [{"value": 48, "count": 1}, {"value": 50, "count": 4}, {"value": 60, "count": 1}, {"value": 80, "count": 1}, {"value": 90, "count": 1}, {"value": 150, "count": 1}, {"value": 190, "count": 1}, {"value": 250, "count": 2}, {"value": 310, "count": 1}, {"value": 380, "count": 1}, {"value": 400, "count": 2}, {"value": 480, "count": 1}, {"value": 500, "count": 1}]}, {"label": "suli-ale / B / ma", "group": 2, "contact": 1, "visited": true, "n": 111, "minimum": 0, "q1": 1.0, "median": 10.0, "q3": 25.0, "maximum": 500, "lowerWhisker": 0, "upperWhisker": 50, "outliers": [{"value": 70, "count": 1}, {"value": 75, "count": 2}, {"value": 80, "count": 2}, {"value": 90, "count": 1}, {"value": 100, "count": 3}, {"value": 150, "count": 1}, {"value": 400, "count": 1}, {"value": 500, "count": 1}]}, {"label": "suli-ale / B / ala", "group": 2, "contact": 1, "visited": false, "n": 111, "minimum": 0, "q1": 2.0, "median": 7.0, "q3": 25.0, "maximum": 200, "lowerWhisker": 0, "upperWhisker": 50, "outliers": [{"value": 60, "count": 1}, {"value": 80, "count": 3}, {"value": 100, "count": 2}, {"value": 110, "count": 2}, {"value": 120, "count": 1}, {"value": 140, "count": 1}, {"value": 150, "count": 1}, {"value": 175, "count": 1}, {"value": 180, "count": 1}, {"value": 200, "count": 2}]}, {"label": "suli-ale / C / ma", "group": 2, "contact": 2, "visited": true, "n": 111, "minimum": 0, "q1": 2.5, "median": 7.0, "q3": 20.0, "maximum": 150, "lowerWhisker": 0, "upperWhisker": 46, "outliers": [{"value": 50, "count": 4}, {"value": 54, "count": 1}, {"value": 100, "count": 2}, {"value": 150, "count": 1}]}, {"label": "suli-ale / C / ala", "group": 2, "contact": 2, "visited": false, "n": 111, "minimum": 0, "q1": 0.0, "median": 3.0, "q3": 10.0, "maximum": 100, "lowerWhisker": 0, "upperWhisker": 25, "outliers": [{"value": 30, "count": 2}, {"value": 48, "count": 1}, {"value": 50, "count": 4}, {"value": 80, "count": 1}, {"value": 100, "count": 1}]}];
+      var maximum = 500;
+      var title = "mute jan tan jan wan";
+      var responseText = "212 sona";
+      var axisTitle = "mute jan tan jan wan (nasin log)";
+      var visitedLabel = "ma pona";
+      var notVisitedLabel = "ma pona ala";
+      var svgNamespace = "http://www.w3.org/2000/svg";
+
+      function svgElement(name, attributes, text) {
+        var element = document.createElementNS(svgNamespace, name);
+        Object.keys(attributes || {}).forEach(function(key) {
+          element.setAttribute(key, attributes[key]);
+        });
+        if (text !== undefined) element.textContent = text;
+        return element;
+      }
+
+      function formatNumber(value) {
+        if (Math.abs(value - Math.round(value)) < 0.001) {
+          return Math.round(value).toLocaleString("en");
+        }
+        return value.toFixed(1);
+      }
+
+      function draw() {
+        container.replaceChildren();
+        var titleElement = document.createElement("div");
+        titleElement.className = "census-boxplot-title";
+        titleElement.textContent = title + " (" + responseText + ")";
+        container.appendChild(titleElement);
+
+        var legend = document.createElement("div");
+        legend.className = "census-boxplot-legend";
+        legend.innerHTML =
+          '<span><i class="visited"></i>' + visitedLabel + '</span>' +
+          '<span><i class="not-visited"></i>' + notVisitedLabel + '</span>';
+        container.appendChild(legend);
+
+        var width = Math.max(300, container.clientWidth || 700);
+        var narrow = width < 500;
+        var left = narrow ? 94 : 145;
+        var right = 24;
+        var top = 18;
+        var bottom = 48;
+        var rowStep = narrow ? 25 : 27;
+        var pairGap = 7;
+        var groupGap = 22;
+        var positions = [];
+        var y = top;
+        rows.forEach(function(row, index) {
+          if (index > 0) {
+            var previous = rows[index - 1];
+            if (row.group !== previous.group) y += groupGap;
+            else if (row.contact !== previous.contact) y += pairGap;
+          }
+          positions.push(y);
+          y += rowStep;
+        });
+        var height = y + bottom;
+        var plotWidth = Math.max(120, width - left - right);
+        var candidates = [0, 1, 2, 5, 10, 25, 50, 100, 250, 500, 1000, 2500, 5000, 10000];
+        var axisMaximum = candidates.find(function(value) { return value >= maximum; }) || maximum;
+        axisMaximum = Math.max(1, axisMaximum);
+        function scale(value) {
+          return left + Math.log1p(value) / Math.log1p(axisMaximum) * plotWidth;
+        }
+
+        var svg = svgElement("svg", {
+          "class": "census-boxplot-svg",
+          "viewBox": "0 0 " + width + " " + height,
+          "role": "img",
+          "aria-label": title + ". " + axisTitle
+        });
+        var tickCandidates = narrow
+          ? [0, 1, 10, 100, 1000, axisMaximum]
+          : candidates;
+        var ticks = Array.from(new Set(tickCandidates))
+          .filter(function(value) { return value <= axisMaximum; })
+          .sort(function(a, b) { return a - b; });
+        ticks.forEach(function(value) {
+          var x = scale(value);
+          svg.appendChild(svgElement("line", {
+            x1: x, x2: x, y1: top - 8, y2: height - bottom + 4,
+            stroke: "#d9d9d9", "stroke-width": 1
+          }));
+          svg.appendChild(svgElement("text", {
+            x: x, y: height - bottom + 21,
+            "text-anchor": value === 0 ? "start" : (value === axisMaximum ? "end" : "middle"),
+            "font-size": 11, fill: "#333333"
+          }, value.toLocaleString("en")));
+        });
+
+        rows.forEach(function(row, index) {
+          var rowY = positions[index];
+          var color = row.visited ? "#1f4e8c" : "#8eb1dc";
+          var group = svgElement("g", {});
+          var summary = row.label + ": n=" + row.n +
+            ", Q1=" + formatNumber(row.q1) +
+            ", median=" + formatNumber(row.median) +
+            ", Q3=" + formatNumber(row.q3) +
+            ", whiskers=" + formatNumber(row.lowerWhisker) +
+            "-" + formatNumber(row.upperWhisker) +
+            ", maximum=" + formatNumber(row.maximum);
+          group.appendChild(svgElement("title", {}, summary));
+          group.appendChild(svgElement("text", {
+            x: left - 8, y: rowY + 4, "text-anchor": "end",
+            "font-size": 11, fill: "#333333"
+          }, row.label));
+
+          var low = scale(row.lowerWhisker);
+          var high = scale(row.upperWhisker);
+          var q1 = scale(row.q1);
+          var q3 = scale(row.q3);
+          var median = scale(row.median);
+          group.appendChild(svgElement("line", {
+            x1: low, x2: high, y1: rowY, y2: rowY,
+            stroke: color, "stroke-width": 2
+          }));
+          group.appendChild(svgElement("line", {
+            x1: low, x2: low, y1: rowY - 5, y2: rowY + 5,
+            stroke: color, "stroke-width": 2
+          }));
+          group.appendChild(svgElement("line", {
+            x1: high, x2: high, y1: rowY - 5, y2: rowY + 5,
+            stroke: color, "stroke-width": 2
+          }));
+          group.appendChild(svgElement("rect", {
+            x: q1, y: rowY - 7, width: Math.max(2, q3 - q1), height: 14,
+            fill: color, "fill-opacity": 0.72
+          }));
+          group.appendChild(svgElement("line", {
+            x1: median, x2: median, y1: rowY - 8, y2: rowY + 8,
+            stroke: "#222222", "stroke-width": 2
+          }));
+          row.outliers.forEach(function(outlier) {
+            var circle = svgElement("circle", {
+              cx: scale(outlier.value), cy: rowY,
+              r: Math.min(5, 2 + Math.log2(outlier.count + 1)),
+              fill: color, stroke: "#ffffff", "stroke-width": 1
+            });
+            circle.appendChild(svgElement(
+              "title", {},
+              formatNumber(outlier.value) + " people: " + outlier.count + " responses"
+            ));
+            group.appendChild(circle);
+          });
+          svg.appendChild(group);
+        });
+
+        svg.appendChild(svgElement("text", {
+          x: left + plotWidth / 2, y: height - 7,
+          "text-anchor": "middle", "font-size": 12, fill: "#333333"
+        }, axisTitle));
+        container.appendChild(svg);
+      }
+
+      draw();
+      var resizeTimer;
+      window.addEventListener("resize", function() {
+        window.clearTimeout(resizeTimer);
+        resizeTimer = window.setTimeout(draw, 120);
+      });
+    })();
+    
+}
+</script>

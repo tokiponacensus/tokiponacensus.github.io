@@ -253,17 +253,52 @@ body {
   margin-top: 2em;
   padding-top: 1em;
   border-top: 1px solid $border-color;
+}
 
-  @include breakpoint(max-width $small) {
-    .btn span {
-      border: 0;
-      clip: rect(0 0 0 0);
-      height: 1px;
-      margin: -1px;
-      overflow: hidden;
-      padding: 0;
-      position: absolute;
-      width: 1px;
+.page__share-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3em;
+  align-items: center;
+
+  .btn {
+    display: inline-flex;
+    width: 2.5em;
+    height: 2.5em;
+    margin-bottom: 0;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.page__share-icon {
+  width: 1.25em;
+  height: 1em;
+  fill: currentColor;
+}
+
+.page__share-native.is-supported {
+  display: inline-flex;
+}
+
+$share-button-colors:
+  (bluesky, #0085ff),
+  (mastodon, #6364ff),
+  (reddit, #ff4500),
+  (tumblr, #35465c),
+  (x-twitter, #111);
+
+@each $share-button, $share-color in $share-button-colors {
+  .btn--#{$share-button} {
+    @include yiq-contrasted($share-color);
+
+    &:visited {
+      @include yiq-contrasted($share-color);
+    }
+
+    &:hover {
+      @include yiq-contrasted(mix(#000, $share-color, 20%));
     }
   }
 }

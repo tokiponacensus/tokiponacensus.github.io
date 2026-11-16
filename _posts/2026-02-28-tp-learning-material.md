@@ -6,6 +6,7 @@ permalink: /couse-materials/
 toc: true
 toc_label: "Learning Material"
 related: false
+show_first_image_in_list: true
 header:
     teaser: /assets/images/slides_preview.png
 ---

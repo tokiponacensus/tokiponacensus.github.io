@@ -6,6 +6,7 @@ permalink: /results2024/
 toc: true
 toc_label: "Results"
 related: false
+show_first_image_in_list: true
 header:
   teaser: /assets/images/census-2024.png
 
@@ -24,9 +25,7 @@ header:
   <img src="/assets/images/sitelen_pona.png">  
 </figure> 
 
-[The 2026 census is open! Fill it! Even if it's only for the first few questions](https://forms.gle/398cRvnSGAADqU6B8)
-
-Go [here]({% post_url 2025-05-01-resources_mentioned_in_census %}) for a list of pointers to resources mentioned in the census.
+Go [here]({% post_url 2026-11-15-resources_mentioned_in_census %}) for a list of pointers to resources mentioned in the census.
 
 How has the Toki Pona community evolved since August 2022? Is it still growing exponentially? How do people find out about Toki Pona? What do people create in Toki Pona most often?
 Find about this and much more in the results to the third Toki Pona census!
@@ -232,7 +231,7 @@ Most people use jan as the word before their name, but this dropped to about 80%
 ## Toki Pona media
 We changed this question a bit, in order to ask about categories rather than mostly about specific works, since now the number of works in Toki Pona has greatly grown. People consume all sorts of media in Toki Pona. Songs, memes and videos are at the top, but the other categories don't fall short. Note that the answers in Toki Pona included examples and more descriptive labels in order to identify them, but we have shorten them for better readability.
 
-Recall that [here]({% post_url 2025-05-01-resources_mentioned_in_census %}) you have Toki Pona resources and media mentioned in the census. They are very cool, check them out!
+Recall that [here]({% post_url 2026-11-15-resources_mentioned_in_census %}) you have Toki Pona resources and media mentioned in the census. They are very cool, check them out!
 
 
 <div id="24What Toki Pona media have you consumed?"></div>

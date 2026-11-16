@@ -35,10 +35,20 @@ layout: default
         {% if page.toc %}
           <aside class="sidebar__right {% if page.toc_sticky %}sticky{% endif %}">
             <nav class="toc">
-              <header><h4 class="nav__title"><i class="fas fa-{{ page.toc_icon | default: 'file-alt' }}"></i> {{ page.toc_label | default: site.data.ui-text[site.locale].toc_label | default: "On this page" }}</h4></header>
-              {% include toc.html sanitize=true html=content h_min=1 h_max=6 class="toc__menu" skip_no_ids=true %}
+              <details class="toc__details" open>
+                <summary class="nav__title">
+                  <span><i class="fas fa-{{ page.toc_icon | default: 'file-alt' }}"></i> {{ page.toc_label | default: site.data.ui-text[site.locale].toc_label | default: "On this page" }}</span>
+                  <span class="toc__toggle-indicator" aria-hidden="true"></span>
+                </summary>
+                {% include toc.html sanitize=true html=content h_min=1 h_max=6 class="toc__menu" skip_no_ids=true %}
+              </details>
             </nav>
           </aside>
+          <script>
+            if (window.matchMedia("(max-width: 1023px)").matches) {
+              document.currentScript.previousElementSibling.querySelector(".toc__details").open = false;
+            }
+          </script>
         {% endif %}
         {{ content }}
         {% if page.link %}<div><a href="{{ page.link }}" class="btn btn--primary">{{ site.data.ui-text[site.locale].ext_link_label | default: "Direct Link" }}</a></div>{% endif %}
